@@ -13,6 +13,7 @@ class ParsingException(Exception):
 class SymbolTable:
 
     def __init__(self):
+        ST.
         pass
     
     def insert(self,name,value):
@@ -28,7 +29,7 @@ class SymbolTable:
         pass
 
 # define tokens here
-tokens = []
+tokens = ['NUM', 'VAR', 'INCREMENT', "MULT", 'PLUS', 'MINUS', 'DIV', 'EQUAL', 'LPAR', 'RPAR', 'SEMI', 'LB', 'RB', 'TYPE', 'PRINT']
 
 lexer = lex.lex()
 
