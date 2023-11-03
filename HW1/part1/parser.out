@@ -1,0 +1,43 @@
+Created by PLY (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> expression
+Rule 1     expression -> expression PLUS expression
+Rule 2     expression -> expression MINUS expression
+Rule 3     expression -> expression TIMES expression
+Rule 4     expression -> expression DIVIDE expression
+Rule 5     expression -> expression EXPONENT expression
+Rule 6     expression -> NUMBER
+Rule 7     expression -> ID
+Rule 8     statement -> ID EQUALS expression SEMI
+Rule 9     statement -> PRINT LPAREN ID RPAREN SEMI
+Rule 10    scope -> LBRACE statements RBRACE
+Rule 11    statements -> statement
+Rule 12    statements -> statements statement
+
+Terminals, with rules where they appear
+
+DIVIDE               : 4
+EQUALS               : 8
+EXPONENT             : 5
+ID                   : 7 8 9
+LBRACE               : 10
+LPAREN               : 9
+MINUS                : 2
+NUMBER               : 6
+PLUS                 : 1
+RBRACE               : 10
+RPAREN               : 9
+SEMI                 : 8 9
+TIMES                : 3
+error                : 
+
+Nonterminals, with rules where they appear
+
+PRINT                : 9
+expression           : 1 1 2 2 3 3 4 4 5 5 8 0
+scope                : 
+statement            : 11 12
+statements           : 10 12
+
