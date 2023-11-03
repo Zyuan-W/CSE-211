@@ -1,24 +1,3 @@
-# This part of the assignment is to implement local value numbering.
-# We will be iterating over a basic block that consists of arithmetic operations, 
-# and replacing redundant arithmetic instructions with assignment instructions.
-# Your goal is to replace as many as arithmetic instructions as possible.
-
-# the test case have a basic block delimited by comments for example:
-# // Start optimization range
-# c = h - f;
-# c = e + h;
-# a = f + h;
-# a = f - e;
-# // End optimization range
-
-# You will need to iterate over each statement in the basic block. You can assume statements are limited to the following form:
-# var = var op var;
-# where var is a single lower-case character and op is either plus or minus (+ or -).
-# The code that your program prints should be able to be compiled and executed. You should create as many extra variables as you need (i.e., for the numbered variables), but you are responsible
-# for declaring the variables.
-# Please also print out a comment at the end of your output file that states how many instructions
-# were replaced. For each test case, the expected replaced instructions is shown in a comment at the top.
-
 import argparse 
 
 def local_value_numbering(f):
@@ -31,117 +10,81 @@ def local_value_numbering(f):
     to_optimize = s.split("// Start optimization range")[1].split("// End optimization range")[0]
 
     # hint: perform the local value numbering optimization here on to_optimize
-
-    # iterate over each statement in the basic block
-    # statements are limited to the form: var = var op var;
-    # where var is single lower-case character and op is either + or -
     
-    # hint: you can use the following code to split the basic block into statements
+    # split the block into statements
     statements = to_optimize.split(";")
     statements = [s.strip() for s in statements]
     statements = [s for s in statements if s != ""]
     
-    # Initialize variables to hold the optimized code and track seen and new variables
-    optimized_code = ""
-    value_number_table = {} # key: variable, value: expression
-    expression_table = {} # key: expression, value: variable
-    replaced = 0
-    all_variables = set() # track all variables
-    new_variables = set() # track new variables
-    
+    # Variables to keep track of expressions and their assigned variables
+    value_table = {} # expr -> var
+    replaced = 0 # number of instructions replaced
+    new_var_count = 0 # number of new variables created
+
+    new_var_block = "" # block of new variable declarations
+    optimized_block = "" # block of optimized instructions
+
+    # Process each line in the to_optimize block
     for statement in statements:
-        # print(f"processing {statement}")
-        operation = statement.split(" = ")
-        left = operation[0]
-        right = operation[1]
-        
-        # Track all variables
-        all_variables.add(left)
-        all_variables.update(right.split(" "))
-        
-        right_0 = right # variable use to check if expression is something like a - a
-        op = right.split(" ")
-        if len(op) == 3 and op[1] == "-":
-            if op[0] == op[2]:
-                zero = "0"
-                right_0 = zero
-                
-        # Check if the expression or its commutative equivalent is already in the table
-        if right_0 in expression_table:
-            optimized_code += f"{left} = {expression_table[right_0]};\n"
-            replaced += 1   
-            # print(f"optimized code: {optimized_code}")
-            # print("=======================================")
+
+        # Parse the instruction
+        var, expr = statement.split(' = ')
+        operand1, op, operand2 = expr.split(' ')
+
+        # Check if the expression has been computed before
+        if expr in value_table:
+            # Replace arithmetic with assignment
+            optimized_block += f"{var} = {value_table[expr]};\n"
+            replaced += 1
         else:
-            # Check for commutative equivalent
-            # print(f"'{right}' not in expression table")
-            operands = right.split(" ")
-            if len(operands) == 3 and operands[1] == "+":
-                commutative_rhs = f"{operands[2]} + {operands[0]}"
-                if commutative_rhs in expression_table:
-                    # print(f"'{commutative_rhs}' is commutative equivalent of '{right}'")
-                    optimized_code += f"{left} = {expression_table[commutative_rhs]};\n"
+            if op == '+':
+                # Check for commutative equivalent
+                commutative = f"{operand2} + {operand1}"
+                if commutative in value_table:
+                    # Replace arithmetic with assignment
+                    optimized_block += f"{var} = {value_table[commutative]};\n"
                     replaced += 1
-                    
-                    # print(f"value_number_table: {value_number_table}")
-                    # print("=======================")
-                    # print(f"expression_table: {expression_table}")
-                    # print("=======================")
-                    # print(f"optimized code: ")
-                    # print(optimized_code)
-                    # print("=============================================================")
                     continue
-                
+            # New expression, assign to a new variable
+            new_var = f"t{new_var_count}"
+            new_var_count += 1
+            value_table[expr] = new_var
 
-            # If expression is new, add to tables and output code
-            optimized_code += f"{left} = {right};\n"
-        
-            value_number_table[left] = right_0
-            # print(f"Added {left} = {right} to value number table")
+            # Declare the new variable and add the original arithmetic line
+            new_var_block += f"auto {new_var} = {expr};\n"
+            optimized_block += f"{var} = {new_var};\n"
             
-            # check if we should update the expression table
-            keys_to_delete = [key for key, value in expression_table.items() if value == left]
-            for key in keys_to_delete:
-                del expression_table[key]
-
-            expression_table[right_0] = left
             
-            # print(f"Added {right} = {left} to expression table")
-            # print(f"value_number_table: {value_number_table}")
-            # print("=======================")
-            # print(f"expression_table: {expression_table}")
-            # print("=======================")   
-            # print(f"optimized code: ")
-            # print(optimized_code)
-            # print("=============================================================")
-                    
-        
-        
-    # Prepare the new variable declarations
-    new_variable_declarations = "\n".join([f"int {var};" for var in new_variables])
-
     print(pre)
+    print(new_var_block)
+    print(optimized_block)
+    print(post)
+
+    # Print out how many instructions were replaced
+    print(f"// replaced: {replaced}")
+
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    # print(pre)
 
     # hint: print out any new variable declarations you need here
-    if new_variable_declarations:
-        print(new_variable_declarations)
-        
+
     # hint: print out the optimized local block here
-    print("// Start optimization range")
-    print(optimized_code.strip())
-    print("// End optimization range")
-    
+
     # hint: store any new numbered variables back to their unumbered counterparts here
-
-
-    print(post)
-        
-
-
+    
+    # print(post)
 
     # You should keep track of how many instructions you replaced
-    #print("// replaced: " + str(replaced))  
-    print(f"// replaced: {replaced}")  
+    #print("// replaced: " + str(replaced))    
     
 
 # if you run this file, you can give it one of the python test cases
