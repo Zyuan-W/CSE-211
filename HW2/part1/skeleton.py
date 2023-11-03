@@ -40,18 +40,17 @@ def local_value_numbering(f):
     statements = to_optimize.split(";")
     statements = [s.strip() for s in statements]
     statements = [s for s in statements if s != ""]
-    # print(statements)
     
     # Initialize variables to hold the optimized code and track seen and new variables
     optimized_code = ""
-    value_number_table = {}
-    expression_table = {}
+    value_number_table = {} # key: variable, value: expression
+    expression_table = {} # key: expression, value: variable
     replaced = 0
-    all_variables = set()
-    new_variables = set()
+    all_variables = set() # track all variables
+    new_variables = set() # track new variables
     
     for statement in statements:
-        print(f"processing {statement}")
+        # print(f"processing {statement}")
         operation = statement.split(" = ")
         left = operation[0]
         right = operation[1]
@@ -60,47 +59,19 @@ def local_value_numbering(f):
         all_variables.add(left)
         all_variables.update(right.split(" "))
         
-        right_0 = right
+        right_0 = right # variable use to check if expression is something like a - a
         op = right.split(" ")
         if len(op) == 3 and op[1] == "-":
             if op[0] == op[2]:
                 zero = "0"
                 right_0 = zero
                 
-
-        
         # Check if the expression or its commutative equivalent is already in the table
         if right_0 in expression_table:
-            print(f"'{right}' already in expression table")
-            # check if expressiont_table[right] is in value_number_table
-            variable = expression_table[right_0]
-            if variable in value_number_table:
-                expre = value_number_table[variable]
-                if expre == right_0:
-                    optimized_code += f"{left} = {variable};\n"
-                    print(f"optimized code: ")
-                    print(optimized_code)
-                    print("=============================================================")
-                    replaced += 1
-                else:
-                    # get out of this if statement
-                    print(f"expression table and value number table are inconsistent")
-                    print(f"value_number_table: {value_number_table}")
-                    print("=======================")
-                    print(f"expression_table: {expression_table}")
-                    print("=======================")
-                    optimized_code += f"{left} = {right};\n"
-                    print(f"optimized code: ")
-                    print(optimized_code)
-                    print("=============================================================")
-                    continue
-                    # print(f"expression table and value number table are inconsistent")
-                
-            
-            # optimized_code += f"{left} = {expression_table[right]};\n"
+            optimized_code += f"{left} = {expression_table[right_0]};\n"
+            replaced += 1   
             # print(f"optimized code: {optimized_code}")
             # print("=======================================")
-            # replaced += 1
         else:
             # Check for commutative equivalent
             # print(f"'{right}' not in expression table")
@@ -112,76 +83,58 @@ def local_value_numbering(f):
                     optimized_code += f"{left} = {expression_table[commutative_rhs]};\n"
                     replaced += 1
                     
-                    print(f"value_number_table: {value_number_table}")
-                    print("=======================")
-                    print(f"expression_table: {expression_table}")
-                    print("=======================")
-                    print(f"optimized code: ")
-                    print(optimized_code)
-                    print("=============================================================")
+                    # print(f"value_number_table: {value_number_table}")
+                    # print("=======================")
+                    # print(f"expression_table: {expression_table}")
+                    # print("=======================")
+                    # print(f"optimized code: ")
+                    # print(optimized_code)
+                    # print("=============================================================")
                     continue
                 
 
             # If expression is new, add to tables and output code
             optimized_code += f"{left} = {right};\n"
-            
-            # right_0 = right
-            # operands = right.split(" ")
-            # if len(operands) == 3 and operands[1] == "-":
-            #     if operands[0] == operands[2]:
-            #         zero = "0"
-            #         right_0 = zero
+        
             value_number_table[left] = right_0
             # print(f"Added {left} = {right} to value number table")
+            
+            # check if we should update the expression table
             keys_to_delete = [key for key, value in expression_table.items() if value == left]
             for key in keys_to_delete:
                 del expression_table[key]
 
             expression_table[right_0] = left
+            
             # print(f"Added {right} = {left} to expression table")
-            print(f"value_number_table: {value_number_table}")
-            print("=======================")
-            print(f"expression_table: {expression_table}")
-            print("=======================")
-            
-            # Update the expression table with the new variable
-            
-   
+            # print(f"value_number_table: {value_number_table}")
+            # print("=======================")
+            # print(f"expression_table: {expression_table}")
+            # print("=======================")   
+            # print(f"optimized code: ")
+            # print(optimized_code)
+            # print("=============================================================")
                     
-                    
-            print(f"optimized code: ")
-            print(optimized_code)
-            print("=============================================================")
-                    
-
-        # print(f"value_number_table: {value_number_table}")
-        # print("=======================")
-        # print(f"expression_table: {expression_table}")
-        # print("=======================")
-        # print(f"optimized code: {optimized_code}")
-        # print("=======================================")
-        # print(expression_table)
-        # print("=======================")
         
         
-    # # Prepare the new variable declarations
-    # new_variable_declarations = "\n".join([f"int {var};" for var in new_variables])
+    # Prepare the new variable declarations
+    new_variable_declarations = "\n".join([f"int {var};" for var in new_variables])
 
-    # print(pre)
+    print(pre)
 
-    # # hint: print out any new variable declarations you need here
-    # if new_variable_declarations:
-    #     print(new_variable_declarations)
+    # hint: print out any new variable declarations you need here
+    if new_variable_declarations:
+        print(new_variable_declarations)
         
-    # # hint: print out the optimized local block here
-    # print("// Start optimization range")
-    # print(optimized_code.strip())
-    # print("// End optimization range")
+    # hint: print out the optimized local block here
+    print("// Start optimization range")
+    print(optimized_code.strip())
+    print("// End optimization range")
     
-    # # hint: store any new numbered variables back to their unumbered counterparts here
+    # hint: store any new numbered variables back to their unumbered counterparts here
 
 
-    # print(post)
+    print(post)
         
 
 
