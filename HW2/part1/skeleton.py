@@ -37,7 +37,7 @@ def local_value_numbering(f):
         else:
             new_var = f"t{new_var_count}"
             var_table[var1] = new_var
-            new_var_block += f"auto {new_var} = {var1};\n"
+            new_var_block += f"double {new_var} = {var1};\n"
             var1 = new_var
             new_var_count += 1
         
@@ -46,54 +46,60 @@ def local_value_numbering(f):
         else:
             new_var = f"t{new_var_count}"
             var_table[var2] = new_var
-            new_var_block += f"auto {new_var} = {var2};\n"
+            new_var_block += f"double {new_var} = {var2};\n"
             var2 = new_var
             new_var_count += 1
             
         new_var_0 = f"t{new_var_count}"
         var_table[var] = new_var_0
-        new_var_block += f"auto {new_var_0} = {var};\n"
+        new_var_block += f"double {new_var_0} = {var};\n"
         var = new_var_0
         new_var_count += 1
         
         
         
         expr = f"{var1} {op} {var2}"
-        print(f"{var} = {expr}")
-            
+        # print(f"{var} = {expr}")
+        
+     
         
             
 
 
-        # # Check if the expression has been computed before
-        # if expr in expr_table:
-        #     # Replace arithmetic with assignment
-        #     optimized_block += f"{var} = {expr_table[expr]};\n"
-        #     replaced += 1
-        # else:
-        #     if op == '+':
-        #         # Check for commutative equivalent a + b = b + a
-        #         commutative = f"{var2} + {var1}"
-        #         if commutative in expr_table:
-        #             # Replace arithmetic with assignment
-        #             optimized_block += f"{var} = {expr_table[commutative]};\n"
-        #             replaced += 1
-        #             continue
-        #     # New expression, assign to a new variable
-        #     new_var = f"t{new_var_count}"
-        #     new_var_count += 1
-        #     expr_table[expr] = new_var
+        # Check if the expression has been computed before
+        if expr in expr_table:
+            # Replace arithmetic with assignment
+            optimized_block += f"{var} = {expr_table[expr]};\n"
+            replaced += 1
+        else:
+            if op == '+':
+                # Check for commutative equivalent a + b = b + a
+                commutative = f"{var2} + {var1}"
+                if commutative in expr_table:
+                    # Replace arithmetic with assignment
+                    optimized_block += f"{var} = {expr_table[commutative]};\n"
+                    replaced += 1
+                    continue
+            # New expression, assign to a new variable
+            # new_var = f"t{new_var_count}"
+            # new_var_count += 1
+            expr_table[expr] = var
 
-        #     # Declare the new variable and add the original arithmetic line
-        #     new_var_block += f"auto {new_var} = {expr};\n"
-        #     optimized_block += f"{var} = {new_var};\n"
+            # Declare the new variable and add the original arithmetic line
+            # new_var_block += f"auto {new_var} = {expr};\n"
+            optimized_block += f"{var} = {expr};\n"
+   
             
-            
-    # print(pre)
-    print(new_var_block)
-    print(var_table)
-    # print(optimized_block)
-    # print(post)
+    print(pre)
+    # print("=====================================")
+    # print(var_table)
+    # print("=====================================")
+    print(new_var_block) # declare new variables
+    print(optimized_block)
+    # assign values back to original variables
+    for var, value in var_table.items():
+        print(f"{var} = {value};")
+    print(post)
 
     # Print out how many instructions were replaced
     print(f"// replaced: {replaced}")
