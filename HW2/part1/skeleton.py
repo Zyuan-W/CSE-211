@@ -16,6 +16,7 @@ def local_value_numbering(f):
     statements = [s.strip() for s in statements]
     statements = [s for s in statements if s != ""]
     
+    
     # Variables to keep track of expressions and their assigned variables
     expr_table = {} # expr -> var
     var_table = {} # var -> value
@@ -32,23 +33,23 @@ def local_value_numbering(f):
         var, expr = statement.split(' = ')
         var1, op, var2 = expr.split(' ') # b + c        
 
-        if var1 in var_table: # if var1 is in var_table, replace var1 with its value
+        if var1 in var_table:
             var1 = var_table[var1]
-        else: # if var1 is not in var_table, create a new variable and add it to var_table
-            new_var = f"t{new_var_count}"
-            var_table[var1] = new_var
-            new_var_block += f"double {new_var} = {var1};\n"
-            var1 = new_var
-            new_var_count += 1
+        # else:
+        #     new_var = f"t{new_var_count}"
+        #     var_table[var1] = new_var
+        #     new_var_block += f"double {new_var} = {var1};\n"
+        #     var1 = new_var
+        #     new_var_count += 1
         
         if var2 in var_table:  
             var2 = var_table[var2]
-        else:
-            new_var = f"t{new_var_count}"
-            var_table[var2] = new_var
-            new_var_block += f"double {new_var} = {var2};\n"
-            var2 = new_var
-            new_var_count += 1
+        # else:
+        #     new_var = f"t{new_var_count}"
+        #     var_table[var2] = new_var
+        #     new_var_block += f"double {new_var} = {var2};\n"
+        #     var2 = new_var
+        #     new_var_count += 1
             
         new_var_0 = f"t{new_var_count}"
         var_table[var] = new_var_0
