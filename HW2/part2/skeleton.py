@@ -29,14 +29,28 @@ def get_graph(input_file):
 # Helper function to extract variables from an assignment instruction
 def extract_variables_from_assignment(instruction):
     # This regex assumes variable names are alphabetic and assignment is simple 'var = expr'
-    match = re.match(r'\s*(\w+)\s*=\s*(.*)', instruction)
-    if match:
-        return match.group(1), re.findall(r'\b\w+\b', match.group(2))
-    return None, None
+    # match = re.match(r'\s*(\w+)\s*=\s*(.*)', instruction)
+    # if match:
+    #     return match.group(1), re.findall(r'\b\w+\b', match.group(2))
+    # return None, None
+    if '=' in instruction:
+        lhs,rhs = instruction.split(' = ')
+        no_, left_var = lhs.split(' ')
+        if rhs != 'input()':
+            return left_var, rhs
+        
+        return left_var, None
+    if "start" or "stop" in instruction:
+        return None, None
+    else:
+        lhs, rhs = instruction.split(' ')
+        return None, rhs
 
 # Function to create the per-node sets of UEVar and VarKill
 def create_uevar_varkill_sets(node, instruction):
     left_var, right_vars = extract_variables_from_assignment(instruction)
+    
+    print("left_var: ", left_var, "  |  right_vars: ", right_vars)
     
     # Upward Exposed Variables are those that are used before being defined in the node
     UEVar = set(right_vars) if right_vars else set()
@@ -59,7 +73,10 @@ def compute_LiveOut(CFG):
     # First, create per-node UEVar and VarKill sets(Part 2.1)
     for node in CFG.nodes():
         instruction = get_node_instruction(node)
+        
+        print("instruction: ", instruction)
         UEVar[node], VarKill[node] = create_uevar_varkill_sets(node, instruction)
+        print("UEVar: ", UEVar[node], "  |  VarKill: ", VarKill[node])
   
     changed = True # Flag - has there been a change in LiveOut?
 
