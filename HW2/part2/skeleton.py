@@ -26,17 +26,44 @@ def get_graph(input_file):
     arcs = []
     return CFGNode.to_graph(arcs)
 
+# Helper function to extract variables from an assignment instruction
+def extract_variables_from_assignment(instruction):
+    # This regex assumes variable names are alphabetic and assignment is simple 'var = expr'
+    match = re.match(r'\s*(\w+)\s*=\s*(.*)', instruction)
+    if match:
+        return match.group(1), re.findall(r'\b\w+\b', match.group(2))
+    return None, None
+
+# Function to create the per-node sets of UEVar and VarKill
+def create_uevar_varkill_sets(node, instruction):
+    left_var, right_vars = extract_variables_from_assignment(instruction)
+    
+    # Upward Exposed Variables are those that are used before being defined in the node
+    UEVar = set(right_vars) if right_vars else set()
+    
+    # Killed Variables are those that are defined and reassigned in the node
+    VarKill = {left_var} if left_var else set()
+    
+    # Remove killed variables from UEVar
+    UEVar -= VarKill
+
+    return UEVar, VarKill
 
 # You can use get_node_successors(CFG, n) to get a list of n's
 # successor nodes.
-def compute_LiveOut(CFG, UEVar, VarKill, VarDomain):
+def compute_LiveOut(CFG):
+    LiveOut = {n : set() for n in CFG.nodes()}
+    UEVar = {}
+    VarKill = {}
 
-    LiveOut = {}
+    # First, create UEVar and VarKill sets
+    for node in CFG.nodes():
+        instruction = get_node_instruction(node)
+        UEVar[node], VarKill[node] = create_uevar_varkill_sets(node, instruction)
 
-    # hint: you will eventually implement a fixed point iteration. It
-    # should look a lot like figure 8.14b in the EAC book.
-        
+
     return LiveOut
+
 
 # The uninitialized variables are the LiveOut variables from the start
 # node. It is fine if your implementation needs to change this
@@ -53,11 +80,15 @@ def find_undefined_variables(input_python_file):
     # Convert the python file into a CFG
     CFG = get_graph(input_python_file)
 
+
     # Get LiveOut
-    LiveOut = compute_LiveOut(CFG, UEVar, VarKill, VarDomain)
+    LiveOut = compute_LiveOut(CFG)
+
 
     # Return a set of unintialized variables
     return get_uninitialized_variables_from_LiveOut(CFG, LiveOut)
+
+
 
 # if you run this file, you can give it one of the python test cases
 # in the test_cases/ directory.
