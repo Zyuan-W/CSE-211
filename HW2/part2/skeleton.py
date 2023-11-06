@@ -33,18 +33,22 @@ def extract_variables_from_assignment(instruction):
     # if match:
     #     return match.group(1), re.findall(r'\b\w+\b', match.group(2))
     # return None, None
+    match = (r'[a-z]+:\s*(\w+)', instruction)
     if '=' in instruction:
+        print("= in instruction: ", instruction)
         lhs,rhs = instruction.split(' = ')
         no_, left_var = lhs.split(' ')
         if rhs != 'input()':
             return left_var, rhs
-        
         return left_var, None
-    if "start" or "stop" in instruction:
+    elif "start" in instruction or "stop" in instruction:
         return None, None
     else:
-        lhs, rhs = instruction.split(' ')
-        return None, rhs
+        if ':' in instruction:
+            parts = instruction.split(": ")
+            rhs = parts[-1]
+            return None, rhs
+        return None, None
 
 # Function to create the per-node sets of UEVar and VarKill
 def create_uevar_varkill_sets(node, instruction):
