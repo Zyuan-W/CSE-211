@@ -56,10 +56,27 @@ def compute_LiveOut(CFG):
     UEVar = {}
     VarKill = {}
 
-    # First, create UEVar and VarKill sets
+    # First, create per-node UEVar and VarKill sets(Part 2.1)
     for node in CFG.nodes():
         instruction = get_node_instruction(node)
         UEVar[node], VarKill[node] = create_uevar_varkill_sets(node, instruction)
+  
+    changed = True # Flag - has there been a change in LiveOut?
+
+    # Iterate until no changes(fixpoint algorithm)(Part 2.2)
+    while changed:
+        changed = False
+        for node in list(CFG.nodes()):
+
+            current_LiveOut = LiveOut[node].copy()
+
+            # Compute new LiveOut value 
+            for successor in get_node_successors(CFG, node):
+                LiveOut[node] |= (UEVar[successor] | (LiveOut[successor] - VarKill[successor]))
+
+            # Check if LiveOut changed
+            if current_LiveOut != LiveOut[node]:
+                changed = True
 
 
     return LiveOut
