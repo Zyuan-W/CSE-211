@@ -1,6 +1,6 @@
-# Performance Comparison Report
+# Performance Comparison Report of Local Value Numbering
 
-This document provides a detailed report on the performance comparison between the original and optimized versions of a given program, evaluated across multiple test cases. The comparison includes execution time measured in milliseconds and the output hash to ensure the correctness of the optimization.
+This document provides a detailed report on the performance comparison between the original code and optimized code after use local value numbering, evaluated across multiple test cases. The comparison includes execution time measured in milliseconds and the output hash to ensure the correctness of the optimization.
 
 ## Summary of Results
 
