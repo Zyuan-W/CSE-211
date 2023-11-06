@@ -72,12 +72,3 @@ Below are the detailed results after running both the original and optimized ver
 ## Conclusion
 
 The optimization process has resulted in increased execution time in all test cases. While the output remains correct (as indicated by the matching hash values), the performance in terms of execution speed has degraded.
-
-Further investigation and refinement of the optimized code may be necessary to reduce execution times while maintaining or improving upon the correctness of the results.
-
-## How to Use This Document
-
-- **For Developers:** Utilize the detailed report sections to analyze the performance impacts of specific changes.
-- **For Reviewers:** Reference the summary table for a quick comparison and verification of optimization effects.
-
-Please ensure to keep the performance testing consistent across different environments to avoid discrepancies due to external factors such as system load or hardware differences.
