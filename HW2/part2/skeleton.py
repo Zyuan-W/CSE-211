@@ -64,7 +64,7 @@ def create_sets(instruction):
 
 # You can use get_node_successors(CFG, n) to get a list of n's
 # successor nodes. 
-# Traversal order: Dictated by the order of nodes produced by PyCFG's CFG.to_graph() member function
+
 def compute_LiveOut(CFG):
     LiveOut = {n : set() for n in CFG.nodes()}
     UEVar = {}
@@ -132,4 +132,6 @@ if __name__ == '__main__':
     parser.add_argument('pythonfile', help ='The python file to be analyzed') 
     args = parser.parse_args()
     print(find_undefined_variables(args.pythonfile))
-    
+
+
+# Traversal order: Dictated by the order of nodes produced by PyCFG's CFG.to_graph() member function
