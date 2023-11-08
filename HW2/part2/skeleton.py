@@ -66,6 +66,8 @@ def create_uevar_varkill_sets(node, instruction):
 # You can use get_node_successors(C FG, n) to get a list of n's
 # successor nodes.
 def compute_LiveOut(CFG):
+    global iter_counter
+    iter_counter = 0
     LiveOut = {n : set() for n in CFG.nodes()}
     UEVar = {}
     VarKill = {}
@@ -82,7 +84,6 @@ def compute_LiveOut(CFG):
 
     # Iterate until no changes(fixpoint algorithm)(Part 2.2)
     while changed:
-        global iter_counter
         iter_counter += 1
         changed = False
         for node in list(CFG.nodes()):
