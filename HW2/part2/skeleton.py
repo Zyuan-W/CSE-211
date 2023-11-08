@@ -47,7 +47,7 @@ def extract_variables_from_assignment(instruction):
         return None, None
 
 # Function to create the per-node sets of UEVar and VarKill
-def create_uevar_varkill_sets(node, instruction):
+def create_sets(node, instruction):
     left_var, right_vars = extract_variables_from_assignment(instruction)
     
     # print("left_var: ", left_var, "  |  right_vars: ", right_vars)
@@ -96,10 +96,9 @@ def compute_LiveOut(CFG):
         instruction = get_node_instruction(node)
         
         # print("instruction: ", instruction)
-        UEVar[node], VarKill[node] = create_uevar_varkill_sets(node, instruction)
+        UEVar[node], VarKill[node] = create_sets(node, instruction)
         # print("UEVar: ", UEVar[node], "  |  VarKill: ", VarKill[node])
         
-
   
     changed = True # Flag - has there been a change in LiveOut?
 
