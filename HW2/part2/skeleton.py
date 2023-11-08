@@ -4,6 +4,7 @@ from pycfg.pycfg import PyCFG, CFGNode, slurp
 import argparse 
 import re
 
+iter_counter = 0
 # Acks: I used
 # https://www.geeksforgeeks.org/draw-control-flow-graph-using-pycfg-python/
 # to get started with PyCFG. 
@@ -46,7 +47,7 @@ def extract_variables_from_assignment(instruction):
         return None, None
 
 # Function to create the per-node sets of UEVar and VarKill
-def create_sets(instruction):
+def create_uevar_varkill_sets(node, instruction):
     left_var, right_vars = extract_variables_from_assignment(instruction)
     
     # print("left_var: ", left_var, "  |  right_vars: ", right_vars)
@@ -62,9 +63,8 @@ def create_sets(instruction):
 
     return UEVar, VarKill
 
-# You can use get_node_successors(CFG, n) to get a list of n's
-# successor nodes. 
-
+# You can use get_node_successors(C FG, n) to get a list of n's
+# successor nodes.
 def compute_LiveOut(CFG):
     LiveOut = {n : set() for n in CFG.nodes()}
     UEVar = {}
@@ -75,27 +75,29 @@ def compute_LiveOut(CFG):
         instruction = get_node_instruction(node)
         
         # print("instruction: ", instruction)
-        UEVar[node], VarKill[node] = create_sets(instruction)
+        UEVar[node], VarKill[node] = create_uevar_varkill_sets(node, instruction)
         # print("UEVar: ", UEVar[node], "  |  VarKill: ", VarKill[node])
   
     changed = True # Flag - has there been a change in LiveOut?
 
-    # Iterate until no further changes(fixpoint algorithm)(Part 2.2)
+    # Iterate until no changes(fixpoint algorithm)(Part 2.2)
     while changed:
+        global iter_counter
+        iter_counter += 1
         changed = False
         for node in list(CFG.nodes()):
 
-            saved_LiveOut = LiveOut[node].copy()
+            current_LiveOut = LiveOut[node].copy()
 
             # Compute new LiveOut value 
             for successor in get_node_successors(CFG, node):
                 LiveOut[node] |= (UEVar[successor] | (LiveOut[successor] - VarKill[successor]))
 
             # Check if LiveOut changed
-            if saved_LiveOut != LiveOut[node]:
+            if current_LiveOut != LiveOut[node]:
                 changed = True
 
-
+    print(f"iterations: {iter_counter}")
     return LiveOut
 
 
@@ -132,6 +134,4 @@ if __name__ == '__main__':
     parser.add_argument('pythonfile', help ='The python file to be analyzed') 
     args = parser.parse_args()
     print(find_undefined_variables(args.pythonfile))
-
-
-# Traversal order: Dictated by the order of nodes produced by PyCFG's CFG.to_graph() member function
+    
