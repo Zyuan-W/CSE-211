@@ -63,6 +63,22 @@ def create_uevar_varkill_sets(node, instruction):
 
     return UEVar, VarKill
 
+# perform postorder traversal of the CFG
+def postorder_traversal(CFG):
+    visited = set()
+    postorder_list = []
+    
+    def visit(node):
+        if node not in visited:
+            visited.add(node)
+            for successor in get_node_successors(CFG,node):
+                visit(successor)
+            postorder_list.append(node)
+    
+    visit(CFG.get_node(0)) # Start at the start node
+    
+    return postorder_list
+
 # You can use get_node_successors(C FG, n) to get a list of n's
 # successor nodes.
 def compute_LiveOut(CFG):
@@ -71,6 +87,9 @@ def compute_LiveOut(CFG):
     LiveOut = {n : set() for n in CFG.nodes()}
     UEVar = {}
     VarKill = {}
+    
+    postorder_nodes = postorder_traversal(CFG)
+    rpo_nodes = list(reversed(postorder_nodes))
 
     # First, create per-node UEVar and VarKill sets(Part 2.1)
     for node in CFG.nodes():
@@ -79,6 +98,8 @@ def compute_LiveOut(CFG):
         # print("instruction: ", instruction)
         UEVar[node], VarKill[node] = create_uevar_varkill_sets(node, instruction)
         # print("UEVar: ", UEVar[node], "  |  VarKill: ", VarKill[node])
+        
+
   
     changed = True # Flag - has there been a change in LiveOut?
 
@@ -86,7 +107,8 @@ def compute_LiveOut(CFG):
     while changed:
         iter_counter += 1
         changed = False
-        for node in list(CFG.nodes()):
+        # for node in list(CFG.nodes()): # default order
+        for node in rpo_nodes: # reverse postorder
 
             current_LiveOut = LiveOut[node].copy()
 
@@ -137,6 +159,7 @@ if __name__ == '__main__':
     print(find_undefined_variables(args.pythonfile))
     
     
+# default order 
 # iterations: 2
 # passed test: 0
 # ---
@@ -156,6 +179,32 @@ if __name__ == '__main__':
 # passed test: 5
 # ---
 # iterations: 8
+# passed test: 6
+# ---
+# iterations: 8
+# passed test: 7
+# ---
+
+# rpo
+# iterations: 2
+# passed test: 0
+# ---
+# iterations: 5
+# passed test: 1
+# ---
+# iterations: 5
+# passed test: 2
+# ---
+# iterations: 6
+# passed test: 3
+# ---
+# iterations: 7
+# passed test: 4
+# ---
+# iterations: 6
+# passed test: 5
+# ---
+# iterations: 9
 # passed test: 6
 # ---
 # iterations: 8
