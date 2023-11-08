@@ -135,3 +135,28 @@ if __name__ == '__main__':
     args = parser.parse_args()
     print(find_undefined_variables(args.pythonfile))
     
+    
+# iterations: 2
+# passed test: 0
+# ---
+# iterations: 5
+# passed test: 1
+# ---
+# iterations: 5
+# passed test: 2
+# ---
+# iterations: 6
+# passed test: 3
+# ---
+# iterations: 7
+# passed test: 4
+# ---
+# iterations: 6
+# passed test: 5
+# ---
+# iterations: 8
+# passed test: 6
+# ---
+# iterations: 8
+# passed test: 7
+# ---
