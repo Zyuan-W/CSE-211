@@ -6,12 +6,12 @@ This document provides a detailed report on the performance comparison between t
 
 The following table summarizes the time differences between the original and optimized code for each test case provided:
 
-| Test ID | Original Time (ms) | Optimized Time (ms) | Time Difference (ms) | Replacements | Hash Value        |
-|---------|--------------------|---------------------|----------------------|--------------|-------------------|
-| test0   | 36                 | 52                  | +16                  | 3            | 45.529884         |
-| test1   | 771                | 1324                | +553                 | 702          | -882.981133       |
-| test2   | 755                | 1295                | +540                 | 843          | 18.455962         |
-| test3   | 768                | 1287                | +519                 | 850          | -782705119.213801 |
+| Test ID | Original Time (ms) | Optimized Time (ms) | Replacements | Hash Value        |
+|---------|--------------------|---------------------|--------------|-------------------|
+| test0   | 33                 | 37                  | 3            | 45.529884         |
+| test1   | 781                | 680                 | 702          | -882.981133       |
+| test2   | 774                | 660                 | 843          | 18.455962         |
+| test3   | 974                | 643                 | 850          | -782705119.213801 |
 
 ## Detailed Report
 
@@ -21,54 +21,54 @@ Below are the detailed results after running both the original and optimized ver
 
 - **Original Program:**
   - File: `test_cases/test0.cpp`
-  - Elapsed Time: 36 ms
+  - Elapsed Time: 33 ms
   - Hash: 45.529884
 
 - **Optimized Program:**
   - File: `test_cases/test0.cpp`
   - Replacements Made: 3
-  - Elapsed Time: 52 ms
+  - Elapsed Time: 37 ms
   - Hash: 45.529884
 
 ### Test 1
 
 - **Original Program:**
   - File: `test_cases/test1.cpp`
-  - Elapsed Time: 771 ms
+  - Elapsed Time: 781 ms
   - Hash: -882.981133
 
 - **Optimized Program:**
   - File: `test_cases/test1.cpp`
   - Replacements Made: 702
-  - Elapsed Time: 1324 ms
+  - Elapsed Time: 680 ms
   - Hash: -882.981133
 
 ### Test 2
 
 - **Original Program:**
   - File: `test_cases/test2.cpp`
-  - Elapsed Time: 755 ms
+  - Elapsed Time: 774 ms
   - Hash: 18.455962
 
 - **Optimized Program:**
   - File: `test_cases/test2.cpp`
   - Replacements Made: 843
-  - Elapsed Time: 1295 ms
+  - Elapsed Time: 660 ms
   - Hash: 18.455962
 
 ### Test 3
 
 - **Original Program:**
   - File: `test_cases/test3.cpp`
-  - Elapsed Time: 768 ms
+  - Elapsed Time: 974 ms
   - Hash: -782705119.213801
 
 - **Optimized Program:**
   - File: `test_cases/test3.cpp`
   - Replacements Made: 850
-  - Elapsed Time: 1287 ms
+  - Elapsed Time: 643 ms
   - Hash: -782705119.213801
 
 ## Conclusion
 
-The optimization process has resulted in increased execution time in all test cases. While the output remains correct (as indicated by the matching hash values), the performance in terms of execution speed has degraded.
+The optimization process has resulted in decreased execution time in all test cases. While the output remains correct (as indicated by the matching hash values), the performance in terms of execution speed has improved.

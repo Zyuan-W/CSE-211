@@ -61,6 +61,7 @@ def local_value_numbering(f):
         
         expr = f"{var1} {op} {var2}"
         # print(f"{var} = {expr}")
+        # print("=====================================")
         
      
         
@@ -70,7 +71,7 @@ def local_value_numbering(f):
         # Check if the expression has been computed before
         if expr in expr_table:
             # Replace arithmetic with assignment
-            optimized_block += f"{var} = {expr_table[expr]};\n"
+            optimized_block += f"double {var} = {expr_table[expr]};\n"
             replaced += 1
         else:
             if op == '+':
@@ -78,7 +79,7 @@ def local_value_numbering(f):
                 commutative = f"{var2} + {var1}"
                 if commutative in expr_table:
                     # Replace arithmetic with assignment
-                    optimized_block += f"{var} = {expr_table[commutative]};\n"
+                    optimized_block += f"double {var} = {expr_table[commutative]};\n"
                     replaced += 1
                     continue
             # New expression, assign to a new variable
@@ -88,14 +89,14 @@ def local_value_numbering(f):
 
             # Declare the new variable and add the original arithmetic line
             # new_var_block += f"auto {new_var} = {expr};\n"
-            optimized_block += f"{var} = {expr};\n"
+            optimized_block += f"double {var} = {expr};\n"
    
             
     print(pre)
     # print("=====================================")
     # print(var_table)
     # print("=====================================")
-    print(new_var_block) # declare new variables
+    # print(new_var_block) # declare new variables
     print(optimized_block)
     # assign values back to original variables
     for var, value in var_table.items():
