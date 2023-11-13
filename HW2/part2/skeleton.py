@@ -91,13 +91,14 @@ def compute_LiveOut(CFG):
     UEVar = {}
     VarKill = {}
     
-    postorder_nodes = postorder_traversal(reverse_CFG)
+    postorder_nodes = postorder_traversal(CFG)
+    # postorder_nodes = postorder_traversal(reverse_CFG) # rpo with reverse CFG
     rpo_nodes = list(reversed(postorder_nodes))
 
     # print("rpo_nodes: ", rpo_nodes)
     # First, create per-node UEVar and VarKill sets(Part 2.1)
-    # for node in CFG.nodes():
-    for node in rpo_nodes:
+    for node in CFG.nodes():
+    # for node in rpo_nodes:
         instruction = get_node_instruction(node)
         
         # print("instruction: ", instruction)
@@ -115,8 +116,8 @@ def compute_LiveOut(CFG):
         
         iter_counter += 1
         changed = False
-        # for node in list(CFG.nodes()): # default order
-        for node in rpo_nodes: # reverse postorder
+        for node in list(CFG.nodes()): # default order
+        # for node in rpo_nodes: # reverse postorder
             current_LiveOut = LiveOut[node].copy()
             # print("current_LiveOut: ", current_LiveOut)
 
