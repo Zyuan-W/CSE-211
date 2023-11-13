@@ -50,12 +50,8 @@ def extract_variables_from_assignment(instruction):
 def create_sets(node, instruction):
     left_var, right_vars = extract_variables_from_assignment(instruction)
     
-    # print("left_var: ", left_var, "  |  right_vars: ", right_vars)
-    
-    # Upward Exposed Variables are those that are used before being defined in the node
     UEVar = set(right_vars) if right_vars else set()
     
-    # Killed Variables are those that are defined and reassigned in the node
     VarKill = {left_var} if left_var else set()
     
     # Remove killed variables from UEVar
