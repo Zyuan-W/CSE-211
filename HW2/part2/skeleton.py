@@ -178,7 +178,7 @@ The number of iterations for each of the three traversal orders(default, rpo, an
 The standard rpo performs comparably to the default traversal order, and worse(in the sense of requiring more iterations) when a loop is present, as in test 6 of the provided tests. 
 In that case, rpo visits the children before the parents, leading to delayed propagation(as parents are visited only after their children are updated, compounded by the loop. 
 
-The rpo traversal performed on the reversed CFG, by contrast, exhibits a marked improvement and reduction in iterations across the tests. For test 6 in particular, rpo realizes an almost 3x reduction in iterations. 
+The rpo traversal performed on the reversed CFG, by contrast, exhibits a marked improvement and reduction in iterations across the tests. For test 6 in particular, rpo on the reverse CFG realizes an almost 3x reduction in iterations. 
 
 Below are the results for all three traversal configurations. 
 
