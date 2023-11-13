@@ -52,10 +52,10 @@ def create_sets(instruction):
     
     # print("left_var: ", left_var, "  |  right_vars: ", right_vars)
     
-    # Upward Exposed Variables are those that are used before being defined in the node
+    # Upward Exposed Variables are those that are used before being defined in the node. They are used interchangeably with right_vars
     UEVar = set(right_vars) if right_vars else set()
     
-    # Killed Variables are those that are defined and reassigned in the node
+    # Killed Variables are those that are defined and reassigned in the node. This corresponds to variables on the left hand side of assignment. 
     VarKill = {left_var} if left_var else set()
     
     # Remove killed variables from UEVar
@@ -101,7 +101,7 @@ def compute_LiveOut(CFG):
         instruction = get_node_instruction(node)
         
         # print("instruction: ", instruction)
-        UEVar[node], VarKill[node] = create_sets(instruction)
+        UEVar[node], VarKill[node] = create_sets(instruction) # Create per-node upward exposed and killed sets
         # print("UEVar: ", UEVar[node], "  |  VarKill: ", VarKill[node])
   
     changed = True # Flag - has there been a change in LiveOut?
@@ -168,7 +168,24 @@ if __name__ == '__main__':
     args = parser.parse_args()
     print(find_undefined_variables(args.pythonfile))
     
-    
+
+'''
+Comment with observations(traversal order and effect on iterations): 
+
+The number of iterations for each of the three traversal orders(default, rpo, and rpo on the reversed CFG) are indicated below. 
+
+The standard rpo performs comparably to the default traversal order, and worse(in the sense of requiring more iterations) when a loop is present, as in test 6 of the provided tests. 
+In that case, rpo visits the children before the parents, leading to delayed propagation(as parents are visited only after their children are updated, compounded by the loop. 
+
+The rpo traversal performed on the reversed CFG, by contrast, exhibits a marked improvement and reduction in iterations across the tests. For test 6 in particular, rpo realizes an almost 3x reduction in iterations. 
+
+Below are the results for all three traversal configurations. 
+
+'''
+
+
+
+
 # default order 
 # iterations: 2
 # passed test: 0
