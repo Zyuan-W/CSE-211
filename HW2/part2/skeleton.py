@@ -1,3 +1,5 @@
+# Pranav Vempati & Ziyuan Wang
+
 # skeleton file for UCSC CSE211 Homework 2: part 1
 
 from pycfg.pycfg import PyCFG, CFGNode, slurp 
