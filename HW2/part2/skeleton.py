@@ -98,7 +98,7 @@ def compute_LiveOut(CFG):
     
     postorder_nodes = postorder_traversal(CFG)
     # postorder_nodes = postorder_traversal(reverse_CFG) # rpo with reverse CFG
-    rpo_nodes = list(reversed(postorder_nodes))
+    # rpo_nodes = list(reversed(postorder_nodes))
 
     # print("rpo_nodes: ", rpo_nodes)
     # First, create per-node UEVar and VarKill sets(Part 2.1)
