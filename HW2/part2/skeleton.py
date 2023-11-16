@@ -89,7 +89,7 @@ def postorder_traversal(CFG):
 # successor nodes.
 def compute_LiveOut(CFG):
     global iter_counter
-    reverse_CFG = CFG.reverse()
+    # reverse_CFG = CFG.reverse()
     iter_counter = 0
     LiveOut = {n : set() for n in CFG.nodes()}
     # LiveOut = {n : set() for n in postorder_traversal(CFG)}
