@@ -31,20 +31,23 @@ def get_graph(input_file):
 
 # Helper function to extract variables from an assignment instruction
 def extract_variables_from_assignment(instruction):
+    # print("instruction: ", instruction)
     if '=' in instruction:
-        lhs,rhs = instruction.split(' = ')
+        lhs,rhs = instruction.split('=')
+        lhs = lhs.strip()
+        rhs = rhs.strip()
         # no_, left_var = lhs.split(' ')
         parts = lhs.split(':')
         left_var = parts[-1].strip()
-        if rhs != 'input()':
+        if rhs != "input()":
             return left_var, rhs
         return left_var, None
     elif "start" in instruction or "stop" in instruction:
         return None, None
     else:
         if ':' in instruction:
-            parts = instruction.split(": ")
-            rhs = parts[-1]
+            parts = instruction.split(":")
+            rhs = parts[-1].strip()
             return None, rhs
         return None, None
 
@@ -55,7 +58,7 @@ def create_sets(instruction):
     # print("left_var: ", left_var, "  |  right_vars: ", right_vars)
     
     # Upward Exposed Variables are those that are used before being defined in the node. They are used interchangeably with right_vars
-    UEVar = set(right_vars) if right_vars else set()
+    UEVar = {right_vars} if right_vars else set()
     
     # Killed Variables are those that are defined and reassigned in the node. This corresponds to variables on the left hand side of assignment. 
     VarKill = {left_var} if left_var else set()
@@ -105,7 +108,7 @@ def compute_LiveOut(CFG):
         
         # print("instruction: ", instruction)
         UEVar[node], VarKill[node] = create_sets(instruction) # Create per-node upward exposed and killed sets
-        # print("UEVar: ", UEVar[node], "  |  VarKill: ", VarKill[node])
+  
   
     changed = True # Flag - has there been a change in LiveOut?
 
