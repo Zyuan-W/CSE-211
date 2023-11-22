@@ -62,9 +62,19 @@ def reference_loop_source(chain_length):
 # with several power-of-two options for the unroll factor for example,
 # try 1,2,4,8, etc.
 def homework_loop_sequential_source(chain_length, unroll_factor):
-    function = "void homework_loop_sequential(float *b, int size) {"
+    function = "void homework_loop_sequential(float *b, int size) {\n"
     #implement me!
+    loop = "for (int i = 0; i < size/{}; i++) {{".format(unroll_factor)
+    loop_close = "  }"
     function_body = ""
+    function += loop
+    for j in range(unroll_factor):
+        function_body += "    float tmp{} = b[i*{} + {}];\n".format(j,unroll_factor,j)
+        for k in range(chain_length):
+            function_body += "    tmp{} += {};\n".format(j, k+1)
+        function_body += "    b[i*{} + {}] = tmp{};\n".format(unroll_factor,j,j)
+    
+    function_body += loop_close
     function_close = "}"
     return "\n".join([function, function_body, function_close])
 
@@ -151,7 +161,7 @@ def pp_program(chain_length, unroll_factor):
     homework_source_string_interleaved = homework_loop_interleaved_source(chain_length, unroll_factor)
 
     # join together all the other parts to make a complete C++ program
-    formatted_params = params_str.format(chain_length, unroll_factor);
+    formatted_params = params_str.format(chain_length, unroll_factor)
     return "\n".join([top_source_string, reference_loop_source(chain_length), homework_source_string_sequential, homework_source_string_interleaved, formatted_params, main_source_string])
 
 # Write a string to a file (helper function)
