@@ -64,15 +64,16 @@ def reference_loop_source(chain_length):
 def homework_loop_sequential_source(chain_length, unroll_factor):
     function = "void homework_loop_sequential(float *b, int size) {\n"
     #implement me!
-    loop = "for (int i = 0; i < size/{}; i++) {{".format(unroll_factor)
+    loop = "    for (int i = 0; i < size/{}; i++) {{".format(unroll_factor)
     loop_close = "  }"
     function_body = ""
     function += loop
     for j in range(unroll_factor):
-        function_body += "    float tmp{} = b[i*{} + {}];\n".format(j,unroll_factor,j)
+        function_body += "        float tmp{} = b[i*{} + {}];\n".format(j,unroll_factor,j)
         for k in range(chain_length):
-            function_body += "    tmp{} += {}f;\n".format(j, (k*1.0 + 1.0))
-        function_body += "    b[i*{} + {}] = tmp{};\n".format(unroll_factor,j,j)
+            function_body += "        tmp{} += {}f;\n".format(j, (k*1.0 + 1.0))
+        function_body += "        b[i*{} + {}] = tmp{};\n".format(unroll_factor,j,j)
+        function_body += "\n" # new line for readability
     
     function_body += loop_close
     function_close = "}"
@@ -88,7 +89,23 @@ def homework_loop_sequential_source(chain_length, unroll_factor):
 def homework_loop_interleaved_source(chain_length, unroll_factor):
     function = "void homework_loop_interleaved(float *b, int size) {"
     #implement me!
-    function_body = ""    
+    loop = "    for (int i = 0; i < size/{}; i++) {{".format(unroll_factor)
+    function_body = ""  
+    function_body += loop
+    function_body += "\n" # new line for readability
+    for j in range(unroll_factor):
+        function_body += "        float tmp{} = b[i*{} + {}];\n".format(j,unroll_factor,j)
+
+    for k in range(chain_length):
+        for j in range(unroll_factor):
+            function_body += "        tmp{} += {}f;\n".format(j, (k*1.0 + 1.0))
+            
+    for j in range(unroll_factor):
+        function_body += "        b[i*{} + {}] = tmp{};\n".format(unroll_factor,j,j)
+    
+    
+    loop_close = "  }"
+    function_body += loop_close
     function_close = "}"
     return "\n".join([function, function_body, function_close])
 
