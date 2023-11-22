@@ -71,7 +71,7 @@ def homework_loop_sequential_source(chain_length, unroll_factor):
     for j in range(unroll_factor):
         function_body += "    float tmp{} = b[i*{} + {}];\n".format(j,unroll_factor,j)
         for k in range(chain_length):
-            function_body += "    tmp{} += {};\n".format(j, k+1)
+            function_body += "    tmp{} += {}f;\n".format(j, (k*1.0 + 1.0))
         function_body += "    b[i*{} + {}] = tmp{};\n".format(unroll_factor,j,j)
     
     function_body += loop_close
