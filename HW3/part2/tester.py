@@ -8,7 +8,12 @@ tests = {"0.py" : (False, True),
          "4.py" : (True, True),
          "5.py" : (True, False),
          "6.py" : (True, True),
-         "7.py" : (True, True)
+         "7.py" : (True, True),
+         "8.py" : (True, False),
+         "9.py" : (True, True),
+         "10.py" : (True, True),
+         "11.py" : (True, False),
+         "12.py" : (True, False),
 }
 
 passed = 0
@@ -19,6 +24,7 @@ for t in tests:
     print("running: " + test_file)
     print("")
     res = analyze_file(test_file)
+    print(res)
     if res != result:
         print("failed test: " + t)
         failed += 1

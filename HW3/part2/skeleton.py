@@ -43,7 +43,7 @@ def get_loop_constraints(FOR_node):
     loop_var = FOR_node.target.id
     lower_bound = pp_expr(FOR_node.iter.args[0])
     upper_bound = pp_expr(FOR_node.iter.args[1])
-    print(lower_bound, upper_bound)
+    # print(lower_bound, upper_bound)
     # return the for loop information in some structure
     return (loop_var, lower_bound, upper_bound)
 
@@ -70,40 +70,30 @@ def get_read_info(node, numbering):
 # It returns True if it is safe to do the top loop in parallel,
 # otherwise it returns False.
 def analyze_file(fname):
-
+    var_dict.clear()
     my_ast = get_ast_from_file(fname)
-    # print(ast)
     original_loop_var, lower_bound, upper_bound = get_loop_constraints(my_ast)
     my_expr = my_ast
-    # print(str(None))
     while is_FOR_node(my_expr):
         loop_var, lower_bound, upper_bound = get_loop_constraints(my_expr)
         var_dict[loop_var] = [z3.Int(loop_var + '0'), z3.Int(loop_var + '1'), lower_bound, upper_bound]
         my_expr = my_expr.body[0]
-    print(ast.dump(my_expr))
-    # i0 = z3.Int('i0')
-    # i1 = z3.Int('i1')
+ 
     write_index0 = get_write_info(my_expr, 0)
     write_index1 = get_write_info(my_expr, 1)
     read_index0 = get_read_info(my_expr, 0)
     read_index1 = get_read_info(my_expr, 1)
-    print(write_index0, write_index1)
-    # print(write_name0)
-    print(read_index0, read_index1)
-   
 
     # write-write
-    # print(ix + iy)
     mysolver = z3.Solver()
     mysolver.add(var_dict[original_loop_var][0] != var_dict[original_loop_var][1])
     for entry in var_dict.values():
-      print(entry)
       mysolver.add(entry[0] >= entry[2])
       mysolver.add(entry[1] >= entry[2])
       mysolver.add(entry[0] < entry[3])
       mysolver.add(entry[1] < entry[3])
     mysolver.add(write_index0 == write_index1)
-    print(mysolver.check())
+
     mysolver2 = z3.Solver()
     mysolver2.add(var_dict[original_loop_var][0] != var_dict[original_loop_var][1])
     for entry in var_dict.values():
@@ -112,8 +102,6 @@ def analyze_file(fname):
       mysolver2.add(entry[0] < entry[3])
       mysolver2.add(entry[1] < entry[3])
     mysolver2.add(write_index0 == read_index1)
-    print(mysolver2.check())
-    # z3.solve(ix != iy, ix >= lower_bound, ix < upper_bound, iy >= lower_bound, iy < upper_bound )
     
     # Suggested steps:
     # 1. Get loop constraints (variables and bounds)
@@ -124,10 +112,7 @@ def analyze_file(fname):
     # conflict or a read-write (rw) conflict
     ww_conflict = str(mysolver.check()) == 'sat'
     rw_conflict = str(mysolver2.check()) == 'sat'
-    if(ww_conflict):
-        print(mysolver.model())
-    if(rw_conflict):
-        print(mysolver2.model())
+
     return ww_conflict, rw_conflict
     
 if __name__ == '__main__':
