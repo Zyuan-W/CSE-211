@@ -34,6 +34,8 @@ def pp_expr(node, numbering=0):
             return pp_expr(node.left, numbering) / pp_expr(node.right, numbering) 
         if(str(node.op.__class__) ==  "<class '_ast.Sub'>"): 
             return pp_expr(node.left, numbering) - pp_expr(node.right, numbering) 
+        if(str(node.op.__class__) ==  "<class '_ast.Mod'>"): 
+            return pp_expr(node.left, numbering) % pp_expr(node.right, numbering) 
         
     
 # Example of how to get information for the ast FOR_node
