@@ -3,7 +3,7 @@ from skeleton import analyze_file
 # fill these in with the expected result for each test
 tests = {"0.py" : (False, True),
          "1.py" : (False, False),
-         "2.py" : (True, False),
+         "2.py" : (True, True),
          "3.py" : (True, False),
          "4.py" : (True, True),
          "5.py" : (True, False),
