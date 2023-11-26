@@ -3,6 +3,7 @@ import argparse
 import z3
 
 # Some example functions on how to use the python ast module:
+var_dict = dict()
 
 # Given a python file, return an AST using the python ast module.
 def get_ast_from_file(fname):
@@ -13,7 +14,7 @@ def get_ast_from_file(fname):
     body_ast = module_ast.body[0]    
     return body_ast
 
-def pp_expr(node, numbering=None):
+def pp_expr(node, numbering=0):
     # print(str(node.__class__))
     # return ast.dump(node)
     if(str(node.__class__) ==  "<class '_ast.Num'>"):
@@ -23,9 +24,7 @@ def pp_expr(node, numbering=None):
     elif(str(node.__class__) ==  "<class '_ast.Index'>"):
         return pp_expr(node.value, numbering)
     elif(str(node.__class__) ==  "<class '_ast.Name'>"):
-        if(numbering == None):
-          return z3.Int(node.id)
-        return numbering
+        return var_dict[node.id][numbering]
     elif(str(node.__class__) ==  "<class '_ast.BinOp'>"):
         if(str(node.op.__class__) ==  "<class '_ast.Mult'>"):
             return pp_expr(node.left, numbering) * pp_expr(node.right, numbering) 
@@ -72,18 +71,20 @@ def analyze_file(fname):
 
     my_ast = get_ast_from_file(fname)
     # print(ast)
-    loop_var, lower_bound, upper_bound = get_loop_constraints(my_ast)
+    original_loop_var, lower_bound, upper_bound = get_loop_constraints(my_ast)
     my_expr = my_ast
     # print(str(None))
     while is_FOR_node(my_expr):
+        loop_var, lower_bound, upper_bound = get_loop_constraints(my_expr)
+        var_dict[loop_var] = [z3.Int(loop_var + '0'), z3.Int(loop_var + '1'), lower_bound, upper_bound]
         my_expr = my_expr.body[0]
     print(ast.dump(my_expr))
-    i0 = z3.Int('i0')
-    i1 = z3.Int('i1')
-    write_index0 = get_write_info(my_expr, i0)
-    write_index1 = get_write_info(my_expr, i1)
-    read_index0 = get_read_info(my_expr, i0)
-    read_index1 = get_read_info(my_expr, i1)
+    # i0 = z3.Int('i0')
+    # i1 = z3.Int('i1')
+    write_index0 = get_write_info(my_expr, 0)
+    write_index1 = get_write_info(my_expr, 1)
+    read_index0 = get_read_info(my_expr, 0)
+    read_index1 = get_read_info(my_expr, 1)
     print(write_index0, write_index1)
     # print(write_name0)
     print(read_index0, read_index1)
@@ -92,19 +93,22 @@ def analyze_file(fname):
     # write-write
     # print(ix + iy)
     mysolver = z3.Solver()
-    mysolver.add(i0 != i1)
-    mysolver.add(i0 >= lower_bound)
-    mysolver.add(i1 >= lower_bound)
-    mysolver.add(i0 < upper_bound)
-    mysolver.add(i1 < upper_bound)
+    mysolver.add(var_dict[original_loop_var][0] != var_dict[original_loop_var][1])
+    for entry in var_dict.values():
+      print(entry)
+      mysolver.add(entry[0] >= entry[2])
+      mysolver.add(entry[1] >= entry[2])
+      mysolver.add(entry[0] < entry[3])
+      mysolver.add(entry[1] < entry[3])
     mysolver.add(write_index0 == write_index1)
     print(mysolver.check())
     mysolver2 = z3.Solver()
-    mysolver2.add(i0 != i1)
-    mysolver2.add(i0 >= lower_bound)
-    mysolver2.add(i1 >= lower_bound)
-    mysolver2.add(i0 < upper_bound)
-    mysolver2.add(i1 < upper_bound)
+    mysolver2.add(var_dict[original_loop_var][0] != var_dict[original_loop_var][1])
+    for entry in var_dict.values():
+      mysolver2.add(entry[0] >= entry[2])
+      mysolver2.add(entry[1] >= entry[2])
+      mysolver2.add(entry[0] < entry[3])
+      mysolver2.add(entry[1] < entry[3])
     mysolver2.add(write_index0 == read_index1)
     print(mysolver2.check())
     # z3.solve(ix != iy, ix >= lower_bound, ix < upper_bound, iy >= lower_bound, iy < upper_bound )
@@ -118,7 +122,10 @@ def analyze_file(fname):
     # conflict or a read-write (rw) conflict
     ww_conflict = str(mysolver.check()) == 'sat'
     rw_conflict = str(mysolver2.check()) == 'sat'
-    
+    if(ww_conflict):
+        print(mysolver.model())
+    if(rw_conflict):
+        print(mysolver2.model())
     return ww_conflict, rw_conflict
     
 if __name__ == '__main__':
