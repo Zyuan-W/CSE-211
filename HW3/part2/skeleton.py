@@ -14,9 +14,8 @@ def get_ast_from_file(fname):
     body_ast = module_ast.body[0]    
     return body_ast
 
+# given node, returns name of node or z3 expression representing the node
 def pp_expr(node, numbering=0):
-    # print(str(node.__class__))
-    # return ast.dump(node)
     if(str(node.__class__) ==  "<class '_ast.Num'>"):
         return node.n
     elif(str(node.__class__) ==  "<class '_ast.Constant'>"):
@@ -41,9 +40,10 @@ def pp_expr(node, numbering=0):
 # Example of how to get information for the ast FOR_node
 def get_loop_constraints(FOR_node):
     loop_var = FOR_node.target.id
+
+    # calls pp_expr to evaluate bounds
     lower_bound = pp_expr(FOR_node.iter.args[0])
     upper_bound = pp_expr(FOR_node.iter.args[1])
-    # print(lower_bound, upper_bound)
     # return the for loop information in some structure
     return (loop_var, lower_bound, upper_bound)
 
@@ -51,15 +51,13 @@ def get_loop_constraints(FOR_node):
 def is_FOR_node(node):
     return str(node.__class__) == "<class '_ast.For'>"
 
-# takes in assign node
+# takes in assign node and returns index of left-hand side
 def get_write_info(node, numbering):
-    # name = pp_expr(node.targets[0].value, numbering)
     index = pp_expr(node.targets[0].slice, numbering)
     return index
 
-# takes in assign node
+# takes in assign node and returns index of right-hand side
 def get_read_info(node, numbering):
-    # name = pp_expr(node.value.value, numbering)
     index = pp_expr(node.value.slice, numbering)
     return index
 
@@ -72,21 +70,27 @@ def get_read_info(node, numbering):
 def analyze_file(fname):
     var_dict.clear()
     my_ast = get_ast_from_file(fname)
+
+    # saves outermost loop info
     original_loop_var, lower_bound, upper_bound = get_loop_constraints(my_ast)
     my_expr = my_ast
+
+    # recursively iterates nested for-loops until assignment node reached
     while is_FOR_node(my_expr):
         loop_var, lower_bound, upper_bound = get_loop_constraints(my_expr)
         var_dict[loop_var] = [z3.Int(loop_var + '0'), z3.Int(loop_var + '1'), lower_bound, upper_bound]
         my_expr = my_expr.body[0]
  
+    # gets write and read indices from two threads of outermost loop
     write_index0 = get_write_info(my_expr, 0)
     write_index1 = get_write_info(my_expr, 1)
     read_index0 = get_read_info(my_expr, 0)
     read_index1 = get_read_info(my_expr, 1)
 
-    # write-write
+    # write-write constraints
     mysolver = z3.Solver()
     mysolver.add(var_dict[original_loop_var][0] != var_dict[original_loop_var][1])
+    # adds bounds
     for entry in var_dict.values():
       mysolver.add(entry[0] >= entry[2])
       mysolver.add(entry[1] >= entry[2])
@@ -94,8 +98,10 @@ def analyze_file(fname):
       mysolver.add(entry[1] < entry[3])
     mysolver.add(write_index0 == write_index1)
 
+    # read-write constraints
     mysolver2 = z3.Solver()
     mysolver2.add(var_dict[original_loop_var][0] != var_dict[original_loop_var][1])
+    # adds bounds
     for entry in var_dict.values():
       mysolver2.add(entry[0] >= entry[2])
       mysolver2.add(entry[1] >= entry[2])

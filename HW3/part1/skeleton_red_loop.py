@@ -52,14 +52,19 @@ def homework_reduction_source(partitions):
 
     # implement me!
     function_body = ""
+    # loop header
     loop = "  for (int i = 1; i < size/{}; i++) {{\n".format(partitions)
     function_body += loop
     function_body += "    a[0] += a[i];\n"
+
+    # creating partitions
     for j in range(partitions-1):
       function_body += "    a[{0}*size/{1}] += a[i+{0}*size/{1}];\n".format(1+j,partitions)
     # closing brace
     loop_close = "  }\n"
     function_body += loop_close
+    
+    # adding together partitions
     for j in range(partitions-1):
       function_body += "  a[0] += a[{0}*size/{1}];\n".format(1+j, partitions)
     function_close = "}"
