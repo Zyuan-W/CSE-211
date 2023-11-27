@@ -1,6 +1,8 @@
+# John Yu & Ziyuan Wang
+
+
 import os
 import argparse
-
 # Top of C++ file with includes and namespaces
 top_source_string = """
 #include <iostream>
