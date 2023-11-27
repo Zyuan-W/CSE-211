@@ -62,14 +62,21 @@ def reference_loop_source(chain_length):
 # with several power-of-two options for the unroll factor for example,
 # try 1,2,4,8, etc.
 def homework_loop_sequential_source(chain_length, unroll_factor):
+    # function header
     function = "void homework_loop_sequential(float *b, int size) {\n"
     #implement me!
+
+    # loop header
     loop = "    for (int i = 0; i < size/{}; i++) {{".format(unroll_factor)
     loop_close = "  }"
+
+    # adding each line of unrolled loop to function loop body
     function_body = ""
     function += loop
     for j in range(unroll_factor):
         function_body += "        float tmp{} = b[i*{} + {}];\n".format(j,unroll_factor,j)
+
+        # generate the addition statements
         for k in range(chain_length):
             function_body += "        tmp{} += {}f;\n".format(j, (k*1.0 + 1.0))
         function_body += "        b[i*{} + {}] = tmp{};\n".format(unroll_factor,j,j)
@@ -77,6 +84,8 @@ def homework_loop_sequential_source(chain_length, unroll_factor):
     
     function_body += loop_close
     function_close = "}"
+
+    # joining everything back together
     return "\n".join([function, function_body, function_close])
 
 # Second homework function here! The specification for this
@@ -87,12 +96,17 @@ def homework_loop_sequential_source(chain_length, unroll_factor):
 # You can assume the unroll factor is a power of 2 and that the
 # the dependency chain also a power of two. 
 def homework_loop_interleaved_source(chain_length, unroll_factor):
+    # function header
     function = "void homework_loop_interleaved(float *b, int size) {"
     #implement me!
+
+    # loop header
     loop = "    for (int i = 0; i < size/{}; i++) {{".format(unroll_factor)
     function_body = ""  
     function_body += loop
     function_body += "\n" # new line for readability
+
+    # unrolling loop one section at a time
     for j in range(unroll_factor):
         function_body += "        float tmp{} = b[i*{} + {}];\n".format(j,unroll_factor,j)
 
