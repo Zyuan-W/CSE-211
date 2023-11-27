@@ -78,6 +78,7 @@ def analyze_file(fname):
     # recursively iterates nested for-loops until assignment node reached
     while is_FOR_node(my_expr):
         loop_var, lower_bound, upper_bound = get_loop_constraints(my_expr)
+        # keeping track of two variables for each for loop
         var_dict[loop_var] = [z3.Int(loop_var + '0'), z3.Int(loop_var + '1'), lower_bound, upper_bound]
         my_expr = my_expr.body[0]
  
@@ -118,7 +119,7 @@ def analyze_file(fname):
     # conflict or a read-write (rw) conflict
     ww_conflict = str(mysolver.check()) == 'sat'
     rw_conflict = str(mysolver2.check()) == 'sat'
-
+    
     return ww_conflict, rw_conflict
     
 if __name__ == '__main__':
