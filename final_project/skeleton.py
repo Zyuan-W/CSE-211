@@ -80,7 +80,7 @@ def t_newline(t):
     t.lexer.lineno +=1
     return None
 
-lex = lex.lex()
+lexer = lex.lex()
 
 # Parser
 
@@ -112,16 +112,30 @@ def p_program(p):
         
         
 # variable declaration: ('declare', var_name, value)
+# temporarily assume everything is assigned to a literal
 def p_statement_decl(p):
-    pass
+    '''
+    statement : INT VAR SEMICOLON
+              | INT VAR EQUALS NUM SEMICOLON
+    '''
+    if len(p) == 4:
+        p[0] = ('declare', p[2], 0)
+    else:
+        p[0] = ('declare', p[2], int(p[4]))
 
 # variable assignment: ('assign', var_name, value)
 def p_statement_assign(p):
-    pass
+    '''
+    statement : VAR EQUALS NUM SEMICOLON
+    '''
+    p[0] = ('assign', p[1], p[3])
 
 # if statement: ('if', condition)
 def p_statement_if(p):
-    pass
+    '''
+    statement : IF LPAREN condition RPAREN
+    '''
+    p[0] = ('if', p[3])
 
 # For loop: ('for', iter, start, end, update)
 def p_statement_for(p):
@@ -133,10 +147,10 @@ def p_statement_while(p):
 
 # condition
 def p_condition(p):
+    '''
+    condition :
+    '''
     pass
-
-
-
 
 
 def p_error(p):
@@ -159,8 +173,15 @@ def read_cpp_file(file_path):
 
 if __name__ == '__main__':
     
-    cpp_code = read_cpp_file('cpp_code.cpp')
-    parser.parse(cpp_code)
+    cpp_code = read_cpp_file('cpp0.cpp')
+    lexer.input(cpp_code)
+    while True:
+      tok = lexer.token()
+      if not tok: 
+          break      # No more input
+      print(tok)
+    p = parser.parse(cpp_code)
+    print(p)
     
     
 

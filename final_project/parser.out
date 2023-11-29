@@ -1,0 +1,222 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    DIV
+    ELSE
+    FOR
+    LB
+    MINUS
+    MULT
+    PLUS
+    PRINT
+    RB
+    WHILE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> statement
+Rule 2     program -> program statement
+Rule 3     statement -> INT VAR SEMICOLON
+Rule 4     statement -> INT VAR EQUALS NUM SEMICOLON
+Rule 5     statement -> VAR EQUALS NUM SEMICOLON
+Rule 6     statement -> IF LPAREN condition RPAREN
+Rule 7     condition -> <empty>
+
+Terminals, with rules where they appear
+
+DIV                  : 
+ELSE                 : 
+EQUALS               : 4 5
+FOR                  : 
+IF                   : 6
+INT                  : 3 4
+LB                   : 
+LPAREN               : 6
+MINUS                : 
+MULT                 : 
+NUM                  : 4 5
+PLUS                 : 
+PRINT                : 
+RB                   : 
+RPAREN               : 6
+SEMICOLON            : 3 4 5
+VAR                  : 3 4 5
+WHILE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+condition            : 6
+program              : 2 0
+statement            : 1 2
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . statement
+    (2) program -> . program statement
+    (3) statement -> . INT VAR SEMICOLON
+    (4) statement -> . INT VAR EQUALS NUM SEMICOLON
+    (5) statement -> . VAR EQUALS NUM SEMICOLON
+    (6) statement -> . IF LPAREN condition RPAREN
+
+    INT             shift and go to state 3
+    VAR             shift and go to state 4
+    IF              shift and go to state 5
+
+    program                        shift and go to state 1
+    statement                      shift and go to state 2
+
+state 1
+
+    (0) S' -> program .
+    (2) program -> program . statement
+    (3) statement -> . INT VAR SEMICOLON
+    (4) statement -> . INT VAR EQUALS NUM SEMICOLON
+    (5) statement -> . VAR EQUALS NUM SEMICOLON
+    (6) statement -> . IF LPAREN condition RPAREN
+
+    INT             shift and go to state 3
+    VAR             shift and go to state 4
+    IF              shift and go to state 5
+
+    statement                      shift and go to state 6
+
+state 2
+
+    (1) program -> statement .
+
+    INT             reduce using rule 1 (program -> statement .)
+    VAR             reduce using rule 1 (program -> statement .)
+    IF              reduce using rule 1 (program -> statement .)
+    $end            reduce using rule 1 (program -> statement .)
+
+
+state 3
+
+    (3) statement -> INT . VAR SEMICOLON
+    (4) statement -> INT . VAR EQUALS NUM SEMICOLON
+
+    VAR             shift and go to state 7
+
+
+state 4
+
+    (5) statement -> VAR . EQUALS NUM SEMICOLON
+
+    EQUALS          shift and go to state 8
+
+
+state 5
+
+    (6) statement -> IF . LPAREN condition RPAREN
+
+    LPAREN          shift and go to state 9
+
+
+state 6
+
+    (2) program -> program statement .
+
+    INT             reduce using rule 2 (program -> program statement .)
+    VAR             reduce using rule 2 (program -> program statement .)
+    IF              reduce using rule 2 (program -> program statement .)
+    $end            reduce using rule 2 (program -> program statement .)
+
+
+state 7
+
+    (3) statement -> INT VAR . SEMICOLON
+    (4) statement -> INT VAR . EQUALS NUM SEMICOLON
+
+    SEMICOLON       shift and go to state 10
+    EQUALS          shift and go to state 11
+
+
+state 8
+
+    (5) statement -> VAR EQUALS . NUM SEMICOLON
+
+    NUM             shift and go to state 12
+
+
+state 9
+
+    (6) statement -> IF LPAREN . condition RPAREN
+    (7) condition -> .
+
+    RPAREN          reduce using rule 7 (condition -> .)
+
+    condition                      shift and go to state 13
+
+state 10
+
+    (3) statement -> INT VAR SEMICOLON .
+
+    INT             reduce using rule 3 (statement -> INT VAR SEMICOLON .)
+    VAR             reduce using rule 3 (statement -> INT VAR SEMICOLON .)
+    IF              reduce using rule 3 (statement -> INT VAR SEMICOLON .)
+    $end            reduce using rule 3 (statement -> INT VAR SEMICOLON .)
+
+
+state 11
+
+    (4) statement -> INT VAR EQUALS . NUM SEMICOLON
+
+    NUM             shift and go to state 14
+
+
+state 12
+
+    (5) statement -> VAR EQUALS NUM . SEMICOLON
+
+    SEMICOLON       shift and go to state 15
+
+
+state 13
+
+    (6) statement -> IF LPAREN condition . RPAREN
+
+    RPAREN          shift and go to state 16
+
+
+state 14
+
+    (4) statement -> INT VAR EQUALS NUM . SEMICOLON
+
+    SEMICOLON       shift and go to state 17
+
+
+state 15
+
+    (5) statement -> VAR EQUALS NUM SEMICOLON .
+
+    INT             reduce using rule 5 (statement -> VAR EQUALS NUM SEMICOLON .)
+    VAR             reduce using rule 5 (statement -> VAR EQUALS NUM SEMICOLON .)
+    IF              reduce using rule 5 (statement -> VAR EQUALS NUM SEMICOLON .)
+    $end            reduce using rule 5 (statement -> VAR EQUALS NUM SEMICOLON .)
+
+
+state 16
+
+    (6) statement -> IF LPAREN condition RPAREN .
+
+    INT             reduce using rule 6 (statement -> IF LPAREN condition RPAREN .)
+    VAR             reduce using rule 6 (statement -> IF LPAREN condition RPAREN .)
+    IF              reduce using rule 6 (statement -> IF LPAREN condition RPAREN .)
+    $end            reduce using rule 6 (statement -> IF LPAREN condition RPAREN .)
+
+
+state 17
+
+    (4) statement -> INT VAR EQUALS NUM SEMICOLON .
+
+    INT             reduce using rule 4 (statement -> INT VAR EQUALS NUM SEMICOLON .)
+    VAR             reduce using rule 4 (statement -> INT VAR EQUALS NUM SEMICOLON .)
+    IF              reduce using rule 4 (statement -> INT VAR EQUALS NUM SEMICOLON .)
+    $end            reduce using rule 4 (statement -> INT VAR EQUALS NUM SEMICOLON .)
+
