@@ -7,8 +7,8 @@ tokens = ['NUM', 'VAR', 'MULT', 'PLUS', 'MINUS', 'DIV',
               'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT']
 
 t_MULT = r'\*'
-t_PLUS = r'\+'
-t_MINUS = r'-'
+# t_PLUS = r'\+'
+# t_MINUS = r'-'
 t_DIV = r'/'    
 t_EQUALS = r'='
 t_LPAREN = r'\('
