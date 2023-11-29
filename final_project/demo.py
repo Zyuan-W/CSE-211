@@ -1,7 +1,5 @@
 # declare, assign, if, else, for, while, etc.
 
-
-
 def parse_cpp_to_ir(cpp_code):
     ir = []
     lines = cpp_code.split('\n')
@@ -50,35 +48,6 @@ def parse_cpp_to_ir(cpp_code):
     return ir
 
         
-        
-        # if 'int ' in line:  # Variable declaration
-        #     var_name = line.split()[1].strip(';')
-        #     ir.append(('declare', var_name))
-        #     if '=' in line:
-        #         var_name, value = line.split('=')
-        #         var_name, value = var_name.strip(), value.strip().strip(';')
-        #         ir.append(('assign', var_name, value))
-        # elif '=' in line:  # Assignment
-        #     var_name, value = line.split('=')
-        #     var_name, value = var_name.strip(), value.strip().strip(';')
-        #     ir.append(('assign', var_name, value))
-        # # Add more parsing logic here for if-else, while, for loops, etc.
-        # elif 'if' in line:  # If statement
-        #     condition = line[line.find('(')+1:line.find(')')]
-        #     ir.append(('if', condition))
-        # elif 'else' in line:  # Else statement
-        #     ir.append(('else',))
-        # elif 'for' in line:  # For loop
-        #     # Simplified parsing, assumes format: for (init; condition; update)
-        #     parts = line[line.find('(')+1:line.find(')')].split(';')
-        #     if len(parts) == 3:
-        #         init = parts[0].strip()
-        #         condition = parts[1].strip()
-        #         update = parts[2].strip()
-        #         ir.append(('for', init, condition, update))
-        # More parsing logic here for while, etc. 
-    # return ir
-
 def generate_python_code(ir):
     python_code = ""
     for command in ir:
@@ -99,29 +68,52 @@ def generate_python_code(ir):
         # Add more logic here for other constructs
     return python_code
 
-# Example C++ Code
-cpp_code = """
-int x = 5;
-int x;  // Variable declaration
-if (x < 10) {
-    x = 20;
-} else {
-    x = 10;
-}
+# # Example C++ Code
+# cpp_code = """
+# int x = 5;
+# int x;  // Variable declaration
+# if (x < 10) {
+#     x = 20;
+# } else {
+#     x = 10;
+# }
 
-int a;
-for (int i = 0; i < 5; i++) {
-    a = i;
-}
-"""
+# int a;
+# for (int i = 0; i < 5; i++) {
+#     a = i;
+# }
+# """
 
-# Translate to IR
-ir = parse_cpp_to_ir(cpp_code)
-for command in ir:
-    print(command)
+def read_cpp_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            return file.read()
+    except FileNotFoundError:
+        print("File not found.")
+        return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
 
-# Generate Python Code
-python_code = generate_python_code(ir)
-print("=====================================")
-print("Python Code:")
-print(python_code)
+
+if __name__ == '__main__':
+
+    # Translate to IR
+    cpp_code = read_cpp_file('cpp_code.cpp')
+
+    print("=====================================")
+    print("C++ Code:")
+    print(cpp_code)
+    
+    
+    # ir = parse_cpp_to_ir(cpp_code)
+    
+    
+    # for command in ir:
+    #     print(command)
+
+    # # Generate Python Code
+    # python_code = generate_python_code(ir)
+    # print("=====================================")
+    # print("Python Code:")
+    # print(python_code)
