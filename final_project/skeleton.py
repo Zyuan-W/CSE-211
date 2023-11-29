@@ -4,7 +4,7 @@ import ply.yacc as yacc
 
 tokens = ['NUM', 'VAR', 'MULT', 'PLUS', 'MINUS', 'DIV', 
               'LPAREN', 'RPAREN', 'SEMICOLON', 'EQUALS', 'FOR', 
-              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT']
+              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 'GRATER', 'LESS']
 
 t_MULT = r'\*'
 # t_PLUS = r'\+'
@@ -20,6 +20,8 @@ t_ELSE = "else"
 t_WHILE = "while"
 t_LB = r'\{'
 t_RB = r'\}'
+t_GRATER = r'>'
+t_LESS = r'<'
 
 def  t_error(t):
     print("Illegal character '%s'" % t.value[0])
@@ -139,17 +141,39 @@ def p_statement_if(p):
 
 # For loop: ('for', iter, start, end, update)
 def p_statement_for(p):
+    '''
+    statement : FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
+    '''
+    p[0] = ('for', f'int {p[4]}', p[6], p[8], p[10])
     pass
 
 # while loop: ('while', condition)
 def p_statement_while(p):
+    '''
+    statement : WHILE LPAREN condition RPAREN
+    '''
+    p[0] = ('while', p[3])
     pass
 
 # condition
 def p_condition(p):
     '''
-    condition :
+    condition : VAR GRATER NUM
+                | VAR LESS NUM
+                | VAR GRATER VAR
+                | VAR LESS VAR
+                | VAR EQUALS NUM
     '''
+    p[0] = f'{p[1]} {p[2]} {p[3]}'
+    pass
+
+# for update
+def p_for_update(p):
+    '''
+    for_update : VAR PLUS PLUS
+               
+    '''
+    p[0] = f'{p[1]} += 1'
     pass
 
 
