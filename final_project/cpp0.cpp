@@ -2,6 +2,9 @@
 
 int i = 0;
 i = 4;
+int j = 2;
+
+int x = 2 + 1 + j;
 if(i == 4)
 if(i < 2)
 if(i > 3)
