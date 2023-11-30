@@ -174,6 +174,12 @@ def p_statement_while(p):
     p[0] = ('while', p[3])
     pass
 
+def p_string(p):
+    '''
+    string : STRING
+    '''
+    p[0] = p[1]
+
 # condition
 def p_condition(p):
     '''

@@ -1,1 +1,1 @@
-"hi there"
+cout << "hi there";
