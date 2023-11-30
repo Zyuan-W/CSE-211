@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DIV ELSE EQUALS FOR GREATER IF IGNORE_CONTENT INT LB LESS LPAREN MINUS MULT NUM PLUS PRINT RB RPAREN SEMICOLON VAR WHILEprogram : statement\n               | program statement\n    statement : INT VAR SEMICOLON\n              | INT VAR EQUALS NUM SEMICOLON\n    \n    statement : VAR EQUALS NUM SEMICOLON\n    \n    statement : IF LPAREN condition RPAREN\n    \n    statement : FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN\n    \n    statement : WHILE LPAREN condition RPAREN\n    \n    condition : VAR GREATER NUM\n                | VAR LESS NUM\n                | VAR GREATER VAR\n                | VAR LESS VAR\n                | VAR EQUALS EQUALS NUM\n    \n    for_update : VAR PLUS PLUS\n               \n    '
+_lr_signature = 'DIV ELSE EQUALS FOR GREATER IF IGNORE_CONTENT INT LB LESS LPAREN MINUS MULT NUM PLUS PRINT RB RPAREN SEMICOLON VAR WHILEprogram : statement\n               | program statement\n    statement : INT VAR SEMICOLON\n              | INT VAR EQUALS NUM SEMICOLON\n    \n    statement : VAR EQUALS NUM SEMICOLON\n    \n    statement : IF LPAREN condition RPAREN\n    \n    statement : FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN\n    \n    statement : WHILE LPAREN condition RPAREN\n    \n    condition : VAR GREATER NUM\n                | VAR LESS NUM\n                | VAR GREATER VAR\n                | VAR LESS VAR\n                | VAR EQUALS EQUALS NUM\n    \n    for_update : VAR PLUS PLUS\n               \n    \n    statement : LB statement RB\n                \n                \n    '
     
-_lr_action_items = {'INT':([0,1,2,8,12,14,22,23,28,29,44,],[3,3,-1,-2,19,-3,-5,-6,-8,-4,-7,]),'VAR':([0,1,2,3,8,11,13,14,19,22,23,24,25,28,29,38,40,44,],[4,4,-1,9,-2,18,18,-3,27,-5,-6,30,32,-8,-4,18,41,-7,]),'IF':([0,1,2,8,14,22,23,28,29,44,],[5,5,-1,-2,-3,-5,-6,-8,-4,-7,]),'FOR':([0,1,2,8,14,22,23,28,29,44,],[6,6,-1,-2,-3,-5,-6,-8,-4,-7,]),'WHILE':([0,1,2,8,14,22,23,28,29,44,],[7,7,-1,-2,-3,-5,-6,-8,-4,-7,]),'$end':([1,2,8,14,22,23,28,29,44,],[0,-1,-2,-3,-5,-6,-8,-4,-7,]),'EQUALS':([4,9,18,26,27,],[10,15,26,34,35,]),'LPAREN':([5,6,7,],[11,12,13,]),'SEMICOLON':([9,16,21,30,31,32,33,36,37,39,],[14,22,29,-11,-9,-12,-10,-13,38,40,]),'NUM':([10,15,24,25,34,35,],[16,21,31,33,36,37,]),'RPAREN':([17,20,30,31,32,33,36,42,45,],[23,28,-11,-9,-12,-10,-13,44,-14,]),'GREATER':([18,],[24,]),'LESS':([18,],[25,]),'PLUS':([41,43,],[43,45,]),}
+_lr_action_items = {'INT':([0,1,2,8,9,13,16,23,25,26,31,32,47,],[3,3,-1,3,-2,21,-3,-15,-5,-6,-8,-4,-7,]),'VAR':([0,1,2,3,8,9,12,14,16,21,23,25,26,27,28,31,32,41,43,47,],[4,4,-1,10,4,-2,20,20,-3,30,-15,-5,-6,33,35,-8,-4,20,44,-7,]),'IF':([0,1,2,8,9,16,23,25,26,31,32,47,],[5,5,-1,5,-2,-3,-15,-5,-6,-8,-4,-7,]),'FOR':([0,1,2,8,9,16,23,25,26,31,32,47,],[6,6,-1,6,-2,-3,-15,-5,-6,-8,-4,-7,]),'WHILE':([0,1,2,8,9,16,23,25,26,31,32,47,],[7,7,-1,7,-2,-3,-15,-5,-6,-8,-4,-7,]),'LB':([0,1,2,8,9,16,23,25,26,31,32,47,],[8,8,-1,8,-2,-3,-15,-5,-6,-8,-4,-7,]),'$end':([1,2,9,16,23,25,26,31,32,47,],[0,-1,-2,-3,-15,-5,-6,-8,-4,-7,]),'EQUALS':([4,10,20,29,30,],[11,17,29,37,38,]),'LPAREN':([5,6,7,],[12,13,14,]),'SEMICOLON':([10,18,24,33,34,35,36,39,40,42,],[16,25,32,-11,-9,-12,-10,-13,41,43,]),'NUM':([11,17,27,28,37,38,],[18,24,34,36,39,40,]),'RB':([15,16,23,25,26,31,32,47,],[23,-3,-15,-5,-6,-8,-4,-7,]),'RPAREN':([19,22,33,34,35,36,39,45,48,],[26,31,-11,-9,-12,-10,-13,47,-14,]),'GREATER':([20,],[27,]),'LESS':([20,],[28,]),'PLUS':([44,46,],[46,48,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'statement':([0,1,],[2,8,]),'condition':([11,13,38,],[17,20,39,]),'for_update':([40,],[42,]),}
+_lr_goto_items = {'program':([0,],[1,]),'statement':([0,1,8,],[2,9,15,]),'condition':([12,14,41,],[19,22,42,]),'for_update':([43,],[45,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -41,4 +41,5 @@ _lr_productions = [
   ('condition -> VAR LESS VAR','condition',3,'p_condition','skeleton.py',168),
   ('condition -> VAR EQUALS EQUALS NUM','condition',4,'p_condition','skeleton.py',169),
   ('for_update -> VAR PLUS PLUS','for_update',3,'p_for_update','skeleton.py',180),
+  ('statement -> LB statement RB','statement',3,'p_statement_scope','skeleton.py',188),
 ]

@@ -183,6 +183,14 @@ def p_for_update(p):
     p[0] = f'{p[1]} += 1'
     pass
 
+def p_statement_scope(p):
+    '''
+    statement : LB statement RB                 
+    '''
+    p[0] = p[2]
+
+    pass
+
 
 def p_error(p):
     print("Syntax error at '%s'" % p.value)
