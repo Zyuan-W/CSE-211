@@ -1,5 +1,11 @@
 #include <iostream>
+using namespace std;
 
+int main() {
+    // Variable declarations and assignments
+    int x = 10;
+    int y = 20;
+    int sum;
 int i = 0;
 i = 4;
 if(i == 4)

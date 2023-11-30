@@ -24,7 +24,7 @@ t_GREATER = r'>'
 t_LESS = r'<'
 
 def t_IGNORE_CONTENT(t):
-    r'\/\*.*\*\/|\#.*'
+    r'\/\*.*\*\/|\#.*|using|namespace|std;'
     pass
 
 def  t_error(t):
@@ -116,7 +116,18 @@ def p_program(p):
     else:
         p[0] = p[1] + [p[2]]
         
-        
+def p_func_decl(p):
+    '''
+    statement : INT VAR LPAREN args RPAREN SEMICOLON
+    '''
+    pass
+
+def p_func_args(p):
+    '''
+    args : INT VAR
+    '''
+    pass
+
 # variable declaration: ('declare', var_name, value)
 # temporarily assume everything is assigned to a literal
 def p_statement_decl(p):
@@ -210,7 +221,7 @@ if __name__ == '__main__':
       tok = lexer.token()
       if not tok: 
           break      # No more input
-    #   print(tok)
+      print(tok)
     p = parser.parse(cpp_code)
     for command in p:
         print(command)
