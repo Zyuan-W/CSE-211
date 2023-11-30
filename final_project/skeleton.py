@@ -4,8 +4,7 @@ import ply.yacc as yacc
 
 tokens = ['NUM', 'VAR', 'MULT', 'PLUS', 'MINUS', 'DIV', 
               'LPAREN', 'RPAREN', 'SEMICOLON', 'EQUALS', 'FOR', 
-              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 'GREATER', 'LESS', 
-              'IGNORE_CONTENT', 'STRING']
+              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 'GREATER', 'LESS', 'IGNORE_CONTENT', 'COUT', 'SENTENCE']
 
 t_MULT = r'\*'
 # t_PLUS = r'\+'
@@ -19,13 +18,12 @@ t_FOR = "for"
 t_IF = "if"
 t_ELSE = "else"
 t_WHILE = "while"
+t_COUT = r'cout'
 t_LB = r'\{'
 t_RB = r'\}'
-t_GREATER = r'>'
-t_LESS = r'<'
-def t_STRING(t):
-    r'"([^"\n]|(\\"))*"$'
-    return t
+t_GREATER = r'\>'
+t_LESS = r'\<'
+# t_DQM = r'\"'
 
 def t_IGNORE_CONTENT(t):
     r'\/\*.*\*\/|\#.*|using|namespace|std;'
@@ -42,8 +40,14 @@ reserved = {
     'for' : 'FOR',
     'if' : 'IF',
     'else' : 'ELSE',
-    'while' : 'WHILE'
+    'while' : 'WHILE',
+    'cout' : 'COUT'
 }
+
+def t_SENTENCE(t):
+    r'"[\w\s,\.]+"'
+    t.type = reserved.get(t.value, 'SENTENCE')
+    return t
 
 def t_INT(t):
     r'int'
@@ -111,6 +115,11 @@ lexer = lex.lex()
 
 # while loop: ('while', condition)
 # while (j = 5) ==> ('while', 'j = 5')
+
+# print statement: ('print', string, var_name)
+# cout << x; ==> ('print', '', 'x')
+# cout << "Hello World"; ==> ('print', '"Hello World"', '')
+# cout << "Hello World" << x; ==> ('print', '"Hello World", x)
 
 def p_program(p):
     '''program : statement
@@ -211,6 +220,20 @@ def p_statement_scope(p):
     p[0] = p[2]
 
     pass
+
+def p_statement_print(p):
+    '''
+    statement : COUT LESS LESS VAR SEMICOLON
+                | COUT LESS LESS SENTENCE SEMICOLON
+                | COUT LESS LESS SENTENCE LESS LESS VAR SEMICOLON
+    
+    '''
+    if len(p) == 6:
+        p[0] = ('print', '', p[4])
+    elif len(p) == 7:
+        p[0] = ('print', p[4], '')
+    else:
+        p[0] = ('print', p[4], p[5])
 
 
 def p_error(p):

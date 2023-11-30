@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DIV ELSE EQUALS FOR GREATER IF IGNORE_CONTENT INT LB LESS LPAREN MINUS MULT NUM PLUS PRINT RB RPAREN SEMICOLON STRING VAR WHILEprogram : statement\n               | program statement\n    statement : INT VAR LPAREN args RPAREN SEMICOLON\n    \n    args : INT VAR\n    \n    statement : INT VAR SEMICOLON\n              | INT VAR EQUALS NUM SEMICOLON\n    \n    statement : VAR EQUALS NUM SEMICOLON\n    \n    statement : IF LPAREN condition RPAREN\n    \n    statement : FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN\n    \n    statement : WHILE LPAREN condition RPAREN\n    \n    string : STRING\n    \n    condition : VAR GREATER NUM\n                | VAR LESS NUM\n                | VAR GREATER VAR\n                | VAR LESS VAR\n                | VAR EQUALS EQUALS NUM\n    \n    for_update : VAR PLUS PLUS\n               \n    \n    statement : LB statement RB                 \n    '
+_lr_signature = 'COUT DIV ELSE EQUALS FOR GREATER IF IGNORE_CONTENT INT LB LESS LPAREN MINUS MULT NUM PLUS PRINT RB RPAREN SEMICOLON SENTENCE VAR WHILEprogram : statement\n               | program statement\n    statement : INT VAR SEMICOLON\n              | INT VAR EQUALS NUM SEMICOLON\n    \n    statement : VAR EQUALS NUM SEMICOLON\n    \n    statement : IF LPAREN condition RPAREN\n    \n    statement : FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN\n    \n    statement : WHILE LPAREN condition RPAREN\n    \n    condition : VAR GREATER NUM\n                | VAR LESS NUM\n                | VAR GREATER VAR\n                | VAR LESS VAR\n                | VAR EQUALS EQUALS NUM\n    \n    for_update : VAR PLUS PLUS\n               \n    \n    statement : LB statement RB                 \n    \n    statement : COUT LESS LESS VAR SEMICOLON\n                | COUT LESS LESS SENTENCE SEMICOLON\n                | COUT LESS LESS SENTENCE LESS LESS VAR SEMICOLON\n    \n    '
     
-_lr_action_items = {'INT':([0,1,2,8,9,13,16,17,24,28,29,34,37,44,53,],[3,3,-1,3,-2,22,25,-5,-18,-7,-8,-10,-6,-3,-9,]),'VAR':([0,1,2,3,8,9,12,14,17,22,24,25,28,29,30,31,34,37,44,47,49,53,],[4,4,-1,10,4,-2,21,21,-5,33,-18,35,-7,-8,38,40,-10,-6,-3,21,50,-9,]),'IF':([0,1,2,8,9,17,24,28,29,34,37,44,53,],[5,5,-1,5,-2,-5,-18,-7,-8,-10,-6,-3,-9,]),'FOR':([0,1,2,8,9,17,24,28,29,34,37,44,53,],[6,6,-1,6,-2,-5,-18,-7,-8,-10,-6,-3,-9,]),'WHILE':([0,1,2,8,9,17,24,28,29,34,37,44,53,],[7,7,-1,7,-2,-5,-18,-7,-8,-10,-6,-3,-9,]),'LB':([0,1,2,8,9,17,24,28,29,34,37,44,53,],[8,8,-1,8,-2,-5,-18,-7,-8,-10,-6,-3,-9,]),'$end':([1,2,9,17,24,28,29,34,37,44,53,],[0,-1,-2,-5,-18,-7,-8,-10,-6,-3,-9,]),'EQUALS':([4,10,21,32,33,],[11,18,32,42,43,]),'LPAREN':([5,6,7,10,],[12,13,14,16,]),'SEMICOLON':([10,19,27,36,38,39,40,41,45,46,48,],[17,28,37,44,-14,-12,-15,-13,-16,47,49,]),'NUM':([11,18,30,31,42,43,],[19,27,39,41,45,46,]),'RB':([15,17,24,28,29,34,37,44,53,],[24,-5,-18,-7,-8,-10,-6,-3,-9,]),'RPAREN':([20,23,26,35,38,39,40,41,45,51,54,],[29,34,36,-4,-14,-12,-15,-13,-16,53,-17,]),'GREATER':([21,],[30,]),'LESS':([21,],[31,]),'PLUS':([50,52,],[52,54,]),}
+_lr_action_items = {'INT':([0,1,2,8,10,14,18,25,28,29,34,37,44,46,53,58,],[3,3,-1,3,-2,23,-3,-15,-5,-6,-8,-4,-16,-17,-18,-7,]),'VAR':([0,1,2,3,8,10,13,15,18,23,25,26,28,29,30,31,34,37,44,46,49,50,53,54,58,],[4,4,-1,11,4,-2,22,22,-3,33,-15,35,-5,-6,38,40,-8,-4,-16,-17,51,22,-18,55,-7,]),'IF':([0,1,2,8,10,18,25,28,29,34,37,44,46,53,58,],[5,5,-1,5,-2,-3,-15,-5,-6,-8,-4,-16,-17,-18,-7,]),'FOR':([0,1,2,8,10,18,25,28,29,34,37,44,46,53,58,],[6,6,-1,6,-2,-3,-15,-5,-6,-8,-4,-16,-17,-18,-7,]),'WHILE':([0,1,2,8,10,18,25,28,29,34,37,44,46,53,58,],[7,7,-1,7,-2,-3,-15,-5,-6,-8,-4,-16,-17,-18,-7,]),'LB':([0,1,2,8,10,18,25,28,29,34,37,44,46,53,58,],[8,8,-1,8,-2,-3,-15,-5,-6,-8,-4,-16,-17,-18,-7,]),'COUT':([0,1,2,8,10,18,25,28,29,34,37,44,46,53,58,],[9,9,-1,9,-2,-3,-15,-5,-6,-8,-4,-16,-17,-18,-7,]),'$end':([1,2,10,18,25,28,29,34,37,44,46,53,58,],[0,-1,-2,-3,-15,-5,-6,-8,-4,-16,-17,-18,-7,]),'EQUALS':([4,11,22,32,33,],[12,19,32,42,43,]),'LPAREN':([5,6,7,],[13,14,15,]),'LESS':([9,17,22,36,45,],[17,26,31,45,49,]),'SEMICOLON':([11,20,27,35,36,38,39,40,41,47,48,51,52,],[18,28,37,44,46,-11,-9,-12,-10,-13,50,53,54,]),'NUM':([12,19,30,31,42,43,],[20,27,39,41,47,48,]),'RB':([16,18,25,28,29,34,37,44,46,53,58,],[25,-3,-15,-5,-6,-8,-4,-16,-17,-18,-7,]),'RPAREN':([21,24,38,39,40,41,47,56,59,],[29,34,-11,-9,-12,-10,-13,58,-14,]),'GREATER':([22,],[30,]),'SENTENCE':([26,],[36,]),'PLUS':([55,57,],[57,59,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'statement':([0,1,8,],[2,9,15,]),'condition':([12,14,47,],[20,23,48,]),'args':([16,],[26,]),'for_update':([49,],[51,]),}
+_lr_goto_items = {'program':([0,],[1,]),'statement':([0,1,8,],[2,10,16,]),'condition':([13,15,50,],[21,24,52,]),'for_update':([54,],[56,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,22 +27,22 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> statement','program',1,'p_program','skeleton.py',116),
-  ('program -> program statement','program',2,'p_program','skeleton.py',117),
-  ('statement -> INT VAR LPAREN args RPAREN SEMICOLON','statement',6,'p_func_decl','skeleton.py',125),
-  ('args -> INT VAR','args',2,'p_func_args','skeleton.py',131),
-  ('statement -> INT VAR SEMICOLON','statement',3,'p_statement_decl','skeleton.py',139),
-  ('statement -> INT VAR EQUALS NUM SEMICOLON','statement',5,'p_statement_decl','skeleton.py',140),
-  ('statement -> VAR EQUALS NUM SEMICOLON','statement',4,'p_statement_assign','skeleton.py',150),
-  ('statement -> IF LPAREN condition RPAREN','statement',4,'p_statement_if','skeleton.py',157),
-  ('statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN','statement',11,'p_statement_for','skeleton.py',164),
-  ('statement -> WHILE LPAREN condition RPAREN','statement',4,'p_statement_while','skeleton.py',172),
-  ('string -> STRING','string',1,'p_string','skeleton.py',179),
-  ('condition -> VAR GREATER NUM','condition',3,'p_condition','skeleton.py',186),
-  ('condition -> VAR LESS NUM','condition',3,'p_condition','skeleton.py',187),
-  ('condition -> VAR GREATER VAR','condition',3,'p_condition','skeleton.py',188),
-  ('condition -> VAR LESS VAR','condition',3,'p_condition','skeleton.py',189),
-  ('condition -> VAR EQUALS EQUALS NUM','condition',4,'p_condition','skeleton.py',190),
-  ('for_update -> VAR PLUS PLUS','for_update',3,'p_for_update','skeleton.py',201),
-  ('statement -> LB statement RB','statement',3,'p_statement_scope','skeleton.py',209),
+  ('program -> statement','program',1,'p_program','skeleton.py',124),
+  ('program -> program statement','program',2,'p_program','skeleton.py',125),
+  ('statement -> INT VAR SEMICOLON','statement',3,'p_statement_decl','skeleton.py',136),
+  ('statement -> INT VAR EQUALS NUM SEMICOLON','statement',5,'p_statement_decl','skeleton.py',137),
+  ('statement -> VAR EQUALS NUM SEMICOLON','statement',4,'p_statement_assign','skeleton.py',147),
+  ('statement -> IF LPAREN condition RPAREN','statement',4,'p_statement_if','skeleton.py',154),
+  ('statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN','statement',11,'p_statement_for','skeleton.py',161),
+  ('statement -> WHILE LPAREN condition RPAREN','statement',4,'p_statement_while','skeleton.py',169),
+  ('condition -> VAR GREATER NUM','condition',3,'p_condition','skeleton.py',177),
+  ('condition -> VAR LESS NUM','condition',3,'p_condition','skeleton.py',178),
+  ('condition -> VAR GREATER VAR','condition',3,'p_condition','skeleton.py',179),
+  ('condition -> VAR LESS VAR','condition',3,'p_condition','skeleton.py',180),
+  ('condition -> VAR EQUALS EQUALS NUM','condition',4,'p_condition','skeleton.py',181),
+  ('for_update -> VAR PLUS PLUS','for_update',3,'p_for_update','skeleton.py',192),
+  ('statement -> LB statement RB','statement',3,'p_statement_scope','skeleton.py',200),
+  ('statement -> COUT LESS LESS VAR SEMICOLON','statement',5,'p_statement_print','skeleton.py',208),
+  ('statement -> COUT LESS LESS SENTENCE SEMICOLON','statement',5,'p_statement_print','skeleton.py',209),
+  ('statement -> COUT LESS LESS SENTENCE LESS LESS VAR SEMICOLON','statement',8,'p_statement_print','skeleton.py',210),
 ]
