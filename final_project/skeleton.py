@@ -162,9 +162,12 @@ def p_condition(p):
                 | VAR LESS NUM
                 | VAR GRATER VAR
                 | VAR LESS VAR
-                | VAR EQUALS NUM
+                | VAR EQUALS EQUALS NUM
     '''
-    p[0] = f'{p[1]} {p[2]} {p[3]}'
+    if len(p) == 4:
+        p[0] = f'{p[1]} {p[2]} {p[3]}'
+    else:
+        p[0] = f'{p[1]} {p[2]} {p[3]} {p[4]}'
     pass
 
 # for update
