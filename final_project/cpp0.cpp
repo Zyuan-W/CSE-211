@@ -1,8 +1,11 @@
 #include <iostream>
 
+int addNumbers(int a, int b);
 int i = 0;
 i = 4;
-if(i == 4)
+if(i == 4){
+  i = 27;
+}
 if(i < 2)
 if(i > 3)
 

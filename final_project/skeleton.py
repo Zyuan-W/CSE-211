@@ -4,7 +4,9 @@ import ply.yacc as yacc
 
 tokens = ['NUM', 'VAR', 'MULT', 'PLUS', 'MINUS', 'DIV', 
               'LPAREN', 'RPAREN', 'SEMICOLON', 'EQUALS', 'FOR', 
-              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 'GREATER', 'LESS', 'IGNORE_CONTENT', 'COUT', 'SENTENCE']
+              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 
+              'GREATER', 'LESS', 'IGNORE_CONTENT', 'COUT', 'SENTENCE',
+              'COMMA']
 
 t_MULT = r'\*'
 # t_PLUS = r'\+'
@@ -24,6 +26,7 @@ t_RB = r'\}'
 t_GREATER = r'\>'
 t_LESS = r'\<'
 # t_DQM = r'\"'
+t_COMMA = r','
 
 def t_IGNORE_CONTENT(t):
     r'\/\*.*\*\/|\#.*|using|namespace|std;'
@@ -128,18 +131,23 @@ def p_program(p):
         p[0] = [p[1]]
     else:
         p[0] = p[1] + [p[2]]
-        
+
+# ('func_declare', name, args, return_type)   
 def p_func_decl(p):
     '''
     statement : INT VAR LPAREN args RPAREN SEMICOLON
     '''
-    pass
+    p[0] = ('func_declare', p[2], p[4], p[1])
 
 def p_func_args(p):
     '''
     args : INT VAR
+         | INT VAR COMMA args
     '''
-    pass
+    if len(p) == 3:
+        p[0] = [(p[1], p[2])]
+    else:
+        p[0] = [(p[1], p[2])] + p[4]
 
 # variable declaration: ('declare', var_name, value)
 # temporarily assume everything is assigned to a literal
@@ -183,12 +191,6 @@ def p_statement_while(p):
     p[0] = ('while', p[3])
     pass
 
-def p_string(p):
-    '''
-    string : STRING
-    '''
-    p[0] = p[1]
-
 # condition
 def p_condition(p):
     '''
@@ -211,22 +213,24 @@ def p_for_update(p):
                
     '''
     p[0] = f'{p[1]} += 1'
-    pass
 
-def p_statement_scope(p):
+def p_statement_lb(p):
     '''
-    statement : LB statement RB                 
+    statement : LB               
     '''
-    p[0] = p[2]
+    p[0] = ('left_brace',)
 
-    pass
+def p_statement_rb(p):
+    '''
+    statement : RB             
+    '''
+    p[0] = ('right_brace',)
 
 def p_statement_print(p):
     '''
     statement : COUT LESS LESS VAR SEMICOLON
                 | COUT LESS LESS SENTENCE SEMICOLON
                 | COUT LESS LESS SENTENCE LESS LESS VAR SEMICOLON
-    
     '''
     if len(p) == 6:
         p[0] = ('print', '', p[4])
@@ -257,12 +261,12 @@ def read_cpp_file(file_path):
 if __name__ == '__main__':
     
     cpp_code = read_cpp_file('cpp0.cpp')
-    lexer.input(cpp_code)
-    while True:
-      tok = lexer.token()
-      if not tok: 
-          break      # No more input
-      print(tok)
+    # lexer.input(cpp_code)
+    # while True:
+    #   tok = lexer.token()
+    #   if not tok: 
+    #       break      # No more input
+    #   print(tok)
     p = parser.parse(cpp_code)
     for command in p:
         print(command)
