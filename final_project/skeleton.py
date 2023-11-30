@@ -4,7 +4,8 @@ import ply.yacc as yacc
 
 tokens = ['NUM', 'VAR', 'MULT', 'PLUS', 'MINUS', 'DIV', 
               'LPAREN', 'RPAREN', 'SEMICOLON', 'EQUALS', 'FOR', 
-              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 'GREATER', 'LESS', 'IGNORE_CONTENT']
+              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 'GREATER', 'LESS', 
+              'IGNORE_CONTENT', 'STRING']
 
 t_MULT = r'\*'
 # t_PLUS = r'\+'
@@ -22,6 +23,9 @@ t_LB = r'\{'
 t_RB = r'\}'
 t_GREATER = r'>'
 t_LESS = r'<'
+def t_STRING(t):
+    r'"([^"\n]|(\\"))*"$'
+    return t
 
 def t_IGNORE_CONTENT(t):
     r'\/\*.*\*\/|\#.*|using|namespace|std;'
