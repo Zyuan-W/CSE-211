@@ -21,9 +21,9 @@ Rule 5     statement -> VAR EQUALS NUM SEMICOLON
 Rule 6     statement -> IF LPAREN condition RPAREN
 Rule 7     statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
 Rule 8     statement -> WHILE LPAREN condition RPAREN
-Rule 9     condition -> VAR GRATER NUM
+Rule 9     condition -> VAR GREATER NUM
 Rule 10    condition -> VAR LESS NUM
-Rule 11    condition -> VAR GRATER VAR
+Rule 11    condition -> VAR GREATER VAR
 Rule 12    condition -> VAR LESS VAR
 Rule 13    condition -> VAR EQUALS EQUALS NUM
 Rule 14    for_update -> VAR PLUS PLUS
@@ -34,7 +34,7 @@ DIV                  :
 ELSE                 : 
 EQUALS               : 4 5 7 13 13
 FOR                  : 7
-GRATER               : 9 11
+GREATER              : 9 11
 IF                   : 6
 INT                  : 3 4 7
 LB                   : 
@@ -180,9 +180,9 @@ state 10
 state 11
 
     (6) statement -> IF LPAREN . condition RPAREN
-    (9) condition -> . VAR GRATER NUM
+    (9) condition -> . VAR GREATER NUM
     (10) condition -> . VAR LESS NUM
-    (11) condition -> . VAR GRATER VAR
+    (11) condition -> . VAR GREATER VAR
     (12) condition -> . VAR LESS VAR
     (13) condition -> . VAR EQUALS EQUALS NUM
 
@@ -200,9 +200,9 @@ state 12
 state 13
 
     (8) statement -> WHILE LPAREN . condition RPAREN
-    (9) condition -> . VAR GRATER NUM
+    (9) condition -> . VAR GREATER NUM
     (10) condition -> . VAR LESS NUM
-    (11) condition -> . VAR GRATER VAR
+    (11) condition -> . VAR GREATER VAR
     (12) condition -> . VAR LESS VAR
     (13) condition -> . VAR EQUALS EQUALS NUM
 
@@ -245,13 +245,13 @@ state 17
 
 state 18
 
-    (9) condition -> VAR . GRATER NUM
+    (9) condition -> VAR . GREATER NUM
     (10) condition -> VAR . LESS NUM
-    (11) condition -> VAR . GRATER VAR
+    (11) condition -> VAR . GREATER VAR
     (12) condition -> VAR . LESS VAR
     (13) condition -> VAR . EQUALS EQUALS NUM
 
-    GRATER          shift and go to state 24
+    GREATER         shift and go to state 24
     LESS            shift and go to state 25
     EQUALS          shift and go to state 26
 
@@ -303,8 +303,8 @@ state 23
 
 state 24
 
-    (9) condition -> VAR GRATER . NUM
-    (11) condition -> VAR GRATER . VAR
+    (9) condition -> VAR GREATER . NUM
+    (11) condition -> VAR GREATER . VAR
 
     NUM             shift and go to state 31
     VAR             shift and go to state 30
@@ -359,18 +359,18 @@ state 29
 
 state 30
 
-    (11) condition -> VAR GRATER VAR .
+    (11) condition -> VAR GREATER VAR .
 
-    RPAREN          reduce using rule 11 (condition -> VAR GRATER VAR .)
-    SEMICOLON       reduce using rule 11 (condition -> VAR GRATER VAR .)
+    RPAREN          reduce using rule 11 (condition -> VAR GREATER VAR .)
+    SEMICOLON       reduce using rule 11 (condition -> VAR GREATER VAR .)
 
 
 state 31
 
-    (9) condition -> VAR GRATER NUM .
+    (9) condition -> VAR GREATER NUM .
 
-    RPAREN          reduce using rule 9 (condition -> VAR GRATER NUM .)
-    SEMICOLON       reduce using rule 9 (condition -> VAR GRATER NUM .)
+    RPAREN          reduce using rule 9 (condition -> VAR GREATER NUM .)
+    SEMICOLON       reduce using rule 9 (condition -> VAR GREATER NUM .)
 
 
 state 32
@@ -421,9 +421,9 @@ state 37
 state 38
 
     (7) statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON . condition SEMICOLON for_update RPAREN
-    (9) condition -> . VAR GRATER NUM
+    (9) condition -> . VAR GREATER NUM
     (10) condition -> . VAR LESS NUM
-    (11) condition -> . VAR GRATER VAR
+    (11) condition -> . VAR GREATER VAR
     (12) condition -> . VAR LESS VAR
     (13) condition -> . VAR EQUALS EQUALS NUM
 

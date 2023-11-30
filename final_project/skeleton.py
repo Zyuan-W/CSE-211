@@ -4,7 +4,7 @@ import ply.yacc as yacc
 
 tokens = ['NUM', 'VAR', 'MULT', 'PLUS', 'MINUS', 'DIV', 
               'LPAREN', 'RPAREN', 'SEMICOLON', 'EQUALS', 'FOR', 
-              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 'GRATER', 'LESS']
+              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 'GREATER', 'LESS']
 
 t_MULT = r'\*'
 # t_PLUS = r'\+'
@@ -20,7 +20,7 @@ t_ELSE = "else"
 t_WHILE = "while"
 t_LB = r'\{'
 t_RB = r'\}'
-t_GRATER = r'>'
+t_GREATER = r'>'
 t_LESS = r'<'
 
 def  t_error(t):
@@ -158,16 +158,16 @@ def p_statement_while(p):
 # condition
 def p_condition(p):
     '''
-    condition : VAR GRATER NUM
+    condition : VAR GREATER NUM
                 | VAR LESS NUM
-                | VAR GRATER VAR
+                | VAR GREATER VAR
                 | VAR LESS VAR
                 | VAR EQUALS EQUALS NUM
     '''
     if len(p) == 4:
         p[0] = f'{p[1]} {p[2]} {p[3]}'
     else:
-        p[0] = f'{p[1]} {p[2]} {p[3]} {p[4]}'
+        p[0] = f'{p[1]} {p[2]}{p[3]} {p[4]}'
     pass
 
 # for update

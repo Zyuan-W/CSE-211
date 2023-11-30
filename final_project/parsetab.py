@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DIV ELSE EQUALS FOR GRATER IF INT LB LESS LPAREN MINUS MULT NUM PLUS PRINT RB RPAREN SEMICOLON VAR WHILEprogram : statement\n               | program statement\n    statement : INT VAR SEMICOLON\n              | INT VAR EQUALS NUM SEMICOLON\n    \n    statement : VAR EQUALS NUM SEMICOLON\n    \n    statement : IF LPAREN condition RPAREN\n    \n    statement : FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN\n    \n    statement : WHILE LPAREN condition RPAREN\n    \n    condition : VAR GRATER NUM\n                | VAR LESS NUM\n                | VAR GRATER VAR\n                | VAR LESS VAR\n                | VAR EQUALS EQUALS NUM\n    \n    for_update : VAR PLUS PLUS\n               \n    '
+_lr_signature = 'DIV ELSE EQUALS FOR GREATER IF INT LB LESS LPAREN MINUS MULT NUM PLUS PRINT RB RPAREN SEMICOLON VAR WHILEprogram : statement\n               | program statement\n    statement : INT VAR SEMICOLON\n              | INT VAR EQUALS NUM SEMICOLON\n    \n    statement : VAR EQUALS NUM SEMICOLON\n    \n    statement : IF LPAREN condition RPAREN\n    \n    statement : FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN\n    \n    statement : WHILE LPAREN condition RPAREN\n    \n    condition : VAR GREATER NUM\n                | VAR LESS NUM\n                | VAR GREATER VAR\n                | VAR LESS VAR\n                | VAR EQUALS EQUALS NUM\n    \n    for_update : VAR PLUS PLUS\n               \n    '
     
-_lr_action_items = {'INT':([0,1,2,8,12,14,22,23,28,29,44,],[3,3,-1,-2,19,-3,-5,-6,-8,-4,-7,]),'VAR':([0,1,2,3,8,11,13,14,19,22,23,24,25,28,29,38,40,44,],[4,4,-1,9,-2,18,18,-3,27,-5,-6,30,32,-8,-4,18,41,-7,]),'IF':([0,1,2,8,14,22,23,28,29,44,],[5,5,-1,-2,-3,-5,-6,-8,-4,-7,]),'FOR':([0,1,2,8,14,22,23,28,29,44,],[6,6,-1,-2,-3,-5,-6,-8,-4,-7,]),'WHILE':([0,1,2,8,14,22,23,28,29,44,],[7,7,-1,-2,-3,-5,-6,-8,-4,-7,]),'$end':([1,2,8,14,22,23,28,29,44,],[0,-1,-2,-3,-5,-6,-8,-4,-7,]),'EQUALS':([4,9,18,26,27,],[10,15,26,34,35,]),'LPAREN':([5,6,7,],[11,12,13,]),'SEMICOLON':([9,16,21,30,31,32,33,36,37,39,],[14,22,29,-11,-9,-12,-10,-13,38,40,]),'NUM':([10,15,24,25,34,35,],[16,21,31,33,36,37,]),'RPAREN':([17,20,30,31,32,33,36,42,45,],[23,28,-11,-9,-12,-10,-13,44,-14,]),'GRATER':([18,],[24,]),'LESS':([18,],[25,]),'PLUS':([41,43,],[43,45,]),}
+_lr_action_items = {'INT':([0,1,2,8,12,14,22,23,28,29,44,],[3,3,-1,-2,19,-3,-5,-6,-8,-4,-7,]),'VAR':([0,1,2,3,8,11,13,14,19,22,23,24,25,28,29,38,40,44,],[4,4,-1,9,-2,18,18,-3,27,-5,-6,30,32,-8,-4,18,41,-7,]),'IF':([0,1,2,8,14,22,23,28,29,44,],[5,5,-1,-2,-3,-5,-6,-8,-4,-7,]),'FOR':([0,1,2,8,14,22,23,28,29,44,],[6,6,-1,-2,-3,-5,-6,-8,-4,-7,]),'WHILE':([0,1,2,8,14,22,23,28,29,44,],[7,7,-1,-2,-3,-5,-6,-8,-4,-7,]),'$end':([1,2,8,14,22,23,28,29,44,],[0,-1,-2,-3,-5,-6,-8,-4,-7,]),'EQUALS':([4,9,18,26,27,],[10,15,26,34,35,]),'LPAREN':([5,6,7,],[11,12,13,]),'SEMICOLON':([9,16,21,30,31,32,33,36,37,39,],[14,22,29,-11,-9,-12,-10,-13,38,40,]),'NUM':([10,15,24,25,34,35,],[16,21,31,33,36,37,]),'RPAREN':([17,20,30,31,32,33,36,42,45,],[23,28,-11,-9,-12,-10,-13,44,-14,]),'GREATER':([18,],[24,]),'LESS':([18,],[25,]),'PLUS':([41,43,],[43,45,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -35,10 +35,10 @@ _lr_productions = [
   ('statement -> IF LPAREN condition RPAREN','statement',4,'p_statement_if','skeleton.py',138),
   ('statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN','statement',11,'p_statement_for','skeleton.py',145),
   ('statement -> WHILE LPAREN condition RPAREN','statement',4,'p_statement_while','skeleton.py',153),
-  ('condition -> VAR GRATER NUM','condition',3,'p_condition','skeleton.py',161),
+  ('condition -> VAR GREATER NUM','condition',3,'p_condition','skeleton.py',161),
   ('condition -> VAR LESS NUM','condition',3,'p_condition','skeleton.py',162),
-  ('condition -> VAR GRATER VAR','condition',3,'p_condition','skeleton.py',163),
+  ('condition -> VAR GREATER VAR','condition',3,'p_condition','skeleton.py',163),
   ('condition -> VAR LESS VAR','condition',3,'p_condition','skeleton.py',164),
   ('condition -> VAR EQUALS EQUALS NUM','condition',4,'p_condition','skeleton.py',165),
-  ('for_update -> VAR PLUS PLUS','for_update',3,'p_for_update','skeleton.py',173),
+  ('for_update -> VAR PLUS PLUS','for_update',3,'p_for_update','skeleton.py',176),
 ]
