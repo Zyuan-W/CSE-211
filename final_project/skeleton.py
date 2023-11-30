@@ -10,7 +10,7 @@ tokens = ['NUM', 'VAR', 'MULT', 'PLUS', 'MINUS', 'DIV',
 
 t_MULT = r'\*'
 # t_PLUS = r'\+'
-# t_MINUS = r'-'
+# t_MINUS = r'\-'
 t_DIV = r'/'    
 t_EQUALS = r'='
 t_LPAREN = r'\('
@@ -46,6 +46,7 @@ reserved = {
     'while' : 'WHILE',
     'cout' : 'COUT'
 }
+
 
 def t_SENTENCE(t):
     r'"[\w\s,\.]+"'
@@ -155,11 +156,13 @@ def p_statement_decl(p):
     '''
     statement : INT VAR SEMICOLON
               | INT VAR EQUALS NUM SEMICOLON
+              | INT VAR EQUALS VAR SEMICOLON
+              | INT VAR EQUALS expr SEMICOLON
     '''
     if len(p) == 4:
         p[0] = ('declare', p[2], 0)
     else:
-        p[0] = ('declare', p[2], int(p[4]))
+        p[0] = ('declare', p[2], p[4])
 
 # variable assignment: ('assign', var_name, value)
 def p_statement_assign(p):
@@ -225,6 +228,61 @@ def p_statement_rb(p):
     statement : RB             
     '''
     p[0] = ('right_brace',)
+
+def p_expr_plus(p):
+    '''
+    expr : expr PLUS term
+    '''
+    p[0] = p[1] + p[3]
+    pass
+
+def p_expr_plus_var(p):
+    '''
+    expr : expr PLUS VAR
+    '''
+    p[0] = f'{p[1]} + {p[3]}'
+    pass
+
+def p_expr_minus(p):
+    '''expr : expr MINUS term'''
+    p[0] = p[1] - p[3]
+
+def p_expr_minus_var(p):
+    '''expr : expr MINUS VAR'''
+    p[0] = f'{p[1]} - {p[3]}'
+    
+def p_expr_term(p):
+    '''expr : term'''
+    p[0] = p[1]
+    
+def p_term_mult(p):
+    '''term : term MULT factor'''
+    p[0] = p[1] * p[3]
+    
+def p_term_div(p):
+    '''term : term DIV factor'''
+    if p[3] == 0:
+        print("divide by 0 error:")
+        print("cannot divide: " + str(p[1]) + " by 0")
+        exit(1)
+    p[0] = p[1] / p[3]
+    
+def p_term_factor(p):
+    '''term : factor'''
+    p[0] = p[1]
+    
+def p_factor_expr(p):
+    '''factor : LPAREN expr RPAREN'''
+    p[0] = p[2]    
+
+def p_factor_num(p):
+    '''factor : NUM'''
+    p[0] = p[1]
+    
+def p_factor_var(p):
+    '''factor : VAR'''
+    p[0] = p[1] 
+
 
 def p_statement_print(p):
     '''
