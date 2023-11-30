@@ -4,6 +4,7 @@ Unused terminals:
 
     DIV
     ELSE
+    IGNORE_CONTENT
     LB
     MINUS
     MULT
@@ -36,6 +37,7 @@ EQUALS               : 4 5 7 13 13
 FOR                  : 7
 GREATER              : 9 11
 IF                   : 6
+IGNORE_CONTENT       : 
 INT                  : 3 4 7
 LB                   : 
 LESS                 : 10 12

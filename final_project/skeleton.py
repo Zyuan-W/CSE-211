@@ -4,7 +4,7 @@ import ply.yacc as yacc
 
 tokens = ['NUM', 'VAR', 'MULT', 'PLUS', 'MINUS', 'DIV', 
               'LPAREN', 'RPAREN', 'SEMICOLON', 'EQUALS', 'FOR', 
-              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 'GREATER', 'LESS']
+              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 'GREATER', 'LESS', 'IGNORE_CONTENT']
 
 t_MULT = r'\*'
 # t_PLUS = r'\+'
@@ -22,6 +22,10 @@ t_LB = r'\{'
 t_RB = r'\}'
 t_GREATER = r'>'
 t_LESS = r'<'
+
+def t_IGNORE_CONTENT(t):
+    r'\/\*.*\*\/|\#.*'
+    pass
 
 def  t_error(t):
     print("Illegal character '%s'" % t.value[0])
@@ -206,9 +210,10 @@ if __name__ == '__main__':
       tok = lexer.token()
       if not tok: 
           break      # No more input
-      print(tok)
+    #   print(tok)
     p = parser.parse(cpp_code)
-    print(p)
+    for command in p:
+        print(command)
     
     
 
