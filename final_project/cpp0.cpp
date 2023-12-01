@@ -1,6 +1,15 @@
-#include <iostream>
 
+
+#include <iostream>
+using namespace std;
+
+// Function declaration
 int addNumbers(int a, int b);
+
+int main() {
+    // Variable declarations and assignments
+    int x = 10;
+}
 int i = 0;
 i = 4;
 int a = 4;

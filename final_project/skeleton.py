@@ -143,13 +143,21 @@ def p_func_decl(p):
     statement : INT VAR LPAREN args RPAREN SEMICOLON
     '''
     p[0] = ('func_declare', p[2], p[4], p[1])
+def p_function(p):
+    '''
+    statement : INT VAR LPAREN args RPAREN
+    '''
+    p[0] = ('function', p[2], p[4], p[1])
 
 def p_func_args(p):
     '''
     args : INT VAR
          | INT VAR COMMA args
+         |
     '''
-    if len(p) == 3:
+    if len(p) == 1:
+        p[0] = []
+    elif len(p) == 3:
         p[0] = [(p[1], p[2])]
     else:
         p[0] = [(p[1], p[2])] + p[4]
@@ -334,7 +342,7 @@ def read_cpp_file(file_path):
 
 if __name__ == '__main__':
     
-    cpp_code = read_cpp_file('cpp_code.cpp')
+    cpp_code = read_cpp_file('cpp0.cpp')
     lexer.input(cpp_code)
     while True:
       tok = lexer.token()
