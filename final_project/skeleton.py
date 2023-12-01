@@ -195,6 +195,7 @@ def p_statement_decl(p):
 def p_statement_assign(p):
     '''
     statement : VAR EQUALS NUM SEMICOLON
+                | VAR EQUALS expr SEMICOLON
     '''
     p[0] = ('assign', p[1], p[3])
 
@@ -359,11 +360,11 @@ if __name__ == '__main__':
     
     cpp_code = read_cpp_file('cpp1.cpp')
     lexer.input(cpp_code)
-    while True:
-      tok = lexer.token()
-      if not tok: 
-          break      # No more input
-      print(tok)
+    # while True:
+    #   tok = lexer.token()
+    #   if not tok: 
+    #       break      # No more input
+    #   print(tok)
     p = parser.parse(cpp_code)
     for command in p:
         print(command)
