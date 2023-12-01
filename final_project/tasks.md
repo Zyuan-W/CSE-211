@@ -12,19 +12,36 @@ def parse_cpp_to_ir(cpp_code):
 
 
 ````
-    declare:
+    declare: ('declare', var_name, value)
 
-    assignment:
+    assignment: ('assign', var_name, value)
 
-    if, else:
+    function: ('function', function_name, parameters, return_type)
 
-    for loop:
+    func_declare: ('func_declare', name, args, return_type) 
 
-    while loop:
+    func_call: ('func_call', function_name, args_list)
 
-    print:
+    func_call_assign: ('func_call_assign', var, function_call)
 
-    function:
+    if: ('if', condition)
+
+    else: ('else')
+
+    for: ('for', iter, start, end, update)
+
+    while: ('while', condition)
+
+    cout: ('cout', content)
+
+    return: ('return', expr)
+
+    {: ('left_brace', '{')
+
+    }: ('right_brace', '}')
+    
+
+    
 
 
 ````  

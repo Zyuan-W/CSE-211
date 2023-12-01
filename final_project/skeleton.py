@@ -1,6 +1,23 @@
 import ply.lex as lex
 import ply.yacc as yacc
+import sys
 
+sys.tracebacklimit = 0
+class SymbolTable:
+    def __init__(self):
+        self.brace_count = 0  
+    
+    def push_scope(self):
+        # brace_count++
+        self.brace_count += 1
+    
+    def pop_scope(self):
+        # brace_count--
+        self.brace_count -= 1
+        
+    def check_scope(self):
+        return self.brace_count
+        
 
 tokens = ['NUM', 'VAR', 'PLUS', 'MINUS', 'DIV', 
               'LPAREN', 'RPAREN', 'SEMICOLON', 'EQUALS', 'FOR', 
@@ -140,17 +157,20 @@ def p_program(p):
     else:
         p[0] = p[1] + [p[2]]
 
-# ('func_declare', name, args, return_type)   
+# ('func_declare', name, params, return_type)   
 def p_func_decl(p):
     '''
     statement : INT VAR LPAREN params RPAREN SEMICOLON
     '''
     p[0] = ('func_declare', p[2], p[4], p[1])
+    
+# ('function', name, args, return_type)
 def p_function(p):
     '''
     statement : INT VAR LPAREN params RPAREN
     '''
     p[0] = ('function', p[2], p[4], p[1])
+    
 
 def p_func_params(p):
     '''
@@ -187,15 +207,18 @@ def p_f_statement(p):
     p[0] = p[1]
         
 # sum = addNumbers(x, y); ==> ('func_call', 'sum', 'addNumbers', ['x', 'y'])
+# ('func_call_assign', var, function_name, args_list)
 def p_func_call(p):
     '''
     f_statement : VAR LPAREN args RPAREN SEMICOLON
                 | VAR EQUALS f_statement
     '''
+    scopes = ST.check_scope()
     if len(p) == 4:
-        p[0] = ('func_call_assign', p[1], p[3])
+        p[0] = ('func_call_assign', scopes, p[1], p[3])
     else:
-        p[0] = ('func_call', p[1], p[3])
+        p[0] = ('func_call', scopes, p[1], p[3])
+
 
 # variable declaration: ('declare', var_name, value)
 # temporarily assume everything is assigned to a literal
@@ -206,10 +229,12 @@ def p_statement_decl(p):
               | INT VAR EQUALS VAR SEMICOLON
               | INT VAR EQUALS expr SEMICOLON
     '''
+    scopes = ST.check_scope()
     if len(p) == 4:
-        p[0] = ('declare', p[2], 0)
+        p[0] = ('declare', scopes, p[2], 0)
     else:
-        p[0] = ('declare', p[2], p[4])
+        p[0] = ('declare', scopes, p[2], p[4])
+
 
 # variable assignment: ('assign', var_name, value)
 def p_statement_assign(p):
@@ -219,42 +244,49 @@ def p_statement_assign(p):
                 | VAR EQUALS expr SEMICOLON
                 | array EQUALS expr SEMICOLON
     '''
-    p[0] = ('assign', p[1], p[3])
+    scopes = ST.check_scope()
+    p[0] = ('assign', scopes, p[1], p[3])
+
     
 def p_statement_plusplus(p):
     '''
     statement : VAR PLUS PLUS SEMICOLON
     '''
-    p[0] = ('assign', p[1], f'{p[1]} + 1')
+    scopes = ST.check_scope()
+    p[0] = ('assign', scopes, p[1], f'{p[1]} + 1')
 
 # if statement: ('if', condition)
 def p_statement_if(p):
     '''
     statement : IF LPAREN condition RPAREN
     '''
-    p[0] = ('if', p[3])
+    scopes = ST.check_scope()
+    p[0] = ('if', scopes, p[3])
     
+# else statement: ('else', )
 def p_statement_if_else(p):
     '''
     statement : ELSE
     '''
-    p[0] = ('else', )
+    scopes = ST.check_scope()
+    p[0] = ('else', scopes)     
 
 # For loop: ('for', iter, start, end, update)
 def p_statement_for(p):
     '''
     statement : FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
     '''
-    p[0] = ('for', f'int {p[4]}', p[6], p[8], p[10])
-    pass
+    scopes = ST.check_scope()
+    p[0] = ('for', scopes, p[4], p[6], p[8], p[10])
+    
 
 # while loop: ('while', condition)
 def p_statement_while(p):
     '''
     statement : WHILE LPAREN condition RPAREN
     '''
-    p[0] = ('while', p[3])
-    pass
+    scopes = ST.check_scope()
+    p[0] = ('while', scopes, p[3])
 
 # condition
 def p_condition(p):
@@ -276,28 +308,35 @@ def p_statement_return(p):
     '''
     statement : RETURN expr SEMICOLON
     '''
-    p[0] = ('return', p[2])
+    scopes = ST.check_scope()
+    p[0] = ('return', scopes, p[2])
     pass
 
 # for update
 def p_for_update(p):
     '''
     for_update : VAR PLUS PLUS
+                | VAR MINUS MINUS
                
     '''
-    p[0] = f'{p[1]} += 1'
+    if p[2] == '+':
+        p[0] = f'{p[1]} += 1'
+    else:
+        p[0] = f'{p[1]} -= 1'
 
 def p_statement_lb(p):
     '''
     statement : LB               
     '''
-    p[0] = ('left_brace',)
+    ST.push_scope()
+    p[0] = ('left_brace', '{')
 
 def p_statement_rb(p):
     '''
     statement : RB             
     '''
-    p[0] = ('right_brace',)
+    ST.pop_scope()
+    p[0] = ('right_brace', '}')
 
 def p_expr_plus(p):
     '''
@@ -371,7 +410,8 @@ def p_array_decl(p):
     '''
     statement : INT STAR VAR SEMICOLON
     '''
-    p[0] = ('array_declare', p[1], p[3])
+    scopes = ST.check_scope()
+    p[0] = ('array_declare', scopes, p[1], p[3])
 
 def p_print_content(p):
     '''
@@ -387,12 +427,14 @@ def p_print_content(p):
     else:
         p[0] = [(p[3])] + p[4]
 
+# cout << "Hello World" << x; ==> ('print', '"Hello World", x)
 def p_statement_print(p):
     '''
     statement : COUT p_content SEMICOLON
 
     '''
-    p[0] = ('print', p[2])
+    scopes = ST.check_scope()
+    p[0] = ('cout', scopes, p[2])
 
 
 def p_error(p):
@@ -400,18 +442,98 @@ def p_error(p):
 
 parser = yacc.yacc(debug=True)
 
+def parser_cpp(cpp_code):
+    global ST
+    ST = SymbolTable()
+    return parser.parse(cpp_code)
+    
+
+def python_var_declare(var_name, value):
+    python_code = f'{var_name} = {value}\n'
+    return python_code
+
+def python_function(func_name, args):
+    python_code = f'def {func_name}('
+    for arg in args:
+        python_code += f'{arg[1]}, '
+    python_code = python_code[:-2]
+    python_code += '):\n'
+    return python_code
+
+
+
+
+
+def switch(ir):
+    command = ir[0]
+    tab = "    "
+    if command == 'declare':
+        if ir[1] > 0:
+            python_code = tab * ir[1] +  python_var_declare(ir[2], ir[3])
+        else:
+            python_code = python_var_declare(ir[2], ir[3])
+        return python_code
+    elif command == 'assign':
+        return 'assign'
+    elif command == 'if':
+        return 'if'
+    elif command == 'else':
+        return 'else'
+    elif command == 'for':
+        return 'for'
+    elif command == 'while':
+        return 'while'
+    elif command == 'cout':
+        return 'print'
+    elif command == 'return':
+        return 'return'
+    elif command == 'left_brace':
+        return ''
+    elif command == 'right_brace':
+        return ''
+    elif command == 'func_declare':
+        return ''
+    elif command == 'func_call':
+        return 'func_call'
+    elif command == 'func_call_assign':
+        return 'func_call_assign'
+    elif command == 'function':
+        python_code = python_function(ir[1], ir[2])
+        return python_code
+    elif command == 'array_declare':
+        return 'array_declare'
+    else:
+        return 'unknown'
+
+# conver interpreted IR into poython code
+def python_code_generator(irs):
+    python_code = ""
+    for ir in irs:
+        python_code += switch(ir)
+        
+    return python_code
+    pass
+    
+    
+
 
 
 def read_cpp_file(file_path):
-    try:
-        with open(file_path, 'r') as file:
-            return file.read()
-    except FileNotFoundError:
-        print("File not found.")
-        return None
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
+    # check if a file path argument is provided
+    if len(sys.argv) < 2:
+        print("no file path provided.")
+        exit(1)
+    else:
+        file_path = sys.argv[1]
+        try:
+            with open(file_path, 'r') as file:
+                return file.read()
+        except FileNotFoundError:
+            print("File not found.")
+            return None
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
 
 if __name__ == '__main__':
     
@@ -422,9 +544,14 @@ if __name__ == '__main__':
     #   if not tok: 
     #       break      # No more input
     #   print(tok)
-    p = parser.parse(cpp_code)
-    for command in p:
-        print(command)
+
+    irs = parser_cpp(cpp_code)
+    for ir in irs:
+        print(ir)
+    pytho_code = python_code_generator(irs)
+    print("=====================================")
+    print(pytho_code)
+
     
     
 
