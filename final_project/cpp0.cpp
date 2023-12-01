@@ -3,15 +3,15 @@
 int addNumbers(int a, int b);
 int i = 0;
 i = 4;
+int a = 4;
 if(i == 4){
   i = 27;
+  a = 6;
 }
 int j = 2;
 
 int x = 2 + 1 + j;
-if(i == 4)
-if(i < 2)
-if(i > 3)
+
 
 
 for (int i = 0; i < 5; i++){

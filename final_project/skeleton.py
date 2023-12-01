@@ -6,7 +6,7 @@ tokens = ['NUM', 'VAR', 'MULT', 'PLUS', 'MINUS', 'DIV',
               'LPAREN', 'RPAREN', 'SEMICOLON', 'EQUALS', 'FOR', 
               'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 
               'GREATER', 'LESS', 'IGNORE_CONTENT', 'COUT', 'SENTENCE',
-              'COMMA']
+              'COMMA', 'ENDL']
 
 t_MULT = r'\*'
 # t_PLUS = r'\+'
@@ -21,6 +21,7 @@ t_IF = "if"
 t_ELSE = "else"
 t_WHILE = "while"
 t_COUT = r'cout'
+t_ENDL = r'endl'
 t_LB = r'\{'
 t_RB = r'\}'
 t_GREATER = r'\>'
@@ -44,7 +45,8 @@ reserved = {
     'if' : 'IF',
     'else' : 'ELSE',
     'while' : 'WHILE',
-    'cout' : 'COUT'
+    'cout' : 'COUT',
+    'endl' : 'ENDL'
 }
 
 
@@ -286,16 +288,13 @@ def p_factor_var(p):
 
 def p_statement_print(p):
     '''
-    statement : COUT LESS LESS VAR SEMICOLON
-                | COUT LESS LESS SENTENCE SEMICOLON
-                | COUT LESS LESS SENTENCE LESS LESS VAR SEMICOLON
+    statement : COUT LESS LESS VAR SEMICOLON LESS LESS ENDL SEMICOLON
+                | COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
     '''
-    if len(p) == 6:
+    if len(p) == 10:
         p[0] = ('print', '', p[4])
-    elif len(p) == 7:
-        p[0] = ('print', p[4], '')
     else:
-        p[0] = ('print', p[4], p[5])
+        p[0] = ('print', p[4], p[7])
 
 
 def p_error(p):
