@@ -1,6 +1,7 @@
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
+import re
 
 sys.tracebacklimit = 0
 class SymbolTable:
@@ -447,6 +448,9 @@ def parser_cpp(cpp_code):
     ST = SymbolTable()
     return parser.parse(cpp_code)
     
+    
+    
+ ## python code generator   
 
 def python_var_declare(var_name, value):
     python_code = f'{var_name} = {value}\n'
@@ -457,51 +461,125 @@ def python_function(func_name, args):
     for arg in args:
         python_code += f'{arg[1]}, '
     python_code = python_code[:-2]
-    python_code += '):\n'
+    python_code += '):'
     return python_code
 
+def python_function_call(func_name, args):
+    python_code = func_name + '('
+    for arg in args:
+        python_code += f'{arg}, '
+    python_code = python_code[:-2]
+    python_code += ')\n'
+    return python_code
 
+def python_print(content):
+    python_code = f'print('
+    for c in content:
+        if c =='endl':
+            c = "'\\n'"
+        python_code += f'{c}, '
+    python_code = python_code[:-2]
+    python_code += ')\n'
+    return python_code
 
+def python_for(iter, start, condition, update):
+    end = condition[len(condition)-1]
+    number = re.findall(r'\d+', update)
+    if '+=' in update:
+        number = int (number[0])
+    elif '-=' in update:
+        number = int (number[0]) * -1
+    python_code = f'for {iter} in range({start}, {end}, {number}):'
+    return python_code
 
+def python_while(condition):
+    python_code = f'while {condition}:'
+    return python_code
+    
 
+# switch
 def switch(ir):
     command = ir[0]
     tab = "    "
     if command == 'declare':
         if ir[1] > 0:
-            python_code = tab * ir[1] +  python_var_declare(ir[2], ir[3])
+            python_code = tab * ir[1] +  python_var_declare(ir[2], ir[3]) 
         else:
             python_code = python_var_declare(ir[2], ir[3])
         return python_code
     elif command == 'assign':
-        return 'assign'
+        if ir[1] > 0:
+            python_code = tab * ir[1] + f'{ir[2]} = {ir[3]}' + '\n'
+        else:
+            python_code = f'{ir[2]} = {ir[3]}' + '\n'
+        return python_code
     elif command == 'if':
-        return 'if'
+        if ir[1] > 0:
+            python_code = tab * ir[1] + f'if {ir[2]}:'
+        else:
+            python_code = f'if {ir[2]}:\n'
+        return python_code
     elif command == 'else':
-        return 'else'
+        if ir[1] > 0:
+            python_code = tab * ir[1] + f'else:'
+        else:
+            python_code = f'else:'
+        return python_code
     elif command == 'for':
-        return 'for'
+        python_code = ""
+        if ir[1] > 0:
+            python_code += tab * ir[1]
+        python_code += python_for(ir[2], ir[3], ir[4], ir[5])
+        return python_code 
     elif command == 'while':
-        return 'while'
+        python_code = ""
+        if ir[1] > 0:
+            python_code += tab * ir[1]
+        python_code += python_while(ir[2])
+        return python_code
     elif command == 'cout':
-        return 'print'
+        python_code = ""
+        if ir[1] > 0:
+            python_code += tab * ir[1]
+        python_code += python_print(ir[2])
+        return python_code
     elif command == 'return':
-        return 'return'
+        python_code = ""
+        if ir[1] > 0:
+            python_code = tab * ir[1]
+        python_code += f'return {ir[2]}\n'
+        return python_code
     elif command == 'left_brace':
-        return ''
+        return '\n'
     elif command == 'right_brace':
-        return ''
+        return '\n'
     elif command == 'func_declare':
         return ''
     elif command == 'func_call':
-        return 'func_call'
+        python_code = ""
+        if ir[1] > 0:
+            python_code = tab * ir[1]
+        python_code += python_function_call(ir[2], ir[3])
+        return python_code
     elif command == 'func_call_assign':
-        return 'func_call_assign'
+        python_code = ""
+        if ir[1] > 0:
+            python_code = python_code + tab * ir[1]
+        var = ir[2]
+        python_code += f'{var} = '
+        func_name = ir[3][2]
+        
+        python_code += python_function_call(func_name, ir[3][3])
+        return python_code
+
     elif command == 'function':
-        python_code = python_function(ir[1], ir[2])
+        if ir[1] == 'main':
+            python_code = "if __name__ == '__main__':" + ''
+        else:
+            python_code = python_function(ir[1], ir[2])
         return python_code
     elif command == 'array_declare':
-        return 'array_declare'
+        return ''
     else:
         return 'unknown'
 
@@ -551,6 +629,10 @@ if __name__ == '__main__':
     pytho_code = python_code_generator(irs)
     print("=====================================")
     print(pytho_code)
+    
+    print("=====================================")
+    # for i in range (10, 0,):
+    #     print(i)
 
     
     

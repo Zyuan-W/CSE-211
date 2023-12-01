@@ -12,6 +12,8 @@ def parse_cpp_to_ir(cpp_code):
 
 
 ````
+ir: ir[0] = command, ir[1] = scopes
+
     declare: ('declare', var_name, value)
 
     assignment: ('assign', var_name, value)
