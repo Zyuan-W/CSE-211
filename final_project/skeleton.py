@@ -6,7 +6,7 @@ tokens = ['NUM', 'VAR', 'MULT', 'PLUS', 'MINUS', 'DIV',
               'LPAREN', 'RPAREN', 'SEMICOLON', 'EQUALS', 'FOR', 
               'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 
               'GREATER', 'LESS', 'IGNORE_CONTENT', 'COUT', 'SENTENCE',
-              'COMMA', 'ENDL']
+              'COMMA', 'ENDL', 'RETURN']
 
 t_MULT = r'\*'
 # t_PLUS = r'\+'
@@ -22,6 +22,7 @@ t_ELSE = "else"
 t_WHILE = "while"
 t_COUT = r'cout'
 t_ENDL = r'endl'
+t_RETURN = r'return'
 t_LB = r'\{'
 t_RB = r'\}'
 t_GREATER = r'\>'
@@ -46,7 +47,8 @@ reserved = {
     'else' : 'ELSE',
     'while' : 'WHILE',
     'cout' : 'COUT',
-    'endl' : 'ENDL'
+    'endl' : 'ENDL',
+    'return' : 'RETURN'
 }
 
 
@@ -179,6 +181,12 @@ def p_statement_if(p):
     statement : IF LPAREN condition RPAREN
     '''
     p[0] = ('if', p[3])
+    
+def p_statement_if_else(p):
+    '''
+    statement : ELSE
+    '''
+    p[0] = ('else', )
 
 # For loop: ('for', iter, start, end, update)
 def p_statement_for(p):
@@ -209,6 +217,14 @@ def p_condition(p):
         p[0] = f'{p[1]} {p[2]} {p[3]}'
     else:
         p[0] = f'{p[1]} {p[2]}{p[3]} {p[4]}'
+    pass
+
+# teturn
+def p_statement_return(p):
+    '''
+    statement : RETURN expr SEMICOLON
+    '''
+    p[0] = ('return', p[2])
     pass
 
 # for update

@@ -2,7 +2,6 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    ELSE
     IGNORE_CONTENT
     PRINT
 
@@ -20,70 +19,73 @@ Rule 8     statement -> INT VAR EQUALS VAR SEMICOLON
 Rule 9     statement -> INT VAR EQUALS expr SEMICOLON
 Rule 10    statement -> VAR EQUALS NUM SEMICOLON
 Rule 11    statement -> IF LPAREN condition RPAREN
-Rule 12    statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
-Rule 13    statement -> WHILE LPAREN condition RPAREN
-Rule 14    condition -> VAR GREATER NUM
-Rule 15    condition -> VAR LESS NUM
-Rule 16    condition -> VAR GREATER VAR
-Rule 17    condition -> VAR LESS VAR
-Rule 18    condition -> VAR EQUALS EQUALS NUM
-Rule 19    for_update -> VAR PLUS PLUS
-Rule 20    statement -> LB
-Rule 21    statement -> RB
-Rule 22    expr -> expr PLUS term
-Rule 23    expr -> expr PLUS VAR
-Rule 24    expr -> expr MINUS term
-Rule 25    expr -> expr MINUS VAR
-Rule 26    expr -> term
-Rule 27    term -> term MULT factor
-Rule 28    term -> term DIV factor
-Rule 29    term -> factor
-Rule 30    factor -> LPAREN expr RPAREN
-Rule 31    factor -> NUM
-Rule 32    factor -> VAR
-Rule 33    statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON
-Rule 34    statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON
-Rule 35    statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
+Rule 12    statement -> ELSE
+Rule 13    statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
+Rule 14    statement -> WHILE LPAREN condition RPAREN
+Rule 15    condition -> VAR GREATER NUM
+Rule 16    condition -> VAR LESS NUM
+Rule 17    condition -> VAR GREATER VAR
+Rule 18    condition -> VAR LESS VAR
+Rule 19    condition -> VAR EQUALS EQUALS NUM
+Rule 20    statement -> RETURN expr SEMICOLON
+Rule 21    for_update -> VAR PLUS PLUS
+Rule 22    statement -> LB
+Rule 23    statement -> RB
+Rule 24    expr -> expr PLUS term
+Rule 25    expr -> expr PLUS VAR
+Rule 26    expr -> expr MINUS term
+Rule 27    expr -> expr MINUS VAR
+Rule 28    expr -> term
+Rule 29    term -> term MULT factor
+Rule 30    term -> term DIV factor
+Rule 31    term -> factor
+Rule 32    factor -> LPAREN expr RPAREN
+Rule 33    factor -> NUM
+Rule 34    factor -> VAR
+Rule 35    statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON
+Rule 36    statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON
+Rule 37    statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
 
 Terminals, with rules where they appear
 
 COMMA                : 5
-COUT                 : 33 34 35
-DIV                  : 28
-ELSE                 : 
-ENDL                 : 33 34 35
-EQUALS               : 7 8 9 10 12 18 18
-FOR                  : 12
-GREATER              : 14 16
+COUT                 : 35 36 37
+DIV                  : 30
+ELSE                 : 12
+ENDL                 : 35 36 37
+EQUALS               : 7 8 9 10 13 19 19
+FOR                  : 13
+GREATER              : 15 17
 IF                   : 11
 IGNORE_CONTENT       : 
-INT                  : 3 4 5 6 7 8 9 12
-LB                   : 20
-LESS                 : 15 17 33 33 33 33 34 34 34 34 35 35 35 35 35 35
-LPAREN               : 3 11 12 13 30
-MINUS                : 24 25
-MULT                 : 27
-NUM                  : 7 10 12 14 15 18 31
-PLUS                 : 19 19 22 23
+INT                  : 3 4 5 6 7 8 9 13
+LB                   : 22
+LESS                 : 16 18 35 35 35 35 36 36 36 36 37 37 37 37 37 37
+LPAREN               : 3 11 13 14 32
+MINUS                : 26 27
+MULT                 : 29
+NUM                  : 7 10 13 15 16 19 33
+PLUS                 : 21 21 24 25
 PRINT                : 
-RB                   : 21
-RPAREN               : 3 11 12 13 30
-SEMICOLON            : 3 6 7 8 9 10 12 12 33 34 35
-SENTENCE             : 34 35
-VAR                  : 3 4 5 6 7 8 8 9 10 12 14 15 16 16 17 17 18 19 23 25 32 33 35
-WHILE                : 13
+RB                   : 23
+RETURN               : 20
+RPAREN               : 3 11 13 14 32
+SEMICOLON            : 3 6 7 8 9 10 13 13 20 35 36 37
+SENTENCE             : 36 37
+VAR                  : 3 4 5 6 7 8 8 9 10 13 15 16 17 17 18 18 19 21 25 27 34 35 37
+WHILE                : 14
 error                : 
 
 Nonterminals, with rules where they appear
 
 args                 : 3 5
-condition            : 11 12 13
-expr                 : 9 22 23 24 25 30
-factor               : 27 28 29
-for_update           : 12
+condition            : 11 13 14
+expr                 : 9 20 24 25 26 27 32
+factor               : 29 30 31
+for_update           : 13
 program              : 2 0
 statement            : 1 2
-term                 : 22 24 26 27 28
+term                 : 24 26 28 29 30
 
 Parsing method: LALR
 
@@ -99,22 +101,26 @@ state 0
     (9) statement -> . INT VAR EQUALS expr SEMICOLON
     (10) statement -> . VAR EQUALS NUM SEMICOLON
     (11) statement -> . IF LPAREN condition RPAREN
-    (12) statement -> . FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
-    (13) statement -> . WHILE LPAREN condition RPAREN
-    (20) statement -> . LB
-    (21) statement -> . RB
-    (33) statement -> . COUT LESS LESS VAR LESS LESS ENDL SEMICOLON
-    (34) statement -> . COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON
-    (35) statement -> . COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
+    (12) statement -> . ELSE
+    (13) statement -> . FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
+    (14) statement -> . WHILE LPAREN condition RPAREN
+    (20) statement -> . RETURN expr SEMICOLON
+    (22) statement -> . LB
+    (23) statement -> . RB
+    (35) statement -> . COUT LESS LESS VAR LESS LESS ENDL SEMICOLON
+    (36) statement -> . COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON
+    (37) statement -> . COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
 
     INT             shift and go to state 3
     VAR             shift and go to state 4
     IF              shift and go to state 5
-    FOR             shift and go to state 6
-    WHILE           shift and go to state 7
-    LB              shift and go to state 8
-    RB              shift and go to state 9
-    COUT            shift and go to state 10
+    ELSE            shift and go to state 6
+    FOR             shift and go to state 7
+    WHILE           shift and go to state 8
+    RETURN          shift and go to state 9
+    LB              shift and go to state 10
+    RB              shift and go to state 11
+    COUT            shift and go to state 12
 
     program                        shift and go to state 1
     statement                      shift and go to state 2
@@ -130,24 +136,28 @@ state 1
     (9) statement -> . INT VAR EQUALS expr SEMICOLON
     (10) statement -> . VAR EQUALS NUM SEMICOLON
     (11) statement -> . IF LPAREN condition RPAREN
-    (12) statement -> . FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
-    (13) statement -> . WHILE LPAREN condition RPAREN
-    (20) statement -> . LB
-    (21) statement -> . RB
-    (33) statement -> . COUT LESS LESS VAR LESS LESS ENDL SEMICOLON
-    (34) statement -> . COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON
-    (35) statement -> . COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
+    (12) statement -> . ELSE
+    (13) statement -> . FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
+    (14) statement -> . WHILE LPAREN condition RPAREN
+    (20) statement -> . RETURN expr SEMICOLON
+    (22) statement -> . LB
+    (23) statement -> . RB
+    (35) statement -> . COUT LESS LESS VAR LESS LESS ENDL SEMICOLON
+    (36) statement -> . COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON
+    (37) statement -> . COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
 
     INT             shift and go to state 3
     VAR             shift and go to state 4
     IF              shift and go to state 5
-    FOR             shift and go to state 6
-    WHILE           shift and go to state 7
-    LB              shift and go to state 8
-    RB              shift and go to state 9
-    COUT            shift and go to state 10
+    ELSE            shift and go to state 6
+    FOR             shift and go to state 7
+    WHILE           shift and go to state 8
+    RETURN          shift and go to state 9
+    LB              shift and go to state 10
+    RB              shift and go to state 11
+    COUT            shift and go to state 12
 
-    statement                      shift and go to state 11
+    statement                      shift and go to state 13
 
 state 2
 
@@ -156,8 +166,10 @@ state 2
     INT             reduce using rule 1 (program -> statement .)
     VAR             reduce using rule 1 (program -> statement .)
     IF              reduce using rule 1 (program -> statement .)
+    ELSE            reduce using rule 1 (program -> statement .)
     FOR             reduce using rule 1 (program -> statement .)
     WHILE           reduce using rule 1 (program -> statement .)
+    RETURN          reduce using rule 1 (program -> statement .)
     LB              reduce using rule 1 (program -> statement .)
     RB              reduce using rule 1 (program -> statement .)
     COUT            reduce using rule 1 (program -> statement .)
@@ -172,92 +184,138 @@ state 3
     (8) statement -> INT . VAR EQUALS VAR SEMICOLON
     (9) statement -> INT . VAR EQUALS expr SEMICOLON
 
-    VAR             shift and go to state 12
+    VAR             shift and go to state 14
 
 
 state 4
 
     (10) statement -> VAR . EQUALS NUM SEMICOLON
 
-    EQUALS          shift and go to state 13
+    EQUALS          shift and go to state 15
 
 
 state 5
 
     (11) statement -> IF . LPAREN condition RPAREN
 
-    LPAREN          shift and go to state 14
+    LPAREN          shift and go to state 16
 
 
 state 6
 
-    (12) statement -> FOR . LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
+    (12) statement -> ELSE .
 
-    LPAREN          shift and go to state 15
+    INT             reduce using rule 12 (statement -> ELSE .)
+    VAR             reduce using rule 12 (statement -> ELSE .)
+    IF              reduce using rule 12 (statement -> ELSE .)
+    ELSE            reduce using rule 12 (statement -> ELSE .)
+    FOR             reduce using rule 12 (statement -> ELSE .)
+    WHILE           reduce using rule 12 (statement -> ELSE .)
+    RETURN          reduce using rule 12 (statement -> ELSE .)
+    LB              reduce using rule 12 (statement -> ELSE .)
+    RB              reduce using rule 12 (statement -> ELSE .)
+    COUT            reduce using rule 12 (statement -> ELSE .)
+    $end            reduce using rule 12 (statement -> ELSE .)
 
 
 state 7
 
-    (13) statement -> WHILE . LPAREN condition RPAREN
+    (13) statement -> FOR . LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
 
-    LPAREN          shift and go to state 16
+    LPAREN          shift and go to state 17
 
 
 state 8
 
-    (20) statement -> LB .
+    (14) statement -> WHILE . LPAREN condition RPAREN
 
-    INT             reduce using rule 20 (statement -> LB .)
-    VAR             reduce using rule 20 (statement -> LB .)
-    IF              reduce using rule 20 (statement -> LB .)
-    FOR             reduce using rule 20 (statement -> LB .)
-    WHILE           reduce using rule 20 (statement -> LB .)
-    LB              reduce using rule 20 (statement -> LB .)
-    RB              reduce using rule 20 (statement -> LB .)
-    COUT            reduce using rule 20 (statement -> LB .)
-    $end            reduce using rule 20 (statement -> LB .)
+    LPAREN          shift and go to state 18
 
 
 state 9
 
-    (21) statement -> RB .
+    (20) statement -> RETURN . expr SEMICOLON
+    (24) expr -> . expr PLUS term
+    (25) expr -> . expr PLUS VAR
+    (26) expr -> . expr MINUS term
+    (27) expr -> . expr MINUS VAR
+    (28) expr -> . term
+    (29) term -> . term MULT factor
+    (30) term -> . term DIV factor
+    (31) term -> . factor
+    (32) factor -> . LPAREN expr RPAREN
+    (33) factor -> . NUM
+    (34) factor -> . VAR
 
-    INT             reduce using rule 21 (statement -> RB .)
-    VAR             reduce using rule 21 (statement -> RB .)
-    IF              reduce using rule 21 (statement -> RB .)
-    FOR             reduce using rule 21 (statement -> RB .)
-    WHILE           reduce using rule 21 (statement -> RB .)
-    LB              reduce using rule 21 (statement -> RB .)
-    RB              reduce using rule 21 (statement -> RB .)
-    COUT            reduce using rule 21 (statement -> RB .)
-    $end            reduce using rule 21 (statement -> RB .)
+    LPAREN          shift and go to state 23
+    NUM             shift and go to state 24
+    VAR             shift and go to state 21
 
+    expr                           shift and go to state 19
+    term                           shift and go to state 20
+    factor                         shift and go to state 22
 
 state 10
 
-    (33) statement -> COUT . LESS LESS VAR LESS LESS ENDL SEMICOLON
-    (34) statement -> COUT . LESS LESS SENTENCE LESS LESS ENDL SEMICOLON
-    (35) statement -> COUT . LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
+    (22) statement -> LB .
 
-    LESS            shift and go to state 17
+    INT             reduce using rule 22 (statement -> LB .)
+    VAR             reduce using rule 22 (statement -> LB .)
+    IF              reduce using rule 22 (statement -> LB .)
+    ELSE            reduce using rule 22 (statement -> LB .)
+    FOR             reduce using rule 22 (statement -> LB .)
+    WHILE           reduce using rule 22 (statement -> LB .)
+    RETURN          reduce using rule 22 (statement -> LB .)
+    LB              reduce using rule 22 (statement -> LB .)
+    RB              reduce using rule 22 (statement -> LB .)
+    COUT            reduce using rule 22 (statement -> LB .)
+    $end            reduce using rule 22 (statement -> LB .)
 
 
 state 11
+
+    (23) statement -> RB .
+
+    INT             reduce using rule 23 (statement -> RB .)
+    VAR             reduce using rule 23 (statement -> RB .)
+    IF              reduce using rule 23 (statement -> RB .)
+    ELSE            reduce using rule 23 (statement -> RB .)
+    FOR             reduce using rule 23 (statement -> RB .)
+    WHILE           reduce using rule 23 (statement -> RB .)
+    RETURN          reduce using rule 23 (statement -> RB .)
+    LB              reduce using rule 23 (statement -> RB .)
+    RB              reduce using rule 23 (statement -> RB .)
+    COUT            reduce using rule 23 (statement -> RB .)
+    $end            reduce using rule 23 (statement -> RB .)
+
+
+state 12
+
+    (35) statement -> COUT . LESS LESS VAR LESS LESS ENDL SEMICOLON
+    (36) statement -> COUT . LESS LESS SENTENCE LESS LESS ENDL SEMICOLON
+    (37) statement -> COUT . LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
+
+    LESS            shift and go to state 25
+
+
+state 13
 
     (2) program -> program statement .
 
     INT             reduce using rule 2 (program -> program statement .)
     VAR             reduce using rule 2 (program -> program statement .)
     IF              reduce using rule 2 (program -> program statement .)
+    ELSE            reduce using rule 2 (program -> program statement .)
     FOR             reduce using rule 2 (program -> program statement .)
     WHILE           reduce using rule 2 (program -> program statement .)
+    RETURN          reduce using rule 2 (program -> program statement .)
     LB              reduce using rule 2 (program -> program statement .)
     RB              reduce using rule 2 (program -> program statement .)
     COUT            reduce using rule 2 (program -> program statement .)
     $end            reduce using rule 2 (program -> program statement .)
 
 
-state 12
+state 14
 
     (3) statement -> INT VAR . LPAREN args RPAREN SEMICOLON
     (6) statement -> INT VAR . SEMICOLON
@@ -265,916 +323,970 @@ state 12
     (8) statement -> INT VAR . EQUALS VAR SEMICOLON
     (9) statement -> INT VAR . EQUALS expr SEMICOLON
 
-    LPAREN          shift and go to state 18
-    SEMICOLON       shift and go to state 19
-    EQUALS          shift and go to state 20
+    LPAREN          shift and go to state 26
+    SEMICOLON       shift and go to state 27
+    EQUALS          shift and go to state 28
 
-
-state 13
-
-    (10) statement -> VAR EQUALS . NUM SEMICOLON
-
-    NUM             shift and go to state 21
-
-
-state 14
-
-    (11) statement -> IF LPAREN . condition RPAREN
-    (14) condition -> . VAR GREATER NUM
-    (15) condition -> . VAR LESS NUM
-    (16) condition -> . VAR GREATER VAR
-    (17) condition -> . VAR LESS VAR
-    (18) condition -> . VAR EQUALS EQUALS NUM
-
-    VAR             shift and go to state 23
-
-    condition                      shift and go to state 22
 
 state 15
 
-    (12) statement -> FOR LPAREN . INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
+    (10) statement -> VAR EQUALS . NUM SEMICOLON
 
-    INT             shift and go to state 24
+    NUM             shift and go to state 29
 
 
 state 16
 
-    (13) statement -> WHILE LPAREN . condition RPAREN
-    (14) condition -> . VAR GREATER NUM
-    (15) condition -> . VAR LESS NUM
-    (16) condition -> . VAR GREATER VAR
-    (17) condition -> . VAR LESS VAR
-    (18) condition -> . VAR EQUALS EQUALS NUM
+    (11) statement -> IF LPAREN . condition RPAREN
+    (15) condition -> . VAR GREATER NUM
+    (16) condition -> . VAR LESS NUM
+    (17) condition -> . VAR GREATER VAR
+    (18) condition -> . VAR LESS VAR
+    (19) condition -> . VAR EQUALS EQUALS NUM
 
-    VAR             shift and go to state 23
+    VAR             shift and go to state 31
 
-    condition                      shift and go to state 25
+    condition                      shift and go to state 30
 
 state 17
 
-    (33) statement -> COUT LESS . LESS VAR LESS LESS ENDL SEMICOLON
-    (34) statement -> COUT LESS . LESS SENTENCE LESS LESS ENDL SEMICOLON
-    (35) statement -> COUT LESS . LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
+    (13) statement -> FOR LPAREN . INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
 
-    LESS            shift and go to state 26
+    INT             shift and go to state 32
 
 
 state 18
+
+    (14) statement -> WHILE LPAREN . condition RPAREN
+    (15) condition -> . VAR GREATER NUM
+    (16) condition -> . VAR LESS NUM
+    (17) condition -> . VAR GREATER VAR
+    (18) condition -> . VAR LESS VAR
+    (19) condition -> . VAR EQUALS EQUALS NUM
+
+    VAR             shift and go to state 31
+
+    condition                      shift and go to state 33
+
+state 19
+
+    (20) statement -> RETURN expr . SEMICOLON
+    (24) expr -> expr . PLUS term
+    (25) expr -> expr . PLUS VAR
+    (26) expr -> expr . MINUS term
+    (27) expr -> expr . MINUS VAR
+
+    SEMICOLON       shift and go to state 34
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 36
+
+
+state 20
+
+    (28) expr -> term .
+    (29) term -> term . MULT factor
+    (30) term -> term . DIV factor
+
+    SEMICOLON       reduce using rule 28 (expr -> term .)
+    PLUS            reduce using rule 28 (expr -> term .)
+    MINUS           reduce using rule 28 (expr -> term .)
+    RPAREN          reduce using rule 28 (expr -> term .)
+    MULT            shift and go to state 37
+    DIV             shift and go to state 38
+
+
+state 21
+
+    (34) factor -> VAR .
+
+    MULT            reduce using rule 34 (factor -> VAR .)
+    DIV             reduce using rule 34 (factor -> VAR .)
+    SEMICOLON       reduce using rule 34 (factor -> VAR .)
+    PLUS            reduce using rule 34 (factor -> VAR .)
+    MINUS           reduce using rule 34 (factor -> VAR .)
+    RPAREN          reduce using rule 34 (factor -> VAR .)
+
+
+state 22
+
+    (31) term -> factor .
+
+    MULT            reduce using rule 31 (term -> factor .)
+    DIV             reduce using rule 31 (term -> factor .)
+    SEMICOLON       reduce using rule 31 (term -> factor .)
+    PLUS            reduce using rule 31 (term -> factor .)
+    MINUS           reduce using rule 31 (term -> factor .)
+    RPAREN          reduce using rule 31 (term -> factor .)
+
+
+state 23
+
+    (32) factor -> LPAREN . expr RPAREN
+    (24) expr -> . expr PLUS term
+    (25) expr -> . expr PLUS VAR
+    (26) expr -> . expr MINUS term
+    (27) expr -> . expr MINUS VAR
+    (28) expr -> . term
+    (29) term -> . term MULT factor
+    (30) term -> . term DIV factor
+    (31) term -> . factor
+    (32) factor -> . LPAREN expr RPAREN
+    (33) factor -> . NUM
+    (34) factor -> . VAR
+
+    LPAREN          shift and go to state 23
+    NUM             shift and go to state 24
+    VAR             shift and go to state 21
+
+    expr                           shift and go to state 39
+    term                           shift and go to state 20
+    factor                         shift and go to state 22
+
+state 24
+
+    (33) factor -> NUM .
+
+    MULT            reduce using rule 33 (factor -> NUM .)
+    DIV             reduce using rule 33 (factor -> NUM .)
+    SEMICOLON       reduce using rule 33 (factor -> NUM .)
+    PLUS            reduce using rule 33 (factor -> NUM .)
+    MINUS           reduce using rule 33 (factor -> NUM .)
+    RPAREN          reduce using rule 33 (factor -> NUM .)
+
+
+state 25
+
+    (35) statement -> COUT LESS . LESS VAR LESS LESS ENDL SEMICOLON
+    (36) statement -> COUT LESS . LESS SENTENCE LESS LESS ENDL SEMICOLON
+    (37) statement -> COUT LESS . LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
+
+    LESS            shift and go to state 40
+
+
+state 26
 
     (3) statement -> INT VAR LPAREN . args RPAREN SEMICOLON
     (4) args -> . INT VAR
     (5) args -> . INT VAR COMMA args
 
-    INT             shift and go to state 27
+    INT             shift and go to state 41
 
-    args                           shift and go to state 28
+    args                           shift and go to state 42
 
-state 19
+state 27
 
     (6) statement -> INT VAR SEMICOLON .
 
     INT             reduce using rule 6 (statement -> INT VAR SEMICOLON .)
     VAR             reduce using rule 6 (statement -> INT VAR SEMICOLON .)
     IF              reduce using rule 6 (statement -> INT VAR SEMICOLON .)
+    ELSE            reduce using rule 6 (statement -> INT VAR SEMICOLON .)
     FOR             reduce using rule 6 (statement -> INT VAR SEMICOLON .)
     WHILE           reduce using rule 6 (statement -> INT VAR SEMICOLON .)
+    RETURN          reduce using rule 6 (statement -> INT VAR SEMICOLON .)
     LB              reduce using rule 6 (statement -> INT VAR SEMICOLON .)
     RB              reduce using rule 6 (statement -> INT VAR SEMICOLON .)
     COUT            reduce using rule 6 (statement -> INT VAR SEMICOLON .)
     $end            reduce using rule 6 (statement -> INT VAR SEMICOLON .)
 
 
-state 20
+state 28
 
     (7) statement -> INT VAR EQUALS . NUM SEMICOLON
     (8) statement -> INT VAR EQUALS . VAR SEMICOLON
     (9) statement -> INT VAR EQUALS . expr SEMICOLON
-    (22) expr -> . expr PLUS term
-    (23) expr -> . expr PLUS VAR
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr MINUS VAR
-    (26) expr -> . term
-    (27) term -> . term MULT factor
-    (28) term -> . term DIV factor
-    (29) term -> . factor
-    (30) factor -> . LPAREN expr RPAREN
-    (31) factor -> . NUM
-    (32) factor -> . VAR
+    (24) expr -> . expr PLUS term
+    (25) expr -> . expr PLUS VAR
+    (26) expr -> . expr MINUS term
+    (27) expr -> . expr MINUS VAR
+    (28) expr -> . term
+    (29) term -> . term MULT factor
+    (30) term -> . term DIV factor
+    (31) term -> . factor
+    (32) factor -> . LPAREN expr RPAREN
+    (33) factor -> . NUM
+    (34) factor -> . VAR
 
-    NUM             shift and go to state 30
-    VAR             shift and go to state 29
-    LPAREN          shift and go to state 34
+    NUM             shift and go to state 44
+    VAR             shift and go to state 43
+    LPAREN          shift and go to state 23
 
-    expr                           shift and go to state 31
-    term                           shift and go to state 32
-    factor                         shift and go to state 33
-
-state 21
-
-    (10) statement -> VAR EQUALS NUM . SEMICOLON
-
-    SEMICOLON       shift and go to state 35
-
-
-state 22
-
-    (11) statement -> IF LPAREN condition . RPAREN
-
-    RPAREN          shift and go to state 36
-
-
-state 23
-
-    (14) condition -> VAR . GREATER NUM
-    (15) condition -> VAR . LESS NUM
-    (16) condition -> VAR . GREATER VAR
-    (17) condition -> VAR . LESS VAR
-    (18) condition -> VAR . EQUALS EQUALS NUM
-
-    GREATER         shift and go to state 37
-    LESS            shift and go to state 38
-    EQUALS          shift and go to state 39
-
-
-state 24
-
-    (12) statement -> FOR LPAREN INT . VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
-
-    VAR             shift and go to state 40
-
-
-state 25
-
-    (13) statement -> WHILE LPAREN condition . RPAREN
-
-    RPAREN          shift and go to state 41
-
-
-state 26
-
-    (33) statement -> COUT LESS LESS . VAR LESS LESS ENDL SEMICOLON
-    (34) statement -> COUT LESS LESS . SENTENCE LESS LESS ENDL SEMICOLON
-    (35) statement -> COUT LESS LESS . SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
-
-    VAR             shift and go to state 42
-    SENTENCE        shift and go to state 43
-
-
-state 27
-
-    (4) args -> INT . VAR
-    (5) args -> INT . VAR COMMA args
-
-    VAR             shift and go to state 44
-
-
-state 28
-
-    (3) statement -> INT VAR LPAREN args . RPAREN SEMICOLON
-
-    RPAREN          shift and go to state 45
-
+    expr                           shift and go to state 45
+    term                           shift and go to state 20
+    factor                         shift and go to state 22
 
 state 29
 
-    (8) statement -> INT VAR EQUALS VAR . SEMICOLON
-    (32) factor -> VAR .
+    (10) statement -> VAR EQUALS NUM . SEMICOLON
 
-  ! shift/reduce conflict for SEMICOLON resolved as shift
     SEMICOLON       shift and go to state 46
-    MULT            reduce using rule 32 (factor -> VAR .)
-    DIV             reduce using rule 32 (factor -> VAR .)
-    PLUS            reduce using rule 32 (factor -> VAR .)
-    MINUS           reduce using rule 32 (factor -> VAR .)
-
-  ! SEMICOLON       [ reduce using rule 32 (factor -> VAR .) ]
 
 
 state 30
 
-    (7) statement -> INT VAR EQUALS NUM . SEMICOLON
-    (31) factor -> NUM .
+    (11) statement -> IF LPAREN condition . RPAREN
 
-  ! shift/reduce conflict for SEMICOLON resolved as shift
-    SEMICOLON       shift and go to state 47
-    MULT            reduce using rule 31 (factor -> NUM .)
-    DIV             reduce using rule 31 (factor -> NUM .)
-    PLUS            reduce using rule 31 (factor -> NUM .)
-    MINUS           reduce using rule 31 (factor -> NUM .)
-
-  ! SEMICOLON       [ reduce using rule 31 (factor -> NUM .) ]
+    RPAREN          shift and go to state 47
 
 
 state 31
 
-    (9) statement -> INT VAR EQUALS expr . SEMICOLON
-    (22) expr -> expr . PLUS term
-    (23) expr -> expr . PLUS VAR
-    (24) expr -> expr . MINUS term
-    (25) expr -> expr . MINUS VAR
+    (15) condition -> VAR . GREATER NUM
+    (16) condition -> VAR . LESS NUM
+    (17) condition -> VAR . GREATER VAR
+    (18) condition -> VAR . LESS VAR
+    (19) condition -> VAR . EQUALS EQUALS NUM
 
-    SEMICOLON       shift and go to state 48
-    PLUS            shift and go to state 49
-    MINUS           shift and go to state 50
+    GREATER         shift and go to state 48
+    LESS            shift and go to state 49
+    EQUALS          shift and go to state 50
 
 
 state 32
 
-    (26) expr -> term .
-    (27) term -> term . MULT factor
-    (28) term -> term . DIV factor
+    (13) statement -> FOR LPAREN INT . VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
 
-    SEMICOLON       reduce using rule 26 (expr -> term .)
-    PLUS            reduce using rule 26 (expr -> term .)
-    MINUS           reduce using rule 26 (expr -> term .)
-    RPAREN          reduce using rule 26 (expr -> term .)
-    MULT            shift and go to state 51
-    DIV             shift and go to state 52
+    VAR             shift and go to state 51
 
 
 state 33
 
-    (29) term -> factor .
+    (14) statement -> WHILE LPAREN condition . RPAREN
 
-    MULT            reduce using rule 29 (term -> factor .)
-    DIV             reduce using rule 29 (term -> factor .)
-    SEMICOLON       reduce using rule 29 (term -> factor .)
-    PLUS            reduce using rule 29 (term -> factor .)
-    MINUS           reduce using rule 29 (term -> factor .)
-    RPAREN          reduce using rule 29 (term -> factor .)
+    RPAREN          shift and go to state 52
 
 
 state 34
 
-    (30) factor -> LPAREN . expr RPAREN
-    (22) expr -> . expr PLUS term
-    (23) expr -> . expr PLUS VAR
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr MINUS VAR
-    (26) expr -> . term
-    (27) term -> . term MULT factor
-    (28) term -> . term DIV factor
-    (29) term -> . factor
-    (30) factor -> . LPAREN expr RPAREN
-    (31) factor -> . NUM
-    (32) factor -> . VAR
+    (20) statement -> RETURN expr SEMICOLON .
 
-    LPAREN          shift and go to state 34
-    NUM             shift and go to state 55
-    VAR             shift and go to state 54
+    INT             reduce using rule 20 (statement -> RETURN expr SEMICOLON .)
+    VAR             reduce using rule 20 (statement -> RETURN expr SEMICOLON .)
+    IF              reduce using rule 20 (statement -> RETURN expr SEMICOLON .)
+    ELSE            reduce using rule 20 (statement -> RETURN expr SEMICOLON .)
+    FOR             reduce using rule 20 (statement -> RETURN expr SEMICOLON .)
+    WHILE           reduce using rule 20 (statement -> RETURN expr SEMICOLON .)
+    RETURN          reduce using rule 20 (statement -> RETURN expr SEMICOLON .)
+    LB              reduce using rule 20 (statement -> RETURN expr SEMICOLON .)
+    RB              reduce using rule 20 (statement -> RETURN expr SEMICOLON .)
+    COUT            reduce using rule 20 (statement -> RETURN expr SEMICOLON .)
+    $end            reduce using rule 20 (statement -> RETURN expr SEMICOLON .)
 
-    expr                           shift and go to state 53
-    term                           shift and go to state 32
-    factor                         shift and go to state 33
 
 state 35
+
+    (24) expr -> expr PLUS . term
+    (25) expr -> expr PLUS . VAR
+    (29) term -> . term MULT factor
+    (30) term -> . term DIV factor
+    (31) term -> . factor
+    (32) factor -> . LPAREN expr RPAREN
+    (33) factor -> . NUM
+    (34) factor -> . VAR
+
+    VAR             shift and go to state 54
+    LPAREN          shift and go to state 23
+    NUM             shift and go to state 24
+
+    term                           shift and go to state 53
+    factor                         shift and go to state 22
+
+state 36
+
+    (26) expr -> expr MINUS . term
+    (27) expr -> expr MINUS . VAR
+    (29) term -> . term MULT factor
+    (30) term -> . term DIV factor
+    (31) term -> . factor
+    (32) factor -> . LPAREN expr RPAREN
+    (33) factor -> . NUM
+    (34) factor -> . VAR
+
+    VAR             shift and go to state 56
+    LPAREN          shift and go to state 23
+    NUM             shift and go to state 24
+
+    term                           shift and go to state 55
+    factor                         shift and go to state 22
+
+state 37
+
+    (29) term -> term MULT . factor
+    (32) factor -> . LPAREN expr RPAREN
+    (33) factor -> . NUM
+    (34) factor -> . VAR
+
+    LPAREN          shift and go to state 23
+    NUM             shift and go to state 24
+    VAR             shift and go to state 21
+
+    factor                         shift and go to state 57
+
+state 38
+
+    (30) term -> term DIV . factor
+    (32) factor -> . LPAREN expr RPAREN
+    (33) factor -> . NUM
+    (34) factor -> . VAR
+
+    LPAREN          shift and go to state 23
+    NUM             shift and go to state 24
+    VAR             shift and go to state 21
+
+    factor                         shift and go to state 58
+
+state 39
+
+    (32) factor -> LPAREN expr . RPAREN
+    (24) expr -> expr . PLUS term
+    (25) expr -> expr . PLUS VAR
+    (26) expr -> expr . MINUS term
+    (27) expr -> expr . MINUS VAR
+
+    RPAREN          shift and go to state 59
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 36
+
+
+state 40
+
+    (35) statement -> COUT LESS LESS . VAR LESS LESS ENDL SEMICOLON
+    (36) statement -> COUT LESS LESS . SENTENCE LESS LESS ENDL SEMICOLON
+    (37) statement -> COUT LESS LESS . SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
+
+    VAR             shift and go to state 60
+    SENTENCE        shift and go to state 61
+
+
+state 41
+
+    (4) args -> INT . VAR
+    (5) args -> INT . VAR COMMA args
+
+    VAR             shift and go to state 62
+
+
+state 42
+
+    (3) statement -> INT VAR LPAREN args . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 63
+
+
+state 43
+
+    (8) statement -> INT VAR EQUALS VAR . SEMICOLON
+    (34) factor -> VAR .
+
+  ! shift/reduce conflict for SEMICOLON resolved as shift
+    SEMICOLON       shift and go to state 64
+    MULT            reduce using rule 34 (factor -> VAR .)
+    DIV             reduce using rule 34 (factor -> VAR .)
+    PLUS            reduce using rule 34 (factor -> VAR .)
+    MINUS           reduce using rule 34 (factor -> VAR .)
+
+  ! SEMICOLON       [ reduce using rule 34 (factor -> VAR .) ]
+
+
+state 44
+
+    (7) statement -> INT VAR EQUALS NUM . SEMICOLON
+    (33) factor -> NUM .
+
+  ! shift/reduce conflict for SEMICOLON resolved as shift
+    SEMICOLON       shift and go to state 65
+    MULT            reduce using rule 33 (factor -> NUM .)
+    DIV             reduce using rule 33 (factor -> NUM .)
+    PLUS            reduce using rule 33 (factor -> NUM .)
+    MINUS           reduce using rule 33 (factor -> NUM .)
+
+  ! SEMICOLON       [ reduce using rule 33 (factor -> NUM .) ]
+
+
+state 45
+
+    (9) statement -> INT VAR EQUALS expr . SEMICOLON
+    (24) expr -> expr . PLUS term
+    (25) expr -> expr . PLUS VAR
+    (26) expr -> expr . MINUS term
+    (27) expr -> expr . MINUS VAR
+
+    SEMICOLON       shift and go to state 66
+    PLUS            shift and go to state 35
+    MINUS           shift and go to state 36
+
+
+state 46
 
     (10) statement -> VAR EQUALS NUM SEMICOLON .
 
     INT             reduce using rule 10 (statement -> VAR EQUALS NUM SEMICOLON .)
     VAR             reduce using rule 10 (statement -> VAR EQUALS NUM SEMICOLON .)
     IF              reduce using rule 10 (statement -> VAR EQUALS NUM SEMICOLON .)
+    ELSE            reduce using rule 10 (statement -> VAR EQUALS NUM SEMICOLON .)
     FOR             reduce using rule 10 (statement -> VAR EQUALS NUM SEMICOLON .)
     WHILE           reduce using rule 10 (statement -> VAR EQUALS NUM SEMICOLON .)
+    RETURN          reduce using rule 10 (statement -> VAR EQUALS NUM SEMICOLON .)
     LB              reduce using rule 10 (statement -> VAR EQUALS NUM SEMICOLON .)
     RB              reduce using rule 10 (statement -> VAR EQUALS NUM SEMICOLON .)
     COUT            reduce using rule 10 (statement -> VAR EQUALS NUM SEMICOLON .)
     $end            reduce using rule 10 (statement -> VAR EQUALS NUM SEMICOLON .)
 
 
-state 36
+state 47
 
     (11) statement -> IF LPAREN condition RPAREN .
 
     INT             reduce using rule 11 (statement -> IF LPAREN condition RPAREN .)
     VAR             reduce using rule 11 (statement -> IF LPAREN condition RPAREN .)
     IF              reduce using rule 11 (statement -> IF LPAREN condition RPAREN .)
+    ELSE            reduce using rule 11 (statement -> IF LPAREN condition RPAREN .)
     FOR             reduce using rule 11 (statement -> IF LPAREN condition RPAREN .)
     WHILE           reduce using rule 11 (statement -> IF LPAREN condition RPAREN .)
+    RETURN          reduce using rule 11 (statement -> IF LPAREN condition RPAREN .)
     LB              reduce using rule 11 (statement -> IF LPAREN condition RPAREN .)
     RB              reduce using rule 11 (statement -> IF LPAREN condition RPAREN .)
     COUT            reduce using rule 11 (statement -> IF LPAREN condition RPAREN .)
     $end            reduce using rule 11 (statement -> IF LPAREN condition RPAREN .)
 
 
-state 37
+state 48
 
-    (14) condition -> VAR GREATER . NUM
-    (16) condition -> VAR GREATER . VAR
+    (15) condition -> VAR GREATER . NUM
+    (17) condition -> VAR GREATER . VAR
 
-    NUM             shift and go to state 57
-    VAR             shift and go to state 56
-
-
-state 38
-
-    (15) condition -> VAR LESS . NUM
-    (17) condition -> VAR LESS . VAR
-
-    NUM             shift and go to state 59
-    VAR             shift and go to state 58
+    NUM             shift and go to state 68
+    VAR             shift and go to state 67
 
 
-state 39
+state 49
 
-    (18) condition -> VAR EQUALS . EQUALS NUM
+    (16) condition -> VAR LESS . NUM
+    (18) condition -> VAR LESS . VAR
 
-    EQUALS          shift and go to state 60
-
-
-state 40
-
-    (12) statement -> FOR LPAREN INT VAR . EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
-
-    EQUALS          shift and go to state 61
+    NUM             shift and go to state 70
+    VAR             shift and go to state 69
 
 
-state 41
+state 50
 
-    (13) statement -> WHILE LPAREN condition RPAREN .
+    (19) condition -> VAR EQUALS . EQUALS NUM
 
-    INT             reduce using rule 13 (statement -> WHILE LPAREN condition RPAREN .)
-    VAR             reduce using rule 13 (statement -> WHILE LPAREN condition RPAREN .)
-    IF              reduce using rule 13 (statement -> WHILE LPAREN condition RPAREN .)
-    FOR             reduce using rule 13 (statement -> WHILE LPAREN condition RPAREN .)
-    WHILE           reduce using rule 13 (statement -> WHILE LPAREN condition RPAREN .)
-    LB              reduce using rule 13 (statement -> WHILE LPAREN condition RPAREN .)
-    RB              reduce using rule 13 (statement -> WHILE LPAREN condition RPAREN .)
-    COUT            reduce using rule 13 (statement -> WHILE LPAREN condition RPAREN .)
-    $end            reduce using rule 13 (statement -> WHILE LPAREN condition RPAREN .)
+    EQUALS          shift and go to state 71
 
 
-state 42
+state 51
 
-    (33) statement -> COUT LESS LESS VAR . LESS LESS ENDL SEMICOLON
+    (13) statement -> FOR LPAREN INT VAR . EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
 
-    LESS            shift and go to state 62
-
-
-state 43
-
-    (34) statement -> COUT LESS LESS SENTENCE . LESS LESS ENDL SEMICOLON
-    (35) statement -> COUT LESS LESS SENTENCE . LESS LESS VAR LESS LESS ENDL SEMICOLON
-
-    LESS            shift and go to state 63
+    EQUALS          shift and go to state 72
 
 
-state 44
+state 52
+
+    (14) statement -> WHILE LPAREN condition RPAREN .
+
+    INT             reduce using rule 14 (statement -> WHILE LPAREN condition RPAREN .)
+    VAR             reduce using rule 14 (statement -> WHILE LPAREN condition RPAREN .)
+    IF              reduce using rule 14 (statement -> WHILE LPAREN condition RPAREN .)
+    ELSE            reduce using rule 14 (statement -> WHILE LPAREN condition RPAREN .)
+    FOR             reduce using rule 14 (statement -> WHILE LPAREN condition RPAREN .)
+    WHILE           reduce using rule 14 (statement -> WHILE LPAREN condition RPAREN .)
+    RETURN          reduce using rule 14 (statement -> WHILE LPAREN condition RPAREN .)
+    LB              reduce using rule 14 (statement -> WHILE LPAREN condition RPAREN .)
+    RB              reduce using rule 14 (statement -> WHILE LPAREN condition RPAREN .)
+    COUT            reduce using rule 14 (statement -> WHILE LPAREN condition RPAREN .)
+    $end            reduce using rule 14 (statement -> WHILE LPAREN condition RPAREN .)
+
+
+state 53
+
+    (24) expr -> expr PLUS term .
+    (29) term -> term . MULT factor
+    (30) term -> term . DIV factor
+
+    SEMICOLON       reduce using rule 24 (expr -> expr PLUS term .)
+    PLUS            reduce using rule 24 (expr -> expr PLUS term .)
+    MINUS           reduce using rule 24 (expr -> expr PLUS term .)
+    RPAREN          reduce using rule 24 (expr -> expr PLUS term .)
+    MULT            shift and go to state 37
+    DIV             shift and go to state 38
+
+
+state 54
+
+    (25) expr -> expr PLUS VAR .
+    (34) factor -> VAR .
+
+  ! reduce/reduce conflict for SEMICOLON resolved using rule 25 (expr -> expr PLUS VAR .)
+  ! reduce/reduce conflict for PLUS resolved using rule 25 (expr -> expr PLUS VAR .)
+  ! reduce/reduce conflict for MINUS resolved using rule 25 (expr -> expr PLUS VAR .)
+  ! reduce/reduce conflict for RPAREN resolved using rule 25 (expr -> expr PLUS VAR .)
+    SEMICOLON       reduce using rule 25 (expr -> expr PLUS VAR .)
+    PLUS            reduce using rule 25 (expr -> expr PLUS VAR .)
+    MINUS           reduce using rule 25 (expr -> expr PLUS VAR .)
+    RPAREN          reduce using rule 25 (expr -> expr PLUS VAR .)
+    MULT            reduce using rule 34 (factor -> VAR .)
+    DIV             reduce using rule 34 (factor -> VAR .)
+
+  ! SEMICOLON       [ reduce using rule 34 (factor -> VAR .) ]
+  ! PLUS            [ reduce using rule 34 (factor -> VAR .) ]
+  ! MINUS           [ reduce using rule 34 (factor -> VAR .) ]
+  ! RPAREN          [ reduce using rule 34 (factor -> VAR .) ]
+
+
+state 55
+
+    (26) expr -> expr MINUS term .
+    (29) term -> term . MULT factor
+    (30) term -> term . DIV factor
+
+    SEMICOLON       reduce using rule 26 (expr -> expr MINUS term .)
+    PLUS            reduce using rule 26 (expr -> expr MINUS term .)
+    MINUS           reduce using rule 26 (expr -> expr MINUS term .)
+    RPAREN          reduce using rule 26 (expr -> expr MINUS term .)
+    MULT            shift and go to state 37
+    DIV             shift and go to state 38
+
+
+state 56
+
+    (27) expr -> expr MINUS VAR .
+    (34) factor -> VAR .
+
+  ! reduce/reduce conflict for SEMICOLON resolved using rule 27 (expr -> expr MINUS VAR .)
+  ! reduce/reduce conflict for PLUS resolved using rule 27 (expr -> expr MINUS VAR .)
+  ! reduce/reduce conflict for MINUS resolved using rule 27 (expr -> expr MINUS VAR .)
+  ! reduce/reduce conflict for RPAREN resolved using rule 27 (expr -> expr MINUS VAR .)
+    SEMICOLON       reduce using rule 27 (expr -> expr MINUS VAR .)
+    PLUS            reduce using rule 27 (expr -> expr MINUS VAR .)
+    MINUS           reduce using rule 27 (expr -> expr MINUS VAR .)
+    RPAREN          reduce using rule 27 (expr -> expr MINUS VAR .)
+    MULT            reduce using rule 34 (factor -> VAR .)
+    DIV             reduce using rule 34 (factor -> VAR .)
+
+  ! SEMICOLON       [ reduce using rule 34 (factor -> VAR .) ]
+  ! PLUS            [ reduce using rule 34 (factor -> VAR .) ]
+  ! MINUS           [ reduce using rule 34 (factor -> VAR .) ]
+  ! RPAREN          [ reduce using rule 34 (factor -> VAR .) ]
+
+
+state 57
+
+    (29) term -> term MULT factor .
+
+    MULT            reduce using rule 29 (term -> term MULT factor .)
+    DIV             reduce using rule 29 (term -> term MULT factor .)
+    SEMICOLON       reduce using rule 29 (term -> term MULT factor .)
+    PLUS            reduce using rule 29 (term -> term MULT factor .)
+    MINUS           reduce using rule 29 (term -> term MULT factor .)
+    RPAREN          reduce using rule 29 (term -> term MULT factor .)
+
+
+state 58
+
+    (30) term -> term DIV factor .
+
+    MULT            reduce using rule 30 (term -> term DIV factor .)
+    DIV             reduce using rule 30 (term -> term DIV factor .)
+    SEMICOLON       reduce using rule 30 (term -> term DIV factor .)
+    PLUS            reduce using rule 30 (term -> term DIV factor .)
+    MINUS           reduce using rule 30 (term -> term DIV factor .)
+    RPAREN          reduce using rule 30 (term -> term DIV factor .)
+
+
+state 59
+
+    (32) factor -> LPAREN expr RPAREN .
+
+    MULT            reduce using rule 32 (factor -> LPAREN expr RPAREN .)
+    DIV             reduce using rule 32 (factor -> LPAREN expr RPAREN .)
+    SEMICOLON       reduce using rule 32 (factor -> LPAREN expr RPAREN .)
+    PLUS            reduce using rule 32 (factor -> LPAREN expr RPAREN .)
+    MINUS           reduce using rule 32 (factor -> LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 32 (factor -> LPAREN expr RPAREN .)
+
+
+state 60
+
+    (35) statement -> COUT LESS LESS VAR . LESS LESS ENDL SEMICOLON
+
+    LESS            shift and go to state 73
+
+
+state 61
+
+    (36) statement -> COUT LESS LESS SENTENCE . LESS LESS ENDL SEMICOLON
+    (37) statement -> COUT LESS LESS SENTENCE . LESS LESS VAR LESS LESS ENDL SEMICOLON
+
+    LESS            shift and go to state 74
+
+
+state 62
 
     (4) args -> INT VAR .
     (5) args -> INT VAR . COMMA args
 
     RPAREN          reduce using rule 4 (args -> INT VAR .)
-    COMMA           shift and go to state 64
+    COMMA           shift and go to state 75
 
 
-state 45
+state 63
 
     (3) statement -> INT VAR LPAREN args RPAREN . SEMICOLON
 
-    SEMICOLON       shift and go to state 65
+    SEMICOLON       shift and go to state 76
 
 
-state 46
+state 64
 
     (8) statement -> INT VAR EQUALS VAR SEMICOLON .
 
     INT             reduce using rule 8 (statement -> INT VAR EQUALS VAR SEMICOLON .)
     VAR             reduce using rule 8 (statement -> INT VAR EQUALS VAR SEMICOLON .)
     IF              reduce using rule 8 (statement -> INT VAR EQUALS VAR SEMICOLON .)
+    ELSE            reduce using rule 8 (statement -> INT VAR EQUALS VAR SEMICOLON .)
     FOR             reduce using rule 8 (statement -> INT VAR EQUALS VAR SEMICOLON .)
     WHILE           reduce using rule 8 (statement -> INT VAR EQUALS VAR SEMICOLON .)
+    RETURN          reduce using rule 8 (statement -> INT VAR EQUALS VAR SEMICOLON .)
     LB              reduce using rule 8 (statement -> INT VAR EQUALS VAR SEMICOLON .)
     RB              reduce using rule 8 (statement -> INT VAR EQUALS VAR SEMICOLON .)
     COUT            reduce using rule 8 (statement -> INT VAR EQUALS VAR SEMICOLON .)
     $end            reduce using rule 8 (statement -> INT VAR EQUALS VAR SEMICOLON .)
 
 
-state 47
+state 65
 
     (7) statement -> INT VAR EQUALS NUM SEMICOLON .
 
     INT             reduce using rule 7 (statement -> INT VAR EQUALS NUM SEMICOLON .)
     VAR             reduce using rule 7 (statement -> INT VAR EQUALS NUM SEMICOLON .)
     IF              reduce using rule 7 (statement -> INT VAR EQUALS NUM SEMICOLON .)
+    ELSE            reduce using rule 7 (statement -> INT VAR EQUALS NUM SEMICOLON .)
     FOR             reduce using rule 7 (statement -> INT VAR EQUALS NUM SEMICOLON .)
     WHILE           reduce using rule 7 (statement -> INT VAR EQUALS NUM SEMICOLON .)
+    RETURN          reduce using rule 7 (statement -> INT VAR EQUALS NUM SEMICOLON .)
     LB              reduce using rule 7 (statement -> INT VAR EQUALS NUM SEMICOLON .)
     RB              reduce using rule 7 (statement -> INT VAR EQUALS NUM SEMICOLON .)
     COUT            reduce using rule 7 (statement -> INT VAR EQUALS NUM SEMICOLON .)
     $end            reduce using rule 7 (statement -> INT VAR EQUALS NUM SEMICOLON .)
 
 
-state 48
+state 66
 
     (9) statement -> INT VAR EQUALS expr SEMICOLON .
 
     INT             reduce using rule 9 (statement -> INT VAR EQUALS expr SEMICOLON .)
     VAR             reduce using rule 9 (statement -> INT VAR EQUALS expr SEMICOLON .)
     IF              reduce using rule 9 (statement -> INT VAR EQUALS expr SEMICOLON .)
+    ELSE            reduce using rule 9 (statement -> INT VAR EQUALS expr SEMICOLON .)
     FOR             reduce using rule 9 (statement -> INT VAR EQUALS expr SEMICOLON .)
     WHILE           reduce using rule 9 (statement -> INT VAR EQUALS expr SEMICOLON .)
+    RETURN          reduce using rule 9 (statement -> INT VAR EQUALS expr SEMICOLON .)
     LB              reduce using rule 9 (statement -> INT VAR EQUALS expr SEMICOLON .)
     RB              reduce using rule 9 (statement -> INT VAR EQUALS expr SEMICOLON .)
     COUT            reduce using rule 9 (statement -> INT VAR EQUALS expr SEMICOLON .)
     $end            reduce using rule 9 (statement -> INT VAR EQUALS expr SEMICOLON .)
 
 
-state 49
+state 67
 
-    (22) expr -> expr PLUS . term
-    (23) expr -> expr PLUS . VAR
-    (27) term -> . term MULT factor
-    (28) term -> . term DIV factor
-    (29) term -> . factor
-    (30) factor -> . LPAREN expr RPAREN
-    (31) factor -> . NUM
-    (32) factor -> . VAR
+    (17) condition -> VAR GREATER VAR .
 
-    VAR             shift and go to state 67
-    LPAREN          shift and go to state 34
-    NUM             shift and go to state 55
-
-    term                           shift and go to state 66
-    factor                         shift and go to state 33
-
-state 50
-
-    (24) expr -> expr MINUS . term
-    (25) expr -> expr MINUS . VAR
-    (27) term -> . term MULT factor
-    (28) term -> . term DIV factor
-    (29) term -> . factor
-    (30) factor -> . LPAREN expr RPAREN
-    (31) factor -> . NUM
-    (32) factor -> . VAR
-
-    VAR             shift and go to state 69
-    LPAREN          shift and go to state 34
-    NUM             shift and go to state 55
-
-    term                           shift and go to state 68
-    factor                         shift and go to state 33
-
-state 51
-
-    (27) term -> term MULT . factor
-    (30) factor -> . LPAREN expr RPAREN
-    (31) factor -> . NUM
-    (32) factor -> . VAR
-
-    LPAREN          shift and go to state 34
-    NUM             shift and go to state 55
-    VAR             shift and go to state 54
-
-    factor                         shift and go to state 70
-
-state 52
-
-    (28) term -> term DIV . factor
-    (30) factor -> . LPAREN expr RPAREN
-    (31) factor -> . NUM
-    (32) factor -> . VAR
-
-    LPAREN          shift and go to state 34
-    NUM             shift and go to state 55
-    VAR             shift and go to state 54
-
-    factor                         shift and go to state 71
-
-state 53
-
-    (30) factor -> LPAREN expr . RPAREN
-    (22) expr -> expr . PLUS term
-    (23) expr -> expr . PLUS VAR
-    (24) expr -> expr . MINUS term
-    (25) expr -> expr . MINUS VAR
-
-    RPAREN          shift and go to state 72
-    PLUS            shift and go to state 49
-    MINUS           shift and go to state 50
+    RPAREN          reduce using rule 17 (condition -> VAR GREATER VAR .)
+    SEMICOLON       reduce using rule 17 (condition -> VAR GREATER VAR .)
 
 
-state 54
+state 68
 
-    (32) factor -> VAR .
+    (15) condition -> VAR GREATER NUM .
 
-    MULT            reduce using rule 32 (factor -> VAR .)
-    DIV             reduce using rule 32 (factor -> VAR .)
-    RPAREN          reduce using rule 32 (factor -> VAR .)
-    PLUS            reduce using rule 32 (factor -> VAR .)
-    MINUS           reduce using rule 32 (factor -> VAR .)
-    SEMICOLON       reduce using rule 32 (factor -> VAR .)
+    RPAREN          reduce using rule 15 (condition -> VAR GREATER NUM .)
+    SEMICOLON       reduce using rule 15 (condition -> VAR GREATER NUM .)
 
 
-state 55
+state 69
 
-    (31) factor -> NUM .
+    (18) condition -> VAR LESS VAR .
 
-    MULT            reduce using rule 31 (factor -> NUM .)
-    DIV             reduce using rule 31 (factor -> NUM .)
-    RPAREN          reduce using rule 31 (factor -> NUM .)
-    PLUS            reduce using rule 31 (factor -> NUM .)
-    MINUS           reduce using rule 31 (factor -> NUM .)
-    SEMICOLON       reduce using rule 31 (factor -> NUM .)
+    RPAREN          reduce using rule 18 (condition -> VAR LESS VAR .)
+    SEMICOLON       reduce using rule 18 (condition -> VAR LESS VAR .)
 
 
-state 56
+state 70
 
-    (16) condition -> VAR GREATER VAR .
+    (16) condition -> VAR LESS NUM .
 
-    RPAREN          reduce using rule 16 (condition -> VAR GREATER VAR .)
-    SEMICOLON       reduce using rule 16 (condition -> VAR GREATER VAR .)
-
-
-state 57
-
-    (14) condition -> VAR GREATER NUM .
-
-    RPAREN          reduce using rule 14 (condition -> VAR GREATER NUM .)
-    SEMICOLON       reduce using rule 14 (condition -> VAR GREATER NUM .)
+    RPAREN          reduce using rule 16 (condition -> VAR LESS NUM .)
+    SEMICOLON       reduce using rule 16 (condition -> VAR LESS NUM .)
 
 
-state 58
+state 71
 
-    (17) condition -> VAR LESS VAR .
+    (19) condition -> VAR EQUALS EQUALS . NUM
 
-    RPAREN          reduce using rule 17 (condition -> VAR LESS VAR .)
-    SEMICOLON       reduce using rule 17 (condition -> VAR LESS VAR .)
-
-
-state 59
-
-    (15) condition -> VAR LESS NUM .
-
-    RPAREN          reduce using rule 15 (condition -> VAR LESS NUM .)
-    SEMICOLON       reduce using rule 15 (condition -> VAR LESS NUM .)
+    NUM             shift and go to state 77
 
 
-state 60
+state 72
 
-    (18) condition -> VAR EQUALS EQUALS . NUM
+    (13) statement -> FOR LPAREN INT VAR EQUALS . NUM SEMICOLON condition SEMICOLON for_update RPAREN
 
-    NUM             shift and go to state 73
-
-
-state 61
-
-    (12) statement -> FOR LPAREN INT VAR EQUALS . NUM SEMICOLON condition SEMICOLON for_update RPAREN
-
-    NUM             shift and go to state 74
+    NUM             shift and go to state 78
 
 
-state 62
+state 73
 
-    (33) statement -> COUT LESS LESS VAR LESS . LESS ENDL SEMICOLON
+    (35) statement -> COUT LESS LESS VAR LESS . LESS ENDL SEMICOLON
 
-    LESS            shift and go to state 75
-
-
-state 63
-
-    (34) statement -> COUT LESS LESS SENTENCE LESS . LESS ENDL SEMICOLON
-    (35) statement -> COUT LESS LESS SENTENCE LESS . LESS VAR LESS LESS ENDL SEMICOLON
-
-    LESS            shift and go to state 76
+    LESS            shift and go to state 79
 
 
-state 64
+state 74
+
+    (36) statement -> COUT LESS LESS SENTENCE LESS . LESS ENDL SEMICOLON
+    (37) statement -> COUT LESS LESS SENTENCE LESS . LESS VAR LESS LESS ENDL SEMICOLON
+
+    LESS            shift and go to state 80
+
+
+state 75
 
     (5) args -> INT VAR COMMA . args
     (4) args -> . INT VAR
     (5) args -> . INT VAR COMMA args
 
-    INT             shift and go to state 27
+    INT             shift and go to state 41
 
-    args                           shift and go to state 77
+    args                           shift and go to state 81
 
-state 65
+state 76
 
     (3) statement -> INT VAR LPAREN args RPAREN SEMICOLON .
 
     INT             reduce using rule 3 (statement -> INT VAR LPAREN args RPAREN SEMICOLON .)
     VAR             reduce using rule 3 (statement -> INT VAR LPAREN args RPAREN SEMICOLON .)
     IF              reduce using rule 3 (statement -> INT VAR LPAREN args RPAREN SEMICOLON .)
+    ELSE            reduce using rule 3 (statement -> INT VAR LPAREN args RPAREN SEMICOLON .)
     FOR             reduce using rule 3 (statement -> INT VAR LPAREN args RPAREN SEMICOLON .)
     WHILE           reduce using rule 3 (statement -> INT VAR LPAREN args RPAREN SEMICOLON .)
+    RETURN          reduce using rule 3 (statement -> INT VAR LPAREN args RPAREN SEMICOLON .)
     LB              reduce using rule 3 (statement -> INT VAR LPAREN args RPAREN SEMICOLON .)
     RB              reduce using rule 3 (statement -> INT VAR LPAREN args RPAREN SEMICOLON .)
     COUT            reduce using rule 3 (statement -> INT VAR LPAREN args RPAREN SEMICOLON .)
     $end            reduce using rule 3 (statement -> INT VAR LPAREN args RPAREN SEMICOLON .)
 
 
-state 66
-
-    (22) expr -> expr PLUS term .
-    (27) term -> term . MULT factor
-    (28) term -> term . DIV factor
-
-    SEMICOLON       reduce using rule 22 (expr -> expr PLUS term .)
-    PLUS            reduce using rule 22 (expr -> expr PLUS term .)
-    MINUS           reduce using rule 22 (expr -> expr PLUS term .)
-    RPAREN          reduce using rule 22 (expr -> expr PLUS term .)
-    MULT            shift and go to state 51
-    DIV             shift and go to state 52
-
-
-state 67
-
-    (23) expr -> expr PLUS VAR .
-    (32) factor -> VAR .
-
-  ! reduce/reduce conflict for SEMICOLON resolved using rule 23 (expr -> expr PLUS VAR .)
-  ! reduce/reduce conflict for PLUS resolved using rule 23 (expr -> expr PLUS VAR .)
-  ! reduce/reduce conflict for MINUS resolved using rule 23 (expr -> expr PLUS VAR .)
-  ! reduce/reduce conflict for RPAREN resolved using rule 23 (expr -> expr PLUS VAR .)
-    SEMICOLON       reduce using rule 23 (expr -> expr PLUS VAR .)
-    PLUS            reduce using rule 23 (expr -> expr PLUS VAR .)
-    MINUS           reduce using rule 23 (expr -> expr PLUS VAR .)
-    RPAREN          reduce using rule 23 (expr -> expr PLUS VAR .)
-    MULT            reduce using rule 32 (factor -> VAR .)
-    DIV             reduce using rule 32 (factor -> VAR .)
-
-  ! SEMICOLON       [ reduce using rule 32 (factor -> VAR .) ]
-  ! PLUS            [ reduce using rule 32 (factor -> VAR .) ]
-  ! MINUS           [ reduce using rule 32 (factor -> VAR .) ]
-  ! RPAREN          [ reduce using rule 32 (factor -> VAR .) ]
-
-
-state 68
-
-    (24) expr -> expr MINUS term .
-    (27) term -> term . MULT factor
-    (28) term -> term . DIV factor
-
-    SEMICOLON       reduce using rule 24 (expr -> expr MINUS term .)
-    PLUS            reduce using rule 24 (expr -> expr MINUS term .)
-    MINUS           reduce using rule 24 (expr -> expr MINUS term .)
-    RPAREN          reduce using rule 24 (expr -> expr MINUS term .)
-    MULT            shift and go to state 51
-    DIV             shift and go to state 52
-
-
-state 69
-
-    (25) expr -> expr MINUS VAR .
-    (32) factor -> VAR .
-
-  ! reduce/reduce conflict for SEMICOLON resolved using rule 25 (expr -> expr MINUS VAR .)
-  ! reduce/reduce conflict for PLUS resolved using rule 25 (expr -> expr MINUS VAR .)
-  ! reduce/reduce conflict for MINUS resolved using rule 25 (expr -> expr MINUS VAR .)
-  ! reduce/reduce conflict for RPAREN resolved using rule 25 (expr -> expr MINUS VAR .)
-    SEMICOLON       reduce using rule 25 (expr -> expr MINUS VAR .)
-    PLUS            reduce using rule 25 (expr -> expr MINUS VAR .)
-    MINUS           reduce using rule 25 (expr -> expr MINUS VAR .)
-    RPAREN          reduce using rule 25 (expr -> expr MINUS VAR .)
-    MULT            reduce using rule 32 (factor -> VAR .)
-    DIV             reduce using rule 32 (factor -> VAR .)
-
-  ! SEMICOLON       [ reduce using rule 32 (factor -> VAR .) ]
-  ! PLUS            [ reduce using rule 32 (factor -> VAR .) ]
-  ! MINUS           [ reduce using rule 32 (factor -> VAR .) ]
-  ! RPAREN          [ reduce using rule 32 (factor -> VAR .) ]
-
-
-state 70
-
-    (27) term -> term MULT factor .
-
-    MULT            reduce using rule 27 (term -> term MULT factor .)
-    DIV             reduce using rule 27 (term -> term MULT factor .)
-    SEMICOLON       reduce using rule 27 (term -> term MULT factor .)
-    PLUS            reduce using rule 27 (term -> term MULT factor .)
-    MINUS           reduce using rule 27 (term -> term MULT factor .)
-    RPAREN          reduce using rule 27 (term -> term MULT factor .)
-
-
-state 71
-
-    (28) term -> term DIV factor .
-
-    MULT            reduce using rule 28 (term -> term DIV factor .)
-    DIV             reduce using rule 28 (term -> term DIV factor .)
-    SEMICOLON       reduce using rule 28 (term -> term DIV factor .)
-    PLUS            reduce using rule 28 (term -> term DIV factor .)
-    MINUS           reduce using rule 28 (term -> term DIV factor .)
-    RPAREN          reduce using rule 28 (term -> term DIV factor .)
-
-
-state 72
-
-    (30) factor -> LPAREN expr RPAREN .
-
-    MULT            reduce using rule 30 (factor -> LPAREN expr RPAREN .)
-    DIV             reduce using rule 30 (factor -> LPAREN expr RPAREN .)
-    SEMICOLON       reduce using rule 30 (factor -> LPAREN expr RPAREN .)
-    PLUS            reduce using rule 30 (factor -> LPAREN expr RPAREN .)
-    MINUS           reduce using rule 30 (factor -> LPAREN expr RPAREN .)
-    RPAREN          reduce using rule 30 (factor -> LPAREN expr RPAREN .)
-
-
-state 73
-
-    (18) condition -> VAR EQUALS EQUALS NUM .
-
-    RPAREN          reduce using rule 18 (condition -> VAR EQUALS EQUALS NUM .)
-    SEMICOLON       reduce using rule 18 (condition -> VAR EQUALS EQUALS NUM .)
-
-
-state 74
-
-    (12) statement -> FOR LPAREN INT VAR EQUALS NUM . SEMICOLON condition SEMICOLON for_update RPAREN
-
-    SEMICOLON       shift and go to state 78
-
-
-state 75
-
-    (33) statement -> COUT LESS LESS VAR LESS LESS . ENDL SEMICOLON
-
-    ENDL            shift and go to state 79
-
-
-state 76
-
-    (34) statement -> COUT LESS LESS SENTENCE LESS LESS . ENDL SEMICOLON
-    (35) statement -> COUT LESS LESS SENTENCE LESS LESS . VAR LESS LESS ENDL SEMICOLON
-
-    ENDL            shift and go to state 80
-    VAR             shift and go to state 81
-
-
 state 77
+
+    (19) condition -> VAR EQUALS EQUALS NUM .
+
+    RPAREN          reduce using rule 19 (condition -> VAR EQUALS EQUALS NUM .)
+    SEMICOLON       reduce using rule 19 (condition -> VAR EQUALS EQUALS NUM .)
+
+
+state 78
+
+    (13) statement -> FOR LPAREN INT VAR EQUALS NUM . SEMICOLON condition SEMICOLON for_update RPAREN
+
+    SEMICOLON       shift and go to state 82
+
+
+state 79
+
+    (35) statement -> COUT LESS LESS VAR LESS LESS . ENDL SEMICOLON
+
+    ENDL            shift and go to state 83
+
+
+state 80
+
+    (36) statement -> COUT LESS LESS SENTENCE LESS LESS . ENDL SEMICOLON
+    (37) statement -> COUT LESS LESS SENTENCE LESS LESS . VAR LESS LESS ENDL SEMICOLON
+
+    ENDL            shift and go to state 84
+    VAR             shift and go to state 85
+
+
+state 81
 
     (5) args -> INT VAR COMMA args .
 
     RPAREN          reduce using rule 5 (args -> INT VAR COMMA args .)
 
 
-state 78
-
-    (12) statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON . condition SEMICOLON for_update RPAREN
-    (14) condition -> . VAR GREATER NUM
-    (15) condition -> . VAR LESS NUM
-    (16) condition -> . VAR GREATER VAR
-    (17) condition -> . VAR LESS VAR
-    (18) condition -> . VAR EQUALS EQUALS NUM
-
-    VAR             shift and go to state 23
-
-    condition                      shift and go to state 82
-
-state 79
-
-    (33) statement -> COUT LESS LESS VAR LESS LESS ENDL . SEMICOLON
-
-    SEMICOLON       shift and go to state 83
-
-
-state 80
-
-    (34) statement -> COUT LESS LESS SENTENCE LESS LESS ENDL . SEMICOLON
-
-    SEMICOLON       shift and go to state 84
-
-
-state 81
-
-    (35) statement -> COUT LESS LESS SENTENCE LESS LESS VAR . LESS LESS ENDL SEMICOLON
-
-    LESS            shift and go to state 85
-
-
 state 82
 
-    (12) statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition . SEMICOLON for_update RPAREN
+    (13) statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON . condition SEMICOLON for_update RPAREN
+    (15) condition -> . VAR GREATER NUM
+    (16) condition -> . VAR LESS NUM
+    (17) condition -> . VAR GREATER VAR
+    (18) condition -> . VAR LESS VAR
+    (19) condition -> . VAR EQUALS EQUALS NUM
 
-    SEMICOLON       shift and go to state 86
+    VAR             shift and go to state 31
 
+    condition                      shift and go to state 86
 
 state 83
 
-    (33) statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .
+    (35) statement -> COUT LESS LESS VAR LESS LESS ENDL . SEMICOLON
 
-    INT             reduce using rule 33 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    VAR             reduce using rule 33 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    IF              reduce using rule 33 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    FOR             reduce using rule 33 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    WHILE           reduce using rule 33 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    LB              reduce using rule 33 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    RB              reduce using rule 33 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    COUT            reduce using rule 33 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    $end            reduce using rule 33 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    SEMICOLON       shift and go to state 87
 
 
 state 84
 
-    (34) statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .
+    (36) statement -> COUT LESS LESS SENTENCE LESS LESS ENDL . SEMICOLON
 
-    INT             reduce using rule 34 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
-    VAR             reduce using rule 34 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
-    IF              reduce using rule 34 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
-    FOR             reduce using rule 34 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
-    WHILE           reduce using rule 34 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
-    LB              reduce using rule 34 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
-    RB              reduce using rule 34 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
-    COUT            reduce using rule 34 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
-    $end            reduce using rule 34 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
+    SEMICOLON       shift and go to state 88
 
 
 state 85
 
-    (35) statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS . LESS ENDL SEMICOLON
+    (37) statement -> COUT LESS LESS SENTENCE LESS LESS VAR . LESS LESS ENDL SEMICOLON
 
-    LESS            shift and go to state 87
+    LESS            shift and go to state 89
 
 
 state 86
 
-    (12) statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON . for_update RPAREN
-    (19) for_update -> . VAR PLUS PLUS
+    (13) statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition . SEMICOLON for_update RPAREN
 
-    VAR             shift and go to state 88
+    SEMICOLON       shift and go to state 90
 
-    for_update                     shift and go to state 89
 
 state 87
 
-    (35) statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS . ENDL SEMICOLON
+    (35) statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .
 
-    ENDL            shift and go to state 90
+    INT             reduce using rule 35 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    VAR             reduce using rule 35 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    IF              reduce using rule 35 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    ELSE            reduce using rule 35 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    FOR             reduce using rule 35 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    WHILE           reduce using rule 35 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    RETURN          reduce using rule 35 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    LB              reduce using rule 35 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    RB              reduce using rule 35 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    COUT            reduce using rule 35 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    $end            reduce using rule 35 (statement -> COUT LESS LESS VAR LESS LESS ENDL SEMICOLON .)
 
 
 state 88
 
-    (19) for_update -> VAR . PLUS PLUS
+    (36) statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .
 
-    PLUS            shift and go to state 91
+    INT             reduce using rule 36 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
+    VAR             reduce using rule 36 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
+    IF              reduce using rule 36 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
+    ELSE            reduce using rule 36 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
+    FOR             reduce using rule 36 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
+    WHILE           reduce using rule 36 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
+    RETURN          reduce using rule 36 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
+    LB              reduce using rule 36 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
+    RB              reduce using rule 36 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
+    COUT            reduce using rule 36 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
+    $end            reduce using rule 36 (statement -> COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON .)
 
 
 state 89
 
-    (12) statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update . RPAREN
+    (37) statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS . LESS ENDL SEMICOLON
 
-    RPAREN          shift and go to state 92
+    LESS            shift and go to state 91
 
 
 state 90
 
-    (35) statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL . SEMICOLON
+    (13) statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON . for_update RPAREN
+    (21) for_update -> . VAR PLUS PLUS
 
-    SEMICOLON       shift and go to state 93
+    VAR             shift and go to state 92
 
+    for_update                     shift and go to state 93
 
 state 91
 
-    (19) for_update -> VAR PLUS . PLUS
+    (37) statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS . ENDL SEMICOLON
 
-    PLUS            shift and go to state 94
+    ENDL            shift and go to state 94
 
 
 state 92
 
-    (12) statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .
+    (21) for_update -> VAR . PLUS PLUS
 
-    INT             reduce using rule 12 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
-    VAR             reduce using rule 12 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
-    IF              reduce using rule 12 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
-    FOR             reduce using rule 12 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
-    WHILE           reduce using rule 12 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
-    LB              reduce using rule 12 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
-    RB              reduce using rule 12 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
-    COUT            reduce using rule 12 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
-    $end            reduce using rule 12 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
+    PLUS            shift and go to state 95
 
 
 state 93
 
-    (35) statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .
+    (13) statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update . RPAREN
 
-    INT             reduce using rule 35 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    VAR             reduce using rule 35 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    IF              reduce using rule 35 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    FOR             reduce using rule 35 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    WHILE           reduce using rule 35 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    LB              reduce using rule 35 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    RB              reduce using rule 35 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    COUT            reduce using rule 35 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
-    $end            reduce using rule 35 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    RPAREN          shift and go to state 96
 
 
 state 94
 
-    (19) for_update -> VAR PLUS PLUS .
+    (37) statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL . SEMICOLON
 
-    RPAREN          reduce using rule 19 (for_update -> VAR PLUS PLUS .)
+    SEMICOLON       shift and go to state 97
+
+
+state 95
+
+    (21) for_update -> VAR PLUS . PLUS
+
+    PLUS            shift and go to state 98
+
+
+state 96
+
+    (13) statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .
+
+    INT             reduce using rule 13 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
+    VAR             reduce using rule 13 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
+    IF              reduce using rule 13 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
+    ELSE            reduce using rule 13 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
+    FOR             reduce using rule 13 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
+    WHILE           reduce using rule 13 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
+    RETURN          reduce using rule 13 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
+    LB              reduce using rule 13 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
+    RB              reduce using rule 13 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
+    COUT            reduce using rule 13 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
+    $end            reduce using rule 13 (statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN .)
+
+
+state 97
+
+    (37) statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .
+
+    INT             reduce using rule 37 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    VAR             reduce using rule 37 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    IF              reduce using rule 37 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    ELSE            reduce using rule 37 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    FOR             reduce using rule 37 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    WHILE           reduce using rule 37 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    RETURN          reduce using rule 37 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    LB              reduce using rule 37 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    RB              reduce using rule 37 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    COUT            reduce using rule 37 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+    $end            reduce using rule 37 (statement -> COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON .)
+
+
+state 98
+
+    (21) for_update -> VAR PLUS PLUS .
+
+    RPAREN          reduce using rule 21 (for_update -> VAR PLUS PLUS .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for SEMICOLON in state 29 resolved as shift
-WARNING: shift/reduce conflict for SEMICOLON in state 30 resolved as shift
-WARNING: reduce/reduce conflict in state 67 resolved using rule (expr -> expr PLUS VAR)
-WARNING: rejected rule (factor -> VAR) in state 67
-WARNING: reduce/reduce conflict in state 69 resolved using rule (expr -> expr MINUS VAR)
-WARNING: rejected rule (factor -> VAR) in state 69
+WARNING: shift/reduce conflict for SEMICOLON in state 43 resolved as shift
+WARNING: shift/reduce conflict for SEMICOLON in state 44 resolved as shift
+WARNING: reduce/reduce conflict in state 54 resolved using rule (expr -> expr PLUS VAR)
+WARNING: rejected rule (factor -> VAR) in state 54
+WARNING: reduce/reduce conflict in state 56 resolved using rule (expr -> expr MINUS VAR)
+WARNING: rejected rule (factor -> VAR) in state 56
