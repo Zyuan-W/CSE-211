@@ -165,9 +165,9 @@ def p_func_params(p):
 def p_func_args(p):
     '''
     args : VAR
-         | VAR COMMA args
+         | args COMMA VAR
          | NUM
-         | NUM COMMA args
+         | args COMMA NUM
          |
     '''
     if len(p) == 1:
@@ -175,13 +175,19 @@ def p_func_args(p):
     elif len(p) == 2:
         p[0] = [(p[1])]
     else:
-        p[0] = [(p[1])] + p[3]
+        p[0] = (p[1]) + [p[3]]
+        
+def p_f_statement(p):
+    '''
+    statement : f_statement
+    '''
+    p[0] = p[1]
         
 # sum = addNumbers(x, y); ==> ('func_call', 'sum', 'addNumbers', ['x', 'y'])
 def p_func_call(p):
     '''
-    statement : VAR LPAREN args RPAREN SEMICOLON
-                | VAR EQUALS statement
+    f_statement : VAR LPAREN args RPAREN SEMICOLON
+                | VAR EQUALS f_statement
     '''
     if len(p) == 4:
         p[0] = ('func_call_assign', p[1], p[3])
@@ -208,7 +214,6 @@ def p_statement_assign(p):
     statement : VAR EQUALS NUM SEMICOLON
                 | VAR EQUALS expr SEMICOLON
     '''
-    print("p[3]", p[3])
     p[0] = ('assign', p[1], p[3])
     
 def p_statement_plusplus(p):
@@ -293,23 +298,26 @@ def p_expr_plus(p):
     '''
     expr : expr PLUS term
     '''
-    p[0] = p[1] + p[3]
-    pass
-
-def p_expr_plus_var(p):
-    '''
-    expr : expr PLUS VAR
-    '''
     p[0] = f'{p[1]} + {p[3]}'
     pass
 
+# def p_expr_plus_var(p):
+#     '''
+#     expr : expr PLUS VAR
+#     '''
+#     print("p[1]", p[1])
+#     print("p[3]", p[3])
+#     p[0] = f'{p[1]} + {p[3]}'
+#     print("p[0]", p[0])
+#     pass
+
 def p_expr_minus(p):
     '''expr : expr MINUS term'''
-    p[0] = p[1] - p[3]
-
-def p_expr_minus_var(p):
-    '''expr : expr MINUS VAR'''
     p[0] = f'{p[1]} - {p[3]}'
+
+# def p_expr_minus_var(p):
+#     '''expr : expr MINUS VAR'''
+#     p[0] = f'{p[1]} - {p[3]}'
     
 def p_expr_term(p):
     '''expr : term'''
@@ -317,7 +325,7 @@ def p_expr_term(p):
     
 def p_term_mult(p):
     '''term : term MULT factor'''
-    p[0] = p[1] * p[3]
+    p[0] = f'{p[1]} * {p[3]}'
     
 def p_term_div(p):
     '''term : term DIV factor'''
@@ -325,7 +333,7 @@ def p_term_div(p):
         print("divide by 0 error:")
         print("cannot divide: " + str(p[1]) + " by 0")
         exit(1)
-    p[0] = p[1] / p[3]
+    p[0] = f'{p[1]} / {p[3]}'
     
 def p_term_factor(p):
     '''term : factor'''
