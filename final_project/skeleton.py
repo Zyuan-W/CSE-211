@@ -176,6 +176,17 @@ def p_func_args(p):
         p[0] = [(p[1])]
     else:
         p[0] = [(p[1])] + p[3]
+        
+# sum = addNumbers(x, y); ==> ('func_call', 'sum', 'addNumbers', ['x', 'y'])
+def p_func_call(p):
+    '''
+    statement : VAR LPAREN args RPAREN SEMICOLON
+                | VAR EQUALS statement
+    '''
+    if len(p) == 4:
+        p[0] = ('func_call_assign', p[1], p[3])
+    else:
+        p[0] = ('func_call', p[1], p[3])
 
 # variable declaration: ('declare', var_name, value)
 # temporarily assume everything is assigned to a literal
@@ -197,7 +208,14 @@ def p_statement_assign(p):
     statement : VAR EQUALS NUM SEMICOLON
                 | VAR EQUALS expr SEMICOLON
     '''
+    print("p[3]", p[3])
     p[0] = ('assign', p[1], p[3])
+    
+def p_statement_plusplus(p):
+    '''
+    statement : VAR PLUS PLUS SEMICOLON
+    '''
+    p[0] = ('assign', p[1], f'{p[1]} + 1')
 
 # if statement: ('if', condition)
 def p_statement_if(p):
@@ -325,17 +343,26 @@ def p_factor_var(p):
     '''factor : VAR'''
     p[0] = p[1] 
 
+def p_print_content(p):
+    '''
+    p_content : LESS LESS VAR p_content
+            | LESS LESS SENTENCE p_content
+            | LESS LESS ENDL
+            |
+    '''
+    if len(p) == 1:
+        p[0] = []
+    elif len(p) == 4:
+        p[0] = [(p[3])]
+    else:
+        p[0] = [(p[3])] + p[4]
 
 def p_statement_print(p):
     '''
-    statement : COUT LESS LESS VAR LESS LESS ENDL SEMICOLON
-                | COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON
-                | COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
+    statement : COUT p_content SEMICOLON
+
     '''
-    if len(p) == 9:
-        p[0] = ('print', p[4])
-    else:
-        p[0] = ('print', p[4], p[7])
+    p[0] = ('print', p[2])
 
 
 def p_error(p):
