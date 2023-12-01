@@ -140,20 +140,20 @@ def p_program(p):
 # ('func_declare', name, args, return_type)   
 def p_func_decl(p):
     '''
-    statement : INT VAR LPAREN args RPAREN SEMICOLON
+    statement : INT VAR LPAREN params RPAREN SEMICOLON
     '''
     p[0] = ('func_declare', p[2], p[4], p[1])
 def p_function(p):
     '''
-    statement : INT VAR LPAREN args RPAREN
+    statement : INT VAR LPAREN params RPAREN
     '''
     p[0] = ('function', p[2], p[4], p[1])
 
-def p_func_args(p):
+def p_func_params(p):
     '''
-    args : INT VAR
-         | INT VAR COMMA args
-         |
+    params : INT VAR
+           | INT VAR COMMA params
+           |
     '''
     if len(p) == 1:
         p[0] = []
@@ -161,6 +161,21 @@ def p_func_args(p):
         p[0] = [(p[1], p[2])]
     else:
         p[0] = [(p[1], p[2])] + p[4]
+
+def p_func_args(p):
+    '''
+    args : VAR
+         | VAR COMMA args
+         | NUM
+         | NUM COMMA args
+         |
+    '''
+    if len(p) == 1:
+        p[0] = []
+    elif len(p) == 2:
+        p[0] = [(p[1])]
+    else:
+        p[0] = [(p[1])] + p[3]
 
 # variable declaration: ('declare', var_name, value)
 # temporarily assume everything is assigned to a literal
@@ -325,7 +340,7 @@ def p_statement_print(p):
 def p_error(p):
     print("Syntax error at '%s'" % p.value)
 
-parser = yacc.yacc()
+parser = yacc.yacc(debug=True)
 
 
 
