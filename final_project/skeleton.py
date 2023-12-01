@@ -31,7 +31,7 @@ t_LESS = r'\<'
 t_COMMA = r','
 
 def t_IGNORE_CONTENT(t):
-    r'\/\*.*\*\/|\#.*|using|namespace|std;'
+    r'\/\/.*|\#.*|using|namespace|std;'
     pass
 
 def  t_error(t):
@@ -334,13 +334,13 @@ def read_cpp_file(file_path):
 
 if __name__ == '__main__':
     
-    cpp_code = read_cpp_file('cpp0.cpp')
-    # lexer.input(cpp_code)
-    # while True:
-    #   tok = lexer.token()
-    #   if not tok: 
-    #       break      # No more input
-    #   print(tok)
+    cpp_code = read_cpp_file('cpp_code.cpp')
+    lexer.input(cpp_code)
+    while True:
+      tok = lexer.token()
+      if not tok: 
+          break      # No more input
+      print(tok)
     p = parser.parse(cpp_code)
     for command in p:
         print(command)
