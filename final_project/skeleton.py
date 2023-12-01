@@ -152,7 +152,7 @@ def p_function(p):
 def p_func_params(p):
     '''
     params : INT VAR
-           | INT VAR COMMA params
+           | params COMMA INT VAR
            |
     '''
     if len(p) == 1:
@@ -160,7 +160,7 @@ def p_func_params(p):
     elif len(p) == 3:
         p[0] = [(p[1], p[2])]
     else:
-        p[0] = [(p[1], p[2])] + p[4]
+        p[0] = p[1] + [(p[3], p[4])]
 
 def p_func_args(p):
     '''

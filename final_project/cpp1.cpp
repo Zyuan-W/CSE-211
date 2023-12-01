@@ -44,7 +44,7 @@ int main() {
     return 0;
 }
 
-// // Function definition
-// int addNumbers(int a, int b) {
-//     return a + b;
-// }
+// Function definition
+int addNumbers(int a, int b) {
+    return a + b;
+}
