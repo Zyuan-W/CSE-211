@@ -2,13 +2,13 @@ import ply.lex as lex
 import ply.yacc as yacc
 
 
-tokens = ['NUM', 'VAR', 'MULT', 'PLUS', 'MINUS', 'DIV', 
+tokens = ['NUM', 'VAR', 'PLUS', 'MINUS', 'DIV', 
               'LPAREN', 'RPAREN', 'SEMICOLON', 'EQUALS', 'FOR', 
               'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 
               'GREATER', 'LESS', 'IGNORE_CONTENT', 'COUT', 'SENTENCE',
-              'COMMA', 'ENDL', 'RETURN']
+              'COMMA', 'ENDL', 'RETURN','LBRACKET', 'RBRACKET', 'STAR']
 
-t_MULT = r'\*'
+# t_MULT = r'\*'
 # t_PLUS = r'\+'
 # t_MINUS = r'\-'
 t_DIV = r'/'    
@@ -27,6 +27,9 @@ t_LB = r'\{'
 t_RB = r'\}'
 t_GREATER = r'\>'
 t_LESS = r'\<'
+t_LBRACKET = r'\['
+t_RBRACKET = r'\]'
+t_STAR = r'\*'
 # t_DQM = r'\"'
 t_COMMA = r','
 
@@ -324,7 +327,7 @@ def p_expr_term(p):
     p[0] = p[1]
     
 def p_term_mult(p):
-    '''term : term MULT factor'''
+    '''term : term STAR factor'''
     p[0] = f'{p[1]} * {p[3]}'
     
 def p_term_div(p):
@@ -339,6 +342,7 @@ def p_term_factor(p):
     '''term : factor'''
     p[0] = p[1]
     
+    
 def p_factor_expr(p):
     '''factor : LPAREN expr RPAREN'''
     p[0] = p[2]    
@@ -350,6 +354,16 @@ def p_factor_num(p):
 def p_factor_var(p):
     '''factor : VAR'''
     p[0] = p[1] 
+    
+def p_factor_array(p):
+    '''factor : VAR LBRACKET factor RBRACKET'''
+    p[0] = f'{p[1]}[{p[3]}]'
+    
+def p_array_decl(p):
+    '''
+    statement : INT STAR VAR SEMICOLON
+    '''
+    p[0] = ('array_declare', p[1], p[3])
 
 def p_print_content(p):
     '''

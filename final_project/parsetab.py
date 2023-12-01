@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'COMMA COUT DIV ELSE ENDL EQUALS FOR GREATER IF IGNORE_CONTENT INT LB LESS LPAREN MINUS MULT NUM PLUS PRINT RB RETURN RPAREN SEMICOLON SENTENCE VAR WHILEprogram : statement\n               | program statement\n    statement : INT VAR LPAREN params RPAREN SEMICOLON\n    \n    statement : INT VAR LPAREN params RPAREN\n    \n    params : INT VAR\n           | params COMMA INT VAR\n           |\n    \n    args : VAR\n         | args COMMA VAR\n         | NUM\n         | args COMMA NUM\n         |\n    \n    statement : f_statement\n    \n    f_statement : VAR LPAREN args RPAREN SEMICOLON\n                | VAR EQUALS f_statement\n    \n    statement : INT VAR SEMICOLON\n              | INT VAR EQUALS NUM SEMICOLON\n              | INT VAR EQUALS VAR SEMICOLON\n              | INT VAR EQUALS expr SEMICOLON\n    \n    statement : VAR EQUALS NUM SEMICOLON\n                | VAR EQUALS expr SEMICOLON\n    \n    statement : VAR PLUS PLUS SEMICOLON\n    \n    statement : IF LPAREN condition RPAREN\n    \n    statement : ELSE\n    \n    statement : FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN\n    \n    statement : WHILE LPAREN condition RPAREN\n    \n    condition : VAR GREATER NUM\n                | VAR LESS NUM\n                | VAR GREATER VAR\n                | VAR LESS VAR\n                | VAR EQUALS EQUALS NUM\n    \n    statement : RETURN expr SEMICOLON\n    \n    for_update : VAR PLUS PLUS\n               \n    \n    statement : LB               \n    \n    statement : RB             \n    \n    expr : expr PLUS term\n    expr : expr MINUS termexpr : termterm : term MULT factorterm : term DIV factorterm : factorfactor : LPAREN expr RPARENfactor : NUMfactor : VAR\n    p_content : LESS LESS VAR p_content\n            | LESS LESS SENTENCE p_content\n            | LESS LESS ENDL\n            |\n    \n    statement : COUT p_content SEMICOLON\n\n    '
+_lr_signature = 'COMMA COUT DIV ELSE ENDL EQUALS FOR GREATER IF IGNORE_CONTENT INT LB LBRACKET LESS LPAREN MINUS NUM PLUS PRINT RB RBRACKET RETURN RPAREN SEMICOLON SENTENCE STAR VAR WHILEprogram : statement\n               | program statement\n    statement : INT VAR LPAREN params RPAREN SEMICOLON\n    \n    statement : INT VAR LPAREN params RPAREN\n    \n    params : INT VAR\n           | params COMMA INT VAR\n           |\n    \n    args : VAR\n         | args COMMA VAR\n         | NUM\n         | args COMMA NUM\n         |\n    \n    statement : f_statement\n    \n    f_statement : VAR LPAREN args RPAREN SEMICOLON\n                | VAR EQUALS f_statement\n    \n    statement : INT VAR SEMICOLON\n              | INT VAR EQUALS NUM SEMICOLON\n              | INT VAR EQUALS VAR SEMICOLON\n              | INT VAR EQUALS expr SEMICOLON\n    \n    statement : VAR EQUALS NUM SEMICOLON\n                | VAR EQUALS expr SEMICOLON\n    \n    statement : VAR PLUS PLUS SEMICOLON\n    \n    statement : IF LPAREN condition RPAREN\n    \n    statement : ELSE\n    \n    statement : FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN\n    \n    statement : WHILE LPAREN condition RPAREN\n    \n    condition : VAR GREATER NUM\n                | VAR LESS NUM\n                | VAR GREATER VAR\n                | VAR LESS VAR\n                | VAR EQUALS EQUALS NUM\n    \n    statement : RETURN expr SEMICOLON\n    \n    for_update : VAR PLUS PLUS\n               \n    \n    statement : LB               \n    \n    statement : RB             \n    \n    expr : expr PLUS term\n    expr : expr MINUS termexpr : termterm : term STAR factorterm : term DIV factorterm : factorfactor : LPAREN expr RPARENfactor : NUMfactor : VARfactor : VAR LBRACKET factor RBRACKET\n    statement : INT STAR VAR SEMICOLON\n    \n    p_content : LESS LESS VAR p_content\n            | LESS LESS SENTENCE p_content\n            | LESS LESS ENDL\n            |\n    \n    statement : COUT p_content SEMICOLON\n\n    '
     
-_lr_action_items = {'INT':([0,1,2,5,7,11,12,14,20,30,31,36,45,51,59,60,61,64,69,79,80,81,82,83,85,96,107,],[3,3,-1,-13,-24,-34,-35,-2,43,53,-16,-15,-32,-49,-20,-21,-22,-23,-26,-4,97,-18,-17,-19,-14,-3,-25,]),'VAR':([0,1,2,3,5,7,10,11,12,14,16,18,19,21,25,31,32,36,43,45,46,47,48,49,51,52,53,58,59,60,61,63,64,65,66,69,79,81,82,83,85,96,97,101,103,107,],[4,4,-1,15,-13,-24,27,-34,-35,-2,33,38,42,42,27,-16,55,-15,68,-32,27,27,27,27,-49,75,78,84,-20,-21,-22,86,-23,88,90,-26,-4,-18,-17,-19,-14,-3,100,42,104,-25,]),'IF':([0,1,2,5,7,11,12,14,31,36,45,51,59,60,61,64,69,79,81,82,83,85,96,107,],[6,6,-1,-13,-24,-34,-35,-2,-16,-15,-32,-49,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'ELSE':([0,1,2,5,7,11,12,14,31,36,45,51,59,60,61,64,69,79,81,82,83,85,96,107,],[7,7,-1,-13,-24,-34,-35,-2,-16,-15,-32,-49,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'FOR':([0,1,2,5,7,11,12,14,31,36,45,51,59,60,61,64,69,79,81,82,83,85,96,107,],[8,8,-1,-13,-24,-34,-35,-2,-16,-15,-32,-49,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'WHILE':([0,1,2,5,7,11,12,14,31,36,45,51,59,60,61,64,69,79,81,82,83,85,96,107,],[9,9,-1,-13,-24,-34,-35,-2,-16,-15,-32,-49,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'RETURN':([0,1,2,5,7,11,12,14,31,36,45,51,59,60,61,64,69,79,81,82,83,85,96,107,],[10,10,-1,-13,-24,-34,-35,-2,-16,-15,-32,-49,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'LB':([0,1,2,5,7,11,12,14,31,36,45,51,59,60,61,64,69,79,81,82,83,85,96,107,],[11,11,-1,-13,-24,-34,-35,-2,-16,-15,-32,-49,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'RB':([0,1,2,5,7,11,12,14,31,36,45,51,59,60,61,64,69,79,81,82,83,85,96,107,],[12,12,-1,-13,-24,-34,-35,-2,-16,-15,-32,-49,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'COUT':([0,1,2,5,7,11,12,14,31,36,45,51,59,60,61,64,69,79,81,82,83,85,96,107,],[13,13,-1,-13,-24,-34,-35,-2,-16,-15,-32,-49,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'$end':([1,2,5,7,11,12,14,31,36,45,51,59,60,61,64,69,79,81,82,83,85,96,107,],[0,-1,-13,-24,-34,-35,-2,-16,-15,-32,-49,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'EQUALS':([4,15,33,42,67,68,84,],[16,32,58,67,92,93,58,]),'PLUS':([4,17,22,23,24,26,27,33,34,35,50,55,56,57,70,71,72,73,74,104,106,],[17,37,46,-38,-41,-43,-44,-44,-43,46,46,-44,-43,46,-36,-37,-39,-40,-42,106,108,]),'LPAREN':([4,6,8,9,10,15,16,25,32,33,46,47,48,49,84,],[18,19,20,21,25,30,25,25,25,18,25,25,25,25,18,]),'NUM':([10,16,18,25,32,46,47,48,49,63,65,66,92,93,],[26,34,40,26,56,26,26,26,26,87,89,91,98,99,]),'LESS':([13,29,42,75,76,],[29,52,66,29,29,]),'SEMICOLON':([13,15,22,23,24,26,27,28,33,34,35,37,55,56,57,62,70,71,72,73,74,75,76,77,79,88,89,90,91,94,95,98,99,102,],[-48,31,45,-38,-41,-43,-44,51,-44,59,60,61,81,82,83,85,-36,-37,-39,-40,-42,-48,-48,-47,96,-29,-27,-30,-28,-45,-46,-31,101,103,]),'RPAREN':([18,23,24,26,27,30,38,39,40,41,44,50,54,70,71,72,73,74,78,86,87,88,89,90,91,98,100,105,108,],[-12,-38,-41,-43,-44,-7,-8,62,-10,64,69,74,79,-36,-37,-39,-40,-42,-5,-9,-11,-29,-27,-30,-28,-31,-6,107,-33,]),'COMMA':([18,30,38,39,40,54,78,86,87,100,],[-12,-7,-8,63,-10,80,-5,-9,-11,-6,]),'MINUS':([22,23,24,26,27,33,34,35,50,55,56,57,70,71,72,73,74,],[47,-38,-41,-43,-44,-44,-43,47,47,-44,-43,47,-36,-37,-39,-40,-42,]),'MULT':([23,24,26,27,33,34,55,56,70,71,72,73,74,],[48,-41,-43,-44,-44,-43,-44,-43,48,48,-39,-40,-42,]),'DIV':([23,24,26,27,33,34,55,56,70,71,72,73,74,],[49,-41,-43,-44,-44,-43,-44,-43,49,49,-39,-40,-42,]),'GREATER':([42,],[65,]),'SENTENCE':([52,],[76,]),'ENDL':([52,],[77,]),}
+_lr_action_items = {'INT':([0,1,2,5,7,11,12,14,21,31,32,38,47,54,61,63,64,65,68,73,84,85,86,87,88,90,102,113,],[3,3,-1,-13,-24,-34,-35,-2,45,56,-16,-15,-32,-51,-46,-20,-21,-22,-23,-26,-4,103,-18,-17,-19,-14,-3,-25,]),'VAR':([0,1,2,3,5,7,10,11,12,14,16,17,19,20,22,26,32,33,38,45,47,48,49,50,51,53,54,55,56,61,62,63,64,65,67,68,69,70,73,84,86,87,88,90,102,103,107,109,113,],[4,4,-1,15,-13,-24,28,-34,-35,-2,34,35,40,44,44,28,-16,58,-15,72,-32,28,28,28,28,28,-51,80,83,-46,89,-20,-21,-22,91,-23,93,95,-26,-4,-18,-17,-19,-14,-3,106,44,110,-25,]),'IF':([0,1,2,5,7,11,12,14,32,38,47,54,61,63,64,65,68,73,84,86,87,88,90,102,113,],[6,6,-1,-13,-24,-34,-35,-2,-16,-15,-32,-51,-46,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'ELSE':([0,1,2,5,7,11,12,14,32,38,47,54,61,63,64,65,68,73,84,86,87,88,90,102,113,],[7,7,-1,-13,-24,-34,-35,-2,-16,-15,-32,-51,-46,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'FOR':([0,1,2,5,7,11,12,14,32,38,47,54,61,63,64,65,68,73,84,86,87,88,90,102,113,],[8,8,-1,-13,-24,-34,-35,-2,-16,-15,-32,-51,-46,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'WHILE':([0,1,2,5,7,11,12,14,32,38,47,54,61,63,64,65,68,73,84,86,87,88,90,102,113,],[9,9,-1,-13,-24,-34,-35,-2,-16,-15,-32,-51,-46,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'RETURN':([0,1,2,5,7,11,12,14,32,38,47,54,61,63,64,65,68,73,84,86,87,88,90,102,113,],[10,10,-1,-13,-24,-34,-35,-2,-16,-15,-32,-51,-46,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'LB':([0,1,2,5,7,11,12,14,32,38,47,54,61,63,64,65,68,73,84,86,87,88,90,102,113,],[11,11,-1,-13,-24,-34,-35,-2,-16,-15,-32,-51,-46,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'RB':([0,1,2,5,7,11,12,14,32,38,47,54,61,63,64,65,68,73,84,86,87,88,90,102,113,],[12,12,-1,-13,-24,-34,-35,-2,-16,-15,-32,-51,-46,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'COUT':([0,1,2,5,7,11,12,14,32,38,47,54,61,63,64,65,68,73,84,86,87,88,90,102,113,],[13,13,-1,-13,-24,-34,-35,-2,-16,-15,-32,-51,-46,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'$end':([1,2,5,7,11,12,14,32,38,47,54,61,63,64,65,68,73,84,86,87,88,90,102,113,],[0,-1,-13,-24,-34,-35,-2,-16,-15,-32,-51,-46,-20,-21,-22,-23,-26,-4,-18,-17,-19,-14,-3,-25,]),'STAR':([3,24,25,27,28,35,36,58,59,74,75,76,77,78,99,],[16,50,-41,-43,-44,-44,-43,-44,-43,50,50,-39,-40,-42,-45,]),'EQUALS':([4,15,35,44,71,72,89,],[17,33,62,71,97,98,62,]),'PLUS':([4,18,23,24,25,27,28,35,36,37,52,58,59,60,74,75,76,77,78,99,110,112,],[18,39,48,-38,-41,-43,-44,-44,-43,48,48,-44,-43,48,-36,-37,-39,-40,-42,-45,112,114,]),'LPAREN':([4,6,8,9,10,15,17,26,33,35,48,49,50,51,53,89,],[19,20,21,22,26,31,26,26,26,19,26,26,26,26,26,19,]),'NUM':([10,17,19,26,33,48,49,50,51,53,67,69,70,97,98,],[27,36,42,27,59,27,27,27,27,27,92,94,96,104,105,]),'LESS':([13,30,44,80,81,],[30,55,70,30,30,]),'SEMICOLON':([13,15,23,24,25,27,28,29,34,35,36,37,39,58,59,60,66,74,75,76,77,78,80,81,82,84,93,94,95,96,99,100,101,104,105,108,],[-50,32,47,-38,-41,-43,-44,54,61,-44,63,64,65,86,87,88,90,-36,-37,-39,-40,-42,-50,-50,-49,102,-29,-27,-30,-28,-45,-47,-48,-31,107,109,]),'RPAREN':([19,24,25,27,28,31,40,41,42,43,46,52,57,74,75,76,77,78,83,91,92,93,94,95,96,99,104,106,111,114,],[-12,-38,-41,-43,-44,-7,-8,66,-10,68,73,78,84,-36,-37,-39,-40,-42,-5,-9,-11,-29,-27,-30,-28,-45,-31,-6,113,-33,]),'COMMA':([19,31,40,41,42,57,83,91,92,106,],[-12,-7,-8,67,-10,85,-5,-9,-11,-6,]),'MINUS':([23,24,25,27,28,35,36,37,52,58,59,60,74,75,76,77,78,99,],[49,-38,-41,-43,-44,-44,-43,49,49,-44,-43,49,-36,-37,-39,-40,-42,-45,]),'DIV':([24,25,27,28,35,36,58,59,74,75,76,77,78,99,],[51,-41,-43,-44,-44,-43,-44,-43,51,51,-39,-40,-42,-45,]),'RBRACKET':([27,28,78,79,99,],[-43,-44,-42,99,-45,]),'LBRACKET':([28,35,58,],[53,53,53,]),'GREATER':([44,],[69,]),'SENTENCE':([55,],[81,]),'ENDL':([55,],[82,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'statement':([0,1,],[2,14,]),'f_statement':([0,1,16,58,],[5,5,36,36,]),'expr':([10,16,25,32,],[22,35,50,57,]),'term':([10,16,25,32,46,47,],[23,23,23,23,70,71,]),'factor':([10,16,25,32,46,47,48,49,],[24,24,24,24,24,24,72,73,]),'p_content':([13,75,76,],[28,94,95,]),'args':([18,],[39,]),'condition':([19,21,101,],[41,44,102,]),'params':([30,],[54,]),'for_update':([103,],[105,]),}
+_lr_goto_items = {'program':([0,],[1,]),'statement':([0,1,],[2,14,]),'f_statement':([0,1,17,62,],[5,5,38,38,]),'expr':([10,17,26,33,],[23,37,52,60,]),'term':([10,17,26,33,48,49,],[24,24,24,24,74,75,]),'factor':([10,17,26,33,48,49,50,51,53,],[25,25,25,25,25,25,76,77,79,]),'p_content':([13,80,81,],[29,100,101,]),'args':([19,],[41,]),'condition':([20,22,107,],[43,46,108,]),'params':([31,],[57,]),'for_update':([109,],[111,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,53 +27,55 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> statement','program',1,'p_program','skeleton.py',133),
-  ('program -> program statement','program',2,'p_program','skeleton.py',134),
-  ('statement -> INT VAR LPAREN params RPAREN SEMICOLON','statement',6,'p_func_decl','skeleton.py',143),
-  ('statement -> INT VAR LPAREN params RPAREN','statement',5,'p_function','skeleton.py',148),
-  ('params -> INT VAR','params',2,'p_func_params','skeleton.py',154),
-  ('params -> params COMMA INT VAR','params',4,'p_func_params','skeleton.py',155),
-  ('params -> <empty>','params',0,'p_func_params','skeleton.py',156),
-  ('args -> VAR','args',1,'p_func_args','skeleton.py',167),
-  ('args -> args COMMA VAR','args',3,'p_func_args','skeleton.py',168),
-  ('args -> NUM','args',1,'p_func_args','skeleton.py',169),
-  ('args -> args COMMA NUM','args',3,'p_func_args','skeleton.py',170),
-  ('args -> <empty>','args',0,'p_func_args','skeleton.py',171),
-  ('statement -> f_statement','statement',1,'p_f_statement','skeleton.py',182),
-  ('f_statement -> VAR LPAREN args RPAREN SEMICOLON','f_statement',5,'p_func_call','skeleton.py',189),
-  ('f_statement -> VAR EQUALS f_statement','f_statement',3,'p_func_call','skeleton.py',190),
-  ('statement -> INT VAR SEMICOLON','statement',3,'p_statement_decl','skeleton.py',201),
-  ('statement -> INT VAR EQUALS NUM SEMICOLON','statement',5,'p_statement_decl','skeleton.py',202),
-  ('statement -> INT VAR EQUALS VAR SEMICOLON','statement',5,'p_statement_decl','skeleton.py',203),
-  ('statement -> INT VAR EQUALS expr SEMICOLON','statement',5,'p_statement_decl','skeleton.py',204),
-  ('statement -> VAR EQUALS NUM SEMICOLON','statement',4,'p_statement_assign','skeleton.py',214),
-  ('statement -> VAR EQUALS expr SEMICOLON','statement',4,'p_statement_assign','skeleton.py',215),
-  ('statement -> VAR PLUS PLUS SEMICOLON','statement',4,'p_statement_plusplus','skeleton.py',221),
-  ('statement -> IF LPAREN condition RPAREN','statement',4,'p_statement_if','skeleton.py',228),
-  ('statement -> ELSE','statement',1,'p_statement_if_else','skeleton.py',234),
-  ('statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN','statement',11,'p_statement_for','skeleton.py',241),
-  ('statement -> WHILE LPAREN condition RPAREN','statement',4,'p_statement_while','skeleton.py',249),
-  ('condition -> VAR GREATER NUM','condition',3,'p_condition','skeleton.py',257),
-  ('condition -> VAR LESS NUM','condition',3,'p_condition','skeleton.py',258),
-  ('condition -> VAR GREATER VAR','condition',3,'p_condition','skeleton.py',259),
-  ('condition -> VAR LESS VAR','condition',3,'p_condition','skeleton.py',260),
-  ('condition -> VAR EQUALS EQUALS NUM','condition',4,'p_condition','skeleton.py',261),
-  ('statement -> RETURN expr SEMICOLON','statement',3,'p_statement_return','skeleton.py',272),
-  ('for_update -> VAR PLUS PLUS','for_update',3,'p_for_update','skeleton.py',280),
-  ('statement -> LB','statement',1,'p_statement_lb','skeleton.py',287),
-  ('statement -> RB','statement',1,'p_statement_rb','skeleton.py',293),
-  ('expr -> expr PLUS term','expr',3,'p_expr_plus','skeleton.py',299),
-  ('expr -> expr MINUS term','expr',3,'p_expr_minus','skeleton.py',315),
-  ('expr -> term','expr',1,'p_expr_term','skeleton.py',323),
-  ('term -> term MULT factor','term',3,'p_term_mult','skeleton.py',327),
-  ('term -> term DIV factor','term',3,'p_term_div','skeleton.py',331),
-  ('term -> factor','term',1,'p_term_factor','skeleton.py',339),
-  ('factor -> LPAREN expr RPAREN','factor',3,'p_factor_expr','skeleton.py',343),
-  ('factor -> NUM','factor',1,'p_factor_num','skeleton.py',347),
-  ('factor -> VAR','factor',1,'p_factor_var','skeleton.py',351),
-  ('p_content -> LESS LESS VAR p_content','p_content',4,'p_print_content','skeleton.py',356),
-  ('p_content -> LESS LESS SENTENCE p_content','p_content',4,'p_print_content','skeleton.py',357),
-  ('p_content -> LESS LESS ENDL','p_content',3,'p_print_content','skeleton.py',358),
-  ('p_content -> <empty>','p_content',0,'p_print_content','skeleton.py',359),
-  ('statement -> COUT p_content SEMICOLON','statement',3,'p_statement_print','skeleton.py',370),
+  ('program -> statement','program',1,'p_program','skeleton.py',136),
+  ('program -> program statement','program',2,'p_program','skeleton.py',137),
+  ('statement -> INT VAR LPAREN params RPAREN SEMICOLON','statement',6,'p_func_decl','skeleton.py',146),
+  ('statement -> INT VAR LPAREN params RPAREN','statement',5,'p_function','skeleton.py',151),
+  ('params -> INT VAR','params',2,'p_func_params','skeleton.py',157),
+  ('params -> params COMMA INT VAR','params',4,'p_func_params','skeleton.py',158),
+  ('params -> <empty>','params',0,'p_func_params','skeleton.py',159),
+  ('args -> VAR','args',1,'p_func_args','skeleton.py',170),
+  ('args -> args COMMA VAR','args',3,'p_func_args','skeleton.py',171),
+  ('args -> NUM','args',1,'p_func_args','skeleton.py',172),
+  ('args -> args COMMA NUM','args',3,'p_func_args','skeleton.py',173),
+  ('args -> <empty>','args',0,'p_func_args','skeleton.py',174),
+  ('statement -> f_statement','statement',1,'p_f_statement','skeleton.py',185),
+  ('f_statement -> VAR LPAREN args RPAREN SEMICOLON','f_statement',5,'p_func_call','skeleton.py',192),
+  ('f_statement -> VAR EQUALS f_statement','f_statement',3,'p_func_call','skeleton.py',193),
+  ('statement -> INT VAR SEMICOLON','statement',3,'p_statement_decl','skeleton.py',204),
+  ('statement -> INT VAR EQUALS NUM SEMICOLON','statement',5,'p_statement_decl','skeleton.py',205),
+  ('statement -> INT VAR EQUALS VAR SEMICOLON','statement',5,'p_statement_decl','skeleton.py',206),
+  ('statement -> INT VAR EQUALS expr SEMICOLON','statement',5,'p_statement_decl','skeleton.py',207),
+  ('statement -> VAR EQUALS NUM SEMICOLON','statement',4,'p_statement_assign','skeleton.py',217),
+  ('statement -> VAR EQUALS expr SEMICOLON','statement',4,'p_statement_assign','skeleton.py',218),
+  ('statement -> VAR PLUS PLUS SEMICOLON','statement',4,'p_statement_plusplus','skeleton.py',224),
+  ('statement -> IF LPAREN condition RPAREN','statement',4,'p_statement_if','skeleton.py',231),
+  ('statement -> ELSE','statement',1,'p_statement_if_else','skeleton.py',237),
+  ('statement -> FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN','statement',11,'p_statement_for','skeleton.py',244),
+  ('statement -> WHILE LPAREN condition RPAREN','statement',4,'p_statement_while','skeleton.py',252),
+  ('condition -> VAR GREATER NUM','condition',3,'p_condition','skeleton.py',260),
+  ('condition -> VAR LESS NUM','condition',3,'p_condition','skeleton.py',261),
+  ('condition -> VAR GREATER VAR','condition',3,'p_condition','skeleton.py',262),
+  ('condition -> VAR LESS VAR','condition',3,'p_condition','skeleton.py',263),
+  ('condition -> VAR EQUALS EQUALS NUM','condition',4,'p_condition','skeleton.py',264),
+  ('statement -> RETURN expr SEMICOLON','statement',3,'p_statement_return','skeleton.py',275),
+  ('for_update -> VAR PLUS PLUS','for_update',3,'p_for_update','skeleton.py',283),
+  ('statement -> LB','statement',1,'p_statement_lb','skeleton.py',290),
+  ('statement -> RB','statement',1,'p_statement_rb','skeleton.py',296),
+  ('expr -> expr PLUS term','expr',3,'p_expr_plus','skeleton.py',302),
+  ('expr -> expr MINUS term','expr',3,'p_expr_minus','skeleton.py',318),
+  ('expr -> term','expr',1,'p_expr_term','skeleton.py',326),
+  ('term -> term STAR factor','term',3,'p_term_mult','skeleton.py',330),
+  ('term -> term DIV factor','term',3,'p_term_div','skeleton.py',334),
+  ('term -> factor','term',1,'p_term_factor','skeleton.py',342),
+  ('factor -> LPAREN expr RPAREN','factor',3,'p_factor_expr','skeleton.py',347),
+  ('factor -> NUM','factor',1,'p_factor_num','skeleton.py',351),
+  ('factor -> VAR','factor',1,'p_factor_var','skeleton.py',355),
+  ('factor -> VAR LBRACKET factor RBRACKET','factor',4,'p_factor_array','skeleton.py',359),
+  ('statement -> INT STAR VAR SEMICOLON','statement',4,'p_array_decl','skeleton.py',364),
+  ('p_content -> LESS LESS VAR p_content','p_content',4,'p_print_content','skeleton.py',370),
+  ('p_content -> LESS LESS SENTENCE p_content','p_content',4,'p_print_content','skeleton.py',371),
+  ('p_content -> LESS LESS ENDL','p_content',3,'p_print_content','skeleton.py',372),
+  ('p_content -> <empty>','p_content',0,'p_print_content','skeleton.py',373),
+  ('statement -> COUT p_content SEMICOLON','statement',3,'p_statement_print','skeleton.py',384),
 ]

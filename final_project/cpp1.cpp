@@ -8,6 +8,8 @@ int addNumbers(int a, int b);
 
 int main() {
     // Variable declarations and assignments
+    int *a;
+    a[1] = 1;
     int x = 10;
     int y = 20;
     int j = x + y;
@@ -23,6 +25,7 @@ int main() {
     } else {
         cout << "Sum is less than or equal to 20." << sum << endl;
     }
+
 
 
     // For loop
