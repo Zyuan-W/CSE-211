@@ -215,7 +215,9 @@ def p_statement_decl(p):
 def p_statement_assign(p):
     '''
     statement : VAR EQUALS NUM SEMICOLON
+                | array EQUALS NUM SEMICOLON
                 | VAR EQUALS expr SEMICOLON
+                | array EQUALS expr SEMICOLON
     '''
     p[0] = ('assign', p[1], p[3])
     
@@ -356,7 +358,13 @@ def p_factor_var(p):
     p[0] = p[1] 
     
 def p_factor_array(p):
-    '''factor : VAR LBRACKET factor RBRACKET'''
+    '''factor : array'''
+    p[0] = p[1]
+    
+def p_array(p):
+    '''
+    array : VAR LBRACKET NUM RBRACKET
+    '''
     p[0] = f'{p[1]}[{p[3]}]'
     
 def p_array_decl(p):
