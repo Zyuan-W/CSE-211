@@ -24,6 +24,7 @@ for (int i = 0; i < 5; i++){
 while (i == 5){
 
     cout << "Sum is less than or equal to 20." << endl;
+    cout << "sum is : " << sum << endl;
 }
 
 

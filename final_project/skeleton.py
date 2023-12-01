@@ -51,7 +51,7 @@ reserved = {
 
 
 def t_SENTENCE(t):
-    r'"[\w\s,\.]+"'
+    r'"[\w\s,\.\:]+"'
     t.type = reserved.get(t.value, 'SENTENCE')
     return t
 
@@ -288,11 +288,12 @@ def p_factor_var(p):
 
 def p_statement_print(p):
     '''
-    statement : COUT LESS LESS VAR SEMICOLON LESS LESS ENDL SEMICOLON
+    statement : COUT LESS LESS VAR LESS LESS ENDL SEMICOLON
+                | COUT LESS LESS SENTENCE LESS LESS ENDL SEMICOLON
                 | COUT LESS LESS SENTENCE LESS LESS VAR LESS LESS ENDL SEMICOLON
     '''
-    if len(p) == 10:
-        p[0] = ('print', '', p[4])
+    if len(p) == 9:
+        p[0] = ('print', p[4])
     else:
         p[0] = ('print', p[4], p[7])
 
