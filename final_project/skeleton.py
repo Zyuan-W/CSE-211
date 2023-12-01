@@ -342,7 +342,7 @@ def read_cpp_file(file_path):
 
 if __name__ == '__main__':
     
-    cpp_code = read_cpp_file('cpp0.cpp')
+    cpp_code = read_cpp_file('cpp1.cpp')
     lexer.input(cpp_code)
     while True:
       tok = lexer.token()
