@@ -24,7 +24,7 @@ tokens = ['NUM', 'VAR', 'PLUS', 'MINUS', 'DIV',
               'LPAREN', 'RPAREN', 'SEMICOLON', 'EQUALS', 'FOR', 
               'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 
               'GREATER', 'LESS', 'IGNORE_CONTENT', 'COUT', 'SENTENCE',
-              'COMMA', 'ENDL', 'RETURN','LBRACKET', 'RBRACKET', 'STAR']
+              'COMMA', 'ENDL', 'RETURN','LBRACKET', 'RBRACKET', 'STAR', 'SIZEOF', 'MALLOC']
 
 # t_MULT = r'\*'
 # t_PLUS = r'\+'
@@ -50,6 +50,8 @@ t_RBRACKET = r'\]'
 t_STAR = r'\*'
 # t_DQM = r'\"'
 t_COMMA = r','
+t_SIZEOF = r'sizeof'
+t_MALLOC = r'malloc'
 
 def t_IGNORE_CONTENT(t):
     r'\/\/.*|\#.*|using|namespace|std;'
@@ -69,12 +71,15 @@ reserved = {
     'while' : 'WHILE',
     'cout' : 'COUT',
     'endl' : 'ENDL',
-    'return' : 'RETURN'
+    'return' : 'RETURN',
+    'sizeof' : 'SIZEOF',
+    'malloc' : 'MALLOC'
 }
 
 
 def t_SENTENCE(t):
-    r'"[\w\s,\.\:]+"'
+    # r'"[\w\s,\.\:]+"'
+    r'".*"'
     t.type = reserved.get(t.value, 'SENTENCE')
     return t
 
@@ -249,12 +254,12 @@ def p_statement_assign(p):
     p[0] = ('assign', scopes, p[1], p[3])
 
     
-def p_statement_plusplus(p):
-    '''
-    statement : VAR PLUS PLUS SEMICOLON
-    '''
-    scopes = ST.check_scope()
-    p[0] = ('assign', scopes, p[1], f'{p[1]} + 1')
+# def p_statement_plusplus(p):
+#     '''
+#     statement : VAR PLUS PLUS SEMICOLON
+#     '''
+#     scopes = ST.check_scope()
+#     p[0] = ('assign', scopes, p[1], f'{p[1]} + 1')
 
 # if statement: ('if', condition)
 def p_statement_if(p):
@@ -292,11 +297,11 @@ def p_statement_while(p):
 # condition
 def p_condition(p):
     '''
-    condition : VAR GREATER NUM
-                | VAR LESS NUM
-                | VAR GREATER VAR
-                | VAR LESS VAR
-                | VAR EQUALS EQUALS NUM
+    condition : factor GREATER factor
+                | factor LESS factor
+                | factor EQUALS EQUALS factor
+                | factor GREATER EQUALS factor
+                | factor LESS EQUALS factor
     '''
     if len(p) == 4:
         p[0] = f'{p[1]} {p[2]} {p[3]}'
@@ -313,11 +318,31 @@ def p_statement_return(p):
     p[0] = ('return', scopes, p[2])
     pass
 
+# i += 1; ==> ('update', 'scopes', 'i', '+=', '1')
+# i -= 1; ==> ('update', 'scopes', 'i', '-=', '1')
+# i ++; ==> ('update', 'scopes', 'i', '++', '1')
+# i --; ==> ('update', 'scopes', 'i', '--', '1')
+def p_statement_update(p):
+    '''
+    statement : VAR PLUS EQUALS factor SEMICOLON
+            | VAR MINUS EQUALS factor SEMICOLON
+            | VAR PLUS PLUS SEMICOLON
+            | VAR MINUS MINUS SEMICOLON
+    '''
+    scopes = ST.check_scope()
+    if len(p) == 6:
+        p[0] = ('update', scopes, p[1], f'{p[2]}{p[3]}', p[4])
+    else:
+        if p[2] == '+':
+            p[0] = ('update', scopes, p[1], '+=', 1)
+        else:
+            p[0] = ('update', scopes, p[1], '-=', 1)
+
 # for update
 def p_for_update(p):
     '''
     for_update : VAR PLUS PLUS
-                | VAR MINUS MINUS
+            | VAR MINUS MINUS
                
     '''
     if p[2] == '+':
@@ -360,6 +385,10 @@ def p_expr_minus(p):
     '''expr : expr MINUS term'''
     p[0] = f'{p[1]} - {p[3]}'
 
+# def p_expr_update(p):
+#     '''expr : update'''
+#     p[0] = p[1]
+
 # def p_expr_minus_var(p):
 #     '''expr : expr MINUS VAR'''
 #     p[0] = f'{p[1]} - {p[3]}'
@@ -401,9 +430,11 @@ def p_factor_array(p):
     '''factor : array'''
     p[0] = p[1]
     
+    
 def p_array(p):
     '''
     array : VAR LBRACKET NUM RBRACKET
+            | VAR LBRACKET VAR RBRACKET
     '''
     p[0] = f'{p[1]}[{p[3]}]'
     
@@ -413,6 +444,14 @@ def p_array_decl(p):
     '''
     scopes = ST.check_scope()
     p[0] = ('array_declare', scopes, p[1], p[3])
+    
+# a = (int *) malloc(sizeof(int) * 10); ==> ('array_declare', 'a', '10')
+def p_array_init(p):
+    '''
+    statement : VAR EQUALS LPAREN INT STAR RPAREN MALLOC LPAREN SIZEOF LPAREN INT RPAREN STAR factor RPAREN SEMICOLON
+    '''
+    scopes = ST.check_scope()
+    p[0] = ('array_init', scopes, p[1], p[14])
 
 def p_print_content(p):
     '''
@@ -513,6 +552,12 @@ def switch(ir):
         else:
             python_code = f'{ir[2]} = {ir[3]}' + '\n'
         return python_code
+    elif command == 'update':
+        python_code = ""
+        if ir[1] > 0:
+            python_code = tab * ir[1]
+        python_code += f'{ir[2]} {ir[3]} {ir[4]}\n'
+        return python_code
     elif command == 'if':
         if ir[1] > 0:
             python_code = tab * ir[1] + f'if {ir[2]}:'
@@ -579,7 +624,22 @@ def switch(ir):
             python_code = python_function(ir[1], ir[2])
         return python_code
     elif command == 'array_declare':
-        return ''
+        python_code = ""
+        if ir[1] > 0:
+            python_code = tab * ir[1]
+        python_code += ir[3] + ' = []\n'
+        return python_code
+    elif command == 'array_init':
+        python_code = ""
+        if ir[1] > 0:
+            python_code = tab * ir[1]
+        python_code += ir[2] + f' = [0] * {ir[3]}' +'\n'
+        return python_code
+    # elif command == 'array_assign':
+    #     python_code = ""
+    #     if ir[1] > 0:
+    #         python_code = tab * ir[1]
+    #     python_code += f'{ir[2]} = {ir[3]}' + '\n'
     else:
         return 'unknown'
 
@@ -613,6 +673,17 @@ def read_cpp_file(file_path):
             print(f"An error occurred: {e}")
             return None
 
+def write_to_file(file_path, content):
+    try:
+        with open(file_path, 'w') as file:
+            file.write(content)
+    except FileNotFoundError:
+        print("File not found.")
+        return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
 if __name__ == '__main__':
     
     cpp_code = read_cpp_file('cpp1.cpp')
@@ -631,8 +702,8 @@ if __name__ == '__main__':
     print(pytho_code)
     
     print("=====================================")
-    # for i in range (10, 0,):
-    #     print(i)
+    write_to_file('python_code.py', pytho_code)
+
 
     
     

@@ -1,0 +1,34 @@
+def addNumbers(a, b):
+    return a + b
+
+if __name__ == '__main__':
+    x = 10
+    y = 20
+    j = x + y
+    j = x + y
+    sum = 0
+    a = []
+    a = [0] * 10
+    a[1] = 1
+    b = []
+    b = [0] * 10
+    sum = addNumbers(x, y)
+    if sum > 20:
+        print("Sum is greater than 20. sum = ", sum, '\n')
+
+    else:
+        print("Sum is less than or equal to 20.  sum = ", sum, '\n')
+
+    print("For loop: ")
+    for i in range(0, 5, 1):
+        print(i, " ")
+
+    print('\n')
+    print("While loop: ")
+    j = 5
+    while j >= 0:
+        print(j, " ")
+        j -= 1
+
+    print('\n')
+
