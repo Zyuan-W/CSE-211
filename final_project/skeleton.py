@@ -478,6 +478,7 @@ def p_statement_print(p):
 
 
 def p_error(p):
+    print("check your Cpp code syntax")
     print("Syntax error at '%s'" % p.value)
 
 parser = yacc.yacc(debug=True)
@@ -651,8 +652,6 @@ def python_code_generator(irs):
         
     return python_code
     pass
-    
-    
 
 
 
