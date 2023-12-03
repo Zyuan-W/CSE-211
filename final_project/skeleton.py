@@ -24,7 +24,8 @@ tokens = ['NUM', 'VAR', 'PLUS', 'MINUS', 'DIV',
               'LPAREN', 'RPAREN', 'SEMICOLON', 'EQUALS', 'FOR', 
               'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 
               'GREATER', 'LESS', 'IGNORE_CONTENT', 'COUT', 'SENTENCE',
-              'COMMA', 'ENDL', 'RETURN','LBRACKET', 'RBRACKET', 'STAR', 'SIZEOF', 'MALLOC']
+              'COMMA', 'ENDL', 'RETURN','LBRACKET', 'RBRACKET', 'STAR', 
+              'SIZEOF', 'MALLOC', 'VOID']
 
 # t_MULT = r'\*'
 # t_PLUS = r'\+'
@@ -52,6 +53,7 @@ t_STAR = r'\*'
 t_COMMA = r','
 t_SIZEOF = r'sizeof'
 t_MALLOC = r'malloc'
+t_VOID = r'void'
 
 def t_IGNORE_CONTENT(t):
     r'\/\/.*|\#.*|using|namespace|std;'
@@ -73,7 +75,8 @@ reserved = {
     'endl' : 'ENDL',
     'return' : 'RETURN',
     'sizeof' : 'SIZEOF',
-    'malloc' : 'MALLOC'
+    'malloc' : 'MALLOC',
+    'void' : 'VOID'
 }
 
 
@@ -167,6 +170,7 @@ def p_program(p):
 def p_func_decl(p):
     '''
     statement : INT VAR LPAREN params RPAREN SEMICOLON
+                | VOID VAR LPAREN params RPAREN SEMICOLON
     '''
     p[0] = ('func_declare', p[2], p[4], p[1])
     
@@ -174,6 +178,7 @@ def p_func_decl(p):
 def p_function(p):
     '''
     statement : INT VAR LPAREN params RPAREN
+                | VOID VAR LPAREN params RPAREN
     '''
     p[0] = ('function', p[2], p[4], p[1])
     
@@ -182,12 +187,18 @@ def p_func_params(p):
     '''
     params : INT VAR
            | params COMMA INT VAR
+           | INT STAR VAR
+           | params COMMA INT STAR VAR
            |
     '''
     if len(p) == 1:
         p[0] = []
     elif len(p) == 3:
         p[0] = [(p[1], p[2])]
+    elif len(p) == 4:
+        p[0] = [(p[1], p[3])]
+    elif len(p) == 6:
+        p[0] = p[1] + [(p[3], p[5])]
     else:
         p[0] = p[1] + [(p[3], p[4])]
 
@@ -324,10 +335,10 @@ def p_statement_return(p):
 # i --; ==> ('update', 'scopes', 'i', '--', '1')
 def p_statement_update(p):
     '''
-    statement : VAR PLUS EQUALS factor SEMICOLON
-            | VAR MINUS EQUALS factor SEMICOLON
-            | VAR PLUS PLUS SEMICOLON
-            | VAR MINUS MINUS SEMICOLON
+    statement : factor PLUS EQUALS factor SEMICOLON
+            | factor MINUS EQUALS factor SEMICOLON
+            | factor PLUS PLUS SEMICOLON
+            | factor MINUS MINUS SEMICOLON
     '''
     scopes = ST.check_scope()
     if len(p) == 6:
@@ -679,7 +690,7 @@ def write_to_file(file_path, content):
     except FileNotFoundError:
         print("File not found.")
         return None
-    except Exception as e:
+    except Exception as e: 
         print(f"An error occurred: {e}")
         return None
 

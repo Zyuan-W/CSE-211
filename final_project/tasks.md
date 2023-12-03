@@ -100,6 +100,15 @@ optimize when generate the python code
 
 parallel for loops as example
 
+    detect the parallel for loop
+
+    use the scope to store the content in blocks
+
+    when parsing for loop, mark it as need to optimize
+
+    def for_optimize(blocks)
+
+
 ```
 
 

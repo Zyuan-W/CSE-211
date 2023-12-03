@@ -3,12 +3,9 @@
 #include <iostream>
 using namespace std;
 
-// Function definition
-int addNumbers(int a, int b) {
-    return a + b;
-  
+// Function declaration
+int addNumbers(int *a, int b);
 
-}
 
 int main() {
     // Variable declarations and assignments
@@ -57,5 +54,10 @@ int main() {
 }
 
 
+// Function definition
+int addNumbers(int *a, int b) {
+    return a + b;
+  
 
+}
 
