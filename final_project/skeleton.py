@@ -4,6 +4,9 @@ import sys
 import re
 
 sys.tracebacklimit = 0
+opt_scope = False
+block_index = 0
+
 class SymbolTable:
     def __init__(self):
         self.brace_count = 0  
@@ -22,7 +25,7 @@ class SymbolTable:
 
 tokens = ['NUM', 'VAR', 'PLUS', 'MINUS', 'DIV', 
               'LPAREN', 'RPAREN', 'SEMICOLON', 'EQUALS', 'FOR', 
-              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'PRINT', 'INT', 
+              'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'INT', 
               'GREATER', 'LESS', 'IGNORE_CONTENT', 'COUT', 'SENTENCE',
               'COMMA', 'ENDL', 'RETURN','LBRACKET', 'RBRACKET', 'STAR', 
               'SIZEOF', 'MALLOC', 'VOID']
@@ -57,7 +60,7 @@ t_VOID = r'void'
 
 def t_IGNORE_CONTENT(t):
     r'\/\/.*|\#.*|using|namespace|std;'
-    pass
+    
 
 def  t_error(t):
     print("Illegal character '%s'" % t.value[0])
@@ -158,6 +161,7 @@ lexer = lex.lex()
 # cout << "Hello World"; ==> ('print', '"Hello World"', '')
 # cout << "Hello World" << x; ==> ('print', '"Hello World", x)
 
+
 def p_program(p):
     '''program : statement
                | program statement'''
@@ -165,6 +169,13 @@ def p_program(p):
         p[0] = [p[1]]
     else:
         p[0] = p[1] + [p[2]]
+        
+def p_statement_IGNORE_CONTENT(p):
+    '''
+    statement : IGNORE_CONTENT
+    '''
+    p[0] = ('ignore_content', p[1])       
+
 
 # ('func_declare', name, params, return_type)   
 def p_func_decl(p):
@@ -173,6 +184,8 @@ def p_func_decl(p):
                 | VOID VAR LPAREN params RPAREN SEMICOLON
     '''
     p[0] = ('func_declare', p[2], p[4], p[1])
+    
+
     
 # ('function', name, args, return_type)
 def p_function(p):
@@ -291,7 +304,7 @@ def p_statement_if_else(p):
 # For loop: ('for', iter, start, end, update)
 def p_statement_for(p):
     '''
-    statement : FOR LPAREN INT VAR EQUALS NUM SEMICOLON condition SEMICOLON for_update RPAREN
+    statement : FOR LPAREN INT VAR EQUALS factor SEMICOLON condition SEMICOLON for_update RPAREN
     '''
     scopes = ST.check_scope()
     p[0] = ('for', scopes, p[4], p[6], p[8], p[10])
@@ -426,8 +439,13 @@ def p_term_factor(p):
     
     
 def p_factor_expr(p):
-    '''factor : LPAREN expr RPAREN'''
-    p[0] = p[2]    
+    '''
+    factor : LPAREN expr RPAREN
+        
+    '''
+
+    p[0] = f'({p[2]})' 
+
 
 def p_factor_num(p):
     '''factor : NUM'''
@@ -443,9 +461,12 @@ def p_factor_array(p):
     
     
 def p_array(p):
+    # '''
+    # array : VAR LBRACKET NUM RBRACKET
+    #         | VAR LBRACKET VAR RBRACKET
+    # '''
     '''
-    array : VAR LBRACKET NUM RBRACKET
-            | VAR LBRACKET VAR RBRACKET
+    array : VAR LBRACKET expr RBRACKET
     '''
     p[0] = f'{p[1]}[{p[3]}]'
     
@@ -534,7 +555,14 @@ def python_print(content):
     return python_code
 
 def python_for(iter, start, condition, update):
-    end = condition[len(condition)-1]
+    # condition => (term GREATER term)
+    end = condition.split()[2]
+    if '<=' in condition:
+        end = end + ' + 1'
+    elif '>=' in condition:
+        end = end + ' - 1'
+    
+    # end = condition[len(condition)-1]
     number = re.findall(r'\d+', update)
     if '+=' in update:
         number = int (number[0])
@@ -549,10 +577,17 @@ def python_while(condition):
     
 
 # switch
-def switch(ir):
+def switch(ir, optimize_blocks, optimize):
+    global opt_scope
+    global block_index
     command = ir[0]
     tab = "    "
-    if command == 'declare':
+    # opt_scop = False
+    if command == 'ignore_content':
+        python_code = '\n'
+        return python_code
+    
+    elif command == 'declare':
         if ir[1] > 0:
             python_code = tab * ir[1] +  python_var_declare(ir[2], ir[3]) 
         else:
@@ -587,6 +622,10 @@ def switch(ir):
         if ir[1] > 0:
             python_code += tab * ir[1]
         python_code += python_for(ir[2], ir[3], ir[4], ir[5])
+        if optimize:
+            opt_scope = True
+            optimize_blocks[block_index] = '# optimize block start\n'
+            optimize_blocks[block_index] += python_code
         return python_code 
     elif command == 'while':
         python_code = ""
@@ -609,6 +648,12 @@ def switch(ir):
     elif command == 'left_brace':
         return '\n'
     elif command == 'right_brace':
+     
+        if optimize and opt_scope:
+            optimize_blocks[block_index] += '\n'
+            optimize_blocks[block_index] += '# optimize block end\n'
+            block_index += 1
+            opt_scope = False
         return '\n'
     elif command == 'func_declare':
         return ''
@@ -656,32 +701,32 @@ def switch(ir):
         return 'unknown'
 
 # conver interpreted IR into poython code
-def python_code_generator(irs):
+def python_code_generator(irs, optimize, optimize_blocks):
+    global opt_scope
+    global block_index
     python_code = ""
     for ir in irs:
-        python_code += switch(ir)
+        code = switch(ir, optimize_blocks, optimize)
+        if opt_scope:
+            
+            optimize_blocks[block_index] += code
+        python_code += code
         
     return python_code
     pass
 
 
 
-def read_cpp_file(file_path):
-    # check if a file path argument is provided
-    if len(sys.argv) < 2:
-        print("no file path provided.")
-        exit(1)
-    else:
-        file_path = sys.argv[1]
-        try:
-            with open(file_path, 'r') as file:
-                return file.read()
-        except FileNotFoundError:
-            print("File not found.")
-            return None
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            return None
+def read_cpp_file():
+    try:
+        with open(file_path, 'r') as file:
+            return file.read()
+    except FileNotFoundError:
+        print("File not found.")
+        return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
 
 def write_to_file(file_path, content):
     try:
@@ -695,8 +740,26 @@ def write_to_file(file_path, content):
         return None
 
 if __name__ == '__main__':
+    # check if a file path argument is provided
+    if len(sys.argv) < 2:
+        print("no file path provided.")
+        exit(1)
+    file_path = sys.argv[1]
+    print("file path: ", file_path)
     
-    cpp_code = read_cpp_file('cpp1.cpp')
+    with open(file_path, 'r') as file:
+        cpp_code = file.read()
+    
+    
+    
+    
+    optimize = False
+    if len(sys.argv) == 3:
+        if sys.argv[2] == 'optimize':
+            optimize = True
+    # cpp_code = read_cpp_file(file_path)
+    
+    
     lexer.input(cpp_code)
     # while True:
     #   tok = lexer.token()
@@ -707,12 +770,21 @@ if __name__ == '__main__':
     irs = parser_cpp(cpp_code)
     for ir in irs:
         print(ir)
-    pytho_code = python_code_generator(irs)
+    
+    optimize_blocks = {}
+   
+    pytho_code = python_code_generator(irs, optimize, optimize_blocks)
     print("=====================================")
     print(pytho_code)
-    
     print("=====================================")
+    print(optimize_blocks[0])
+    print(optimize_blocks[1])
+    
+    
+    
     write_to_file('python_code.py', pytho_code)
+    print("=====================================")
+    
 
 
     
