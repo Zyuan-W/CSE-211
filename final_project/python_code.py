@@ -1,20 +1,16 @@
-flag = 0
-    
-    
-def function():
-    global flag
-    flag += 1
-        
+def addNumbers(a, b):
+    return a + b
+
+def reference_reduction(b, size):
+    for i in range(1, size, 1):
+        b[0] += b[i]
 
 
-def function_0():
-    global flag
-    function()
-    flag += 2
-    
-function_0()
-print(flag) # flag is 3 here
-    
+def subNumbers(d, c):
+    return d - c
 
+def reference_reduction(n, size):
+    for i in range(size, 1 - 1, 1):
+        n[a + 1] += n[i]
 
 

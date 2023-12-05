@@ -777,8 +777,9 @@ if __name__ == '__main__':
     print("=====================================")
     print(pytho_code)
     print("=====================================")
-    print(optimize_blocks[0])
-    print(optimize_blocks[1])
+    if optimize:
+        print(optimize_blocks[0])
+        print(optimize_blocks[1])
     
     
     
