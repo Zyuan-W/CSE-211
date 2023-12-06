@@ -816,6 +816,7 @@ if __name__ == '__main__':
         #   print(block)
           can_optimize = False
           temp = []
+          add_blocks = []
           for ir in block:
               temp.append(ir)
               if ir[0] == 'update' and ir[1] == 2:
@@ -823,9 +824,13 @@ if __name__ == '__main__':
                   curr_ir[2] = curr_ir[2][:-1] +  '+size/2]'
                   curr_ir[4]= curr_ir[4][:-1] +  '+size/2]'
                   temp.append(curr_ir)
+                  add_blocks.append(['update', 2, ir[2], '+=', curr_ir[2]])
                   can_optimize = True
-
-          temp[0][4] += '/2'
+          if(can_optimize):
+            temp[0][4] += '/2'
+            for block in add_blocks:
+              temp.append(block)
+          # temp.append()
         #   print("OPTIMIZED BLOCK")
           print(temp)
           optimized_code += optimization_for(temp)
