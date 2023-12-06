@@ -709,8 +709,11 @@ def python_code_generator(irs, optimize, optimize_blocks):
     for ir in irs:
         code = switch(ir, optimize_blocks, optimize)
         if opt_scope:
-            
-            optimize_blocks[block_index].append(ir)
+            ir_list.append(ir)
+        elif len(ir_list):
+            ir_list.append(ir)
+            optimize_blocks.append(ir_list)
+            ir_list = []
         python_code += code
         
     return python_code
@@ -777,15 +780,15 @@ if __name__ == '__main__':
     for ir in irs:
         print(ir)
     
-    optimize_blocks = {}
+    optimize_blocks = []
    
     pytho_code = python_code_generator(irs, optimize, optimize_blocks)
     print("=====================================")
     print(pytho_code)
     print("=====================================")
     if optimize:
-        print(optimize_blocks[0])
-        print(optimize_blocks[1])
+        for block in optimize_blocks: 
+          print(block)
         
   
    
