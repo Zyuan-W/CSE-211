@@ -624,7 +624,7 @@ def switch(ir, optimize_blocks, optimize):
         python_code += python_for(ir[2], ir[3], ir[4], ir[5])
         if optimize:
             opt_scope = True
-            optimize_blocks[block_index] = '# optimize block start\n'
+            # optimize_blocks[block_index] = '// optimize block start\n'
             # optimize_blocks[block_index] += python_code
         return python_code 
     elif command == 'while':
@@ -650,8 +650,8 @@ def switch(ir, optimize_blocks, optimize):
     elif command == 'right_brace':
      
         if optimize and opt_scope:
-            optimize_blocks[block_index] += '\n'
-            optimize_blocks[block_index] += '# optimize block end\n'
+            # optimize_blocks[block_index] += '\n'
+            # optimize_blocks[block_index] += '// optimize block end\n'
             block_index += 1
             opt_scope = False
         return '\n'
@@ -705,11 +705,12 @@ def python_code_generator(irs, optimize, optimize_blocks):
     global opt_scope
     global block_index
     python_code = ""
+    ir_list = []
     for ir in irs:
         code = switch(ir, optimize_blocks, optimize)
         if opt_scope:
             
-            optimize_blocks[block_index] += code
+            optimize_blocks[block_index].append(ir)
         python_code += code
         
     return python_code
