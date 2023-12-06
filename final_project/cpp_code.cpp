@@ -29,6 +29,11 @@ int main() {
     }
     cout << endl;
 
+
+    for (int i = 1; i < size; i++) {
+        b[0] += b[i];
+    }
+
     // While loop
     cout << "While loop: ";
     int j = 0;

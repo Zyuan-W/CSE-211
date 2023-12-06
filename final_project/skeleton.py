@@ -625,7 +625,7 @@ def switch(ir, optimize_blocks, optimize):
         if optimize:
             opt_scope = True
             optimize_blocks[block_index] = '# optimize block start\n'
-            optimize_blocks[block_index] += python_code
+            # optimize_blocks[block_index] += python_code
         return python_code 
     elif command == 'while':
         python_code = ""
@@ -716,6 +716,11 @@ def python_code_generator(irs, optimize, optimize_blocks):
     pass
 
 
+# def optimization_for(code):
+    
+    
+    
+
 
 def read_cpp_file():
     try:
@@ -780,7 +785,9 @@ if __name__ == '__main__':
     if optimize:
         print(optimize_blocks[0])
         print(optimize_blocks[1])
-    
+        
+  
+   
     
     
     write_to_file('python_code.py', pytho_code)
