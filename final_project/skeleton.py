@@ -174,7 +174,7 @@ def p_statement_IGNORE_CONTENT(p):
     '''
     statement : IGNORE_CONTENT
     '''
-    p[0] = ('ignore_content', p[1])       
+    p[0] = ['ignore_content', p[1]]  
 
 
 # ('func_declare', name, params, return_type)   
@@ -183,7 +183,7 @@ def p_func_decl(p):
     statement : INT VAR LPAREN params RPAREN SEMICOLON
                 | VOID VAR LPAREN params RPAREN SEMICOLON
     '''
-    p[0] = ('func_declare', p[2], p[4], p[1])
+    p[0] = ['func_declare', p[2], p[4], p[1]]
     
 
     
@@ -193,7 +193,7 @@ def p_function(p):
     statement : INT VAR LPAREN params RPAREN
                 | VOID VAR LPAREN params RPAREN
     '''
-    p[0] = ('function', p[2], p[4], p[1])
+    p[0] = ['function', p[2], p[4], p[1]]
     
 
 def p_func_params(p):
@@ -207,13 +207,13 @@ def p_func_params(p):
     if len(p) == 1:
         p[0] = []
     elif len(p) == 3:
-        p[0] = [(p[1], p[2])]
+        p[0] = [[p[1], p[2]]]
     elif len(p) == 4:
-        p[0] = [(p[1], p[3])]
+        p[0] = [[p[1], p[3]]]
     elif len(p) == 6:
-        p[0] = p[1] + [(p[3], p[5])]
+        p[0] = p[1] + [[p[3], p[5]]]
     else:
-        p[0] = p[1] + [(p[3], p[4])]
+        p[0] = p[1] + [[p[3], p[4]]]
 
 def p_func_args(p):
     '''
@@ -226,9 +226,9 @@ def p_func_args(p):
     if len(p) == 1:
         p[0] = []
     elif len(p) == 2:
-        p[0] = [(p[1])]
+        p[0] = [[p[1]]]
     else:
-        p[0] = (p[1]) + [p[3]]
+        p[0] = [p[1]] + [p[3]]
         
 def p_f_statement(p):
     '''
@@ -245,9 +245,9 @@ def p_func_call(p):
     '''
     scopes = ST.check_scope()
     if len(p) == 4:
-        p[0] = ('func_call_assign', scopes, p[1], p[3])
+        p[0] = ['func_call_assign', scopes, p[1], p[3]]
     else:
-        p[0] = ('func_call', scopes, p[1], p[3])
+        p[0] = ['func_call', scopes, p[1], p[3]]
 
 
 # variable declaration: ('declare', var_name, value)
@@ -261,9 +261,9 @@ def p_statement_decl(p):
     '''
     scopes = ST.check_scope()
     if len(p) == 4:
-        p[0] = ('declare', scopes, p[2], 0)
+        p[0] = ['declare', scopes, p[2], 0]
     else:
-        p[0] = ('declare', scopes, p[2], p[4])
+        p[0] = ['declare', scopes, p[2], p[4]]
 
 
 # variable assignment: ('assign', var_name, value)
@@ -275,7 +275,7 @@ def p_statement_assign(p):
                 | array EQUALS expr SEMICOLON
     '''
     scopes = ST.check_scope()
-    p[0] = ('assign', scopes, p[1], p[3])
+    p[0] = ['assign', scopes, p[1], p[3]]
 
     
 # def p_statement_plusplus(p):
@@ -291,7 +291,7 @@ def p_statement_if(p):
     statement : IF LPAREN condition RPAREN
     '''
     scopes = ST.check_scope()
-    p[0] = ('if', scopes, p[3])
+    p[0] = ['if', scopes, p[3]]
     
 # else statement: ('else', )
 def p_statement_if_else(p):
@@ -299,7 +299,7 @@ def p_statement_if_else(p):
     statement : ELSE
     '''
     scopes = ST.check_scope()
-    p[0] = ('else', scopes)     
+    p[0] = ['else', scopes] 
 
 # For loop: ('for', iter, start, end, update)
 def p_statement_for(p):
@@ -307,7 +307,7 @@ def p_statement_for(p):
     statement : FOR LPAREN INT VAR EQUALS factor SEMICOLON condition SEMICOLON for_update RPAREN
     '''
     scopes = ST.check_scope()
-    p[0] = ('for', scopes, p[4], p[6], p[8], p[10])
+    p[0] = ['for', scopes, p[4], p[6], p[8], p[10]]
     
 
 # while loop: ('while', condition)
@@ -316,7 +316,7 @@ def p_statement_while(p):
     statement : WHILE LPAREN condition RPAREN
     '''
     scopes = ST.check_scope()
-    p[0] = ('while', scopes, p[3])
+    p[0] = ['while', scopes, p[3]]
 
 # condition
 def p_condition(p):
@@ -339,7 +339,7 @@ def p_statement_return(p):
     statement : RETURN expr SEMICOLON
     '''
     scopes = ST.check_scope()
-    p[0] = ('return', scopes, p[2])
+    p[0] = ['return', scopes, p[2]]
     pass
 
 # i += 1; ==> ('update', 'scopes', 'i', '+=', '1')
@@ -355,12 +355,12 @@ def p_statement_update(p):
     '''
     scopes = ST.check_scope()
     if len(p) == 6:
-        p[0] = ('update', scopes, p[1], f'{p[2]}{p[3]}', p[4])
+        p[0] = ['update', scopes, p[1], f'{p[2]}{p[3]}', p[4]]
     else:
         if p[2] == '+':
-            p[0] = ('update', scopes, p[1], '+=', 1)
+            p[0] = ['update', scopes, p[1], '+=', 1]
         else:
-            p[0] = ('update', scopes, p[1], '-=', 1)
+            p[0] = ['update', scopes, p[1], '-=', 1]
 
 # for update
 def p_for_update(p):
@@ -495,9 +495,9 @@ def p_print_content(p):
     if len(p) == 1:
         p[0] = []
     elif len(p) == 4:
-        p[0] = [(p[3])]
+        p[0] = [[p[3]]]
     else:
-        p[0] = [(p[3])] + p[4]
+        p[0] = [[p[3]]] + p[4]
 
 # cout << "Hello World" << x; ==> ('print', '"Hello World", x)
 def p_statement_print(p):
@@ -506,7 +506,7 @@ def p_statement_print(p):
 
     '''
     scopes = ST.check_scope()
-    p[0] = ('cout', scopes, p[2])
+    p[0] = ['cout', scopes, p[2]]
 
 
 def p_error(p):
@@ -717,7 +717,6 @@ def python_code_generator(irs, optimize, optimize_blocks):
         python_code += code
         
     return python_code
-    pass
 
 
 # def optimization_for(code):
@@ -786,9 +785,26 @@ if __name__ == '__main__':
     print("=====================================")
     print(pytho_code)
     print("=====================================")
+    from copy import deepcopy
+
     if optimize:
         for block in optimize_blocks: 
+          print("UNOPTIMIZED BLOCK")
           print(block)
+          can_optimize = False
+          temp = []
+          for ir in block:
+              temp.append(ir)
+              if ir[0] == 'update' and ir[1] == 2:
+                  curr_ir = deepcopy(ir)
+                  curr_ir[2] = curr_ir[2][:-1] +  '+size/2]'
+                  curr_ir[4]= curr_ir[4][:-1] +  '+size/2]'
+                  temp.append(curr_ir)
+                  can_optimize = True
+
+          temp[0][4] += '/2'
+          print("OPTIMIZED BLOCK")
+          print(temp)
         
   
    
