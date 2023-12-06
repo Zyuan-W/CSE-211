@@ -2,6 +2,7 @@ import ply.lex as lex
 import ply.yacc as yacc
 import sys
 import re
+from copy import deepcopy
 
 sys.tracebacklimit = 0
 opt_scope = False
@@ -577,7 +578,7 @@ def python_while(condition):
     
 
 # switch
-def switch(ir, optimize_blocks, optimize):
+def switch(ir, optimize):
     global opt_scope
     global block_index
     command = ir[0]
@@ -691,7 +692,7 @@ def switch(ir, optimize_blocks, optimize):
         if ir[1] > 0:
             python_code = tab * ir[1]
         python_code += ir[2] + f' = [0] * {ir[3]}' +'\n'
-        return python_code
+        return python_code 
     # elif command == 'array_assign':
     #     python_code = ""
     #     if ir[1] > 0:
@@ -701,29 +702,60 @@ def switch(ir, optimize_blocks, optimize):
         return 'unknown'
 
 # conver interpreted IR into poython code
-def python_code_generator(irs, optimize, optimize_blocks):
+def python_code_generator(irs, optimize):
     global opt_scope
     global block_index
     python_code = ""
     ir_list = []
+    optimized_code = ""
+    # optimize_blocks = []
     for ir in irs:
-        code = switch(ir, optimize_blocks, optimize)
+        code = switch(ir, optimize)
         if opt_scope:
             ir_list.append(ir)
         elif len(ir_list):
             ir_list.append(ir)
-            optimize_blocks.append(ir_list)
+            # optimize_blocks.append(ir_list)
+            optimized_code = optimization_for(ir_list)
+            python_code += optimized_code
             ir_list = []
-        python_code += code
+        
+        else:
+            python_code += code
+     
         
     return python_code
 
-def optimization_for(blocks):
-    # optimize_code = ""
-    
+def optimization_for(block):
+    optimized_code = ""
+    if block is not None:
+        # for block in optimize_blocks: 
+        #   print("UNOPTIMIZED BLOCK")
+        #   print(block)
+        can_optimize = False
+        temp = []
+        add_blocks = []
+        for ir in block:
+            temp.append(ir)
+            if ir[0] == 'update' and ir[1] == 2:
+                curr_ir = deepcopy(ir)
+                curr_ir[2] = curr_ir[2][:-1] +  '+size/2]'
+                curr_ir[4]= curr_ir[4][:-1] +  '+size/2]'
+                temp.append(curr_ir)
+                add_blocks.append(['update', ir[1]-1, ir[2], '+=', curr_ir[2]])
+                can_optimize = True
+        if(can_optimize):
+            temp[0][4] += '/2'
+            for b in add_blocks:
+                temp.append(b)
+        
+        for i in temp: 
+            optimized_code += switch(i, False)
+
+        
    
-    
-    return python_code_generator(blocks, False, None)
+    return optimized_code
+    # return python_code_generator(blocks, False, None)
     
     # for block in blocks:      
     #     if block[1] > 0:
@@ -801,47 +833,51 @@ if __name__ == '__main__':
     
     optimize_blocks = []
    
-    pytho_code = python_code_generator(irs, optimize, optimize_blocks)
+    python_code = python_code_generator(irs, optimize)
     print("=====================================")
-    print(pytho_code)
+    print(python_code)
     print("=====================================")
-    from copy import deepcopy
+   
     
  
-    optimized_code = ""
+    # optimized_code = ""
     
-    if optimize_blocks is not None:
-        for block in optimize_blocks: 
-        #   print("UNOPTIMIZED BLOCK")
-        #   print(block)
-          can_optimize = False
-          temp = []
-          add_blocks = []
-          for ir in block:
-              temp.append(ir)
-              if ir[0] == 'update' and ir[1] == 2:
-                  curr_ir = deepcopy(ir)
-                  curr_ir[2] = curr_ir[2][:-1] +  '+size/2]'
-                  curr_ir[4]= curr_ir[4][:-1] +  '+size/2]'
-                  temp.append(curr_ir)
-                  add_blocks.append(['update', 2, ir[2], '+=', curr_ir[2]])
-                  can_optimize = True
-          if(can_optimize):
-            temp[0][4] += '/2'
-            for block in add_blocks:
-              temp.append(block)
-          # temp.append()
-        #   print("OPTIMIZED BLOCK")
-          print(temp)
-          optimized_code += optimization_for(temp)
+    # if optimize_blocks is not None:
+    #     for block in optimize_blocks: 
+    #     #   print("UNOPTIMIZED BLOCK")
+    #     #   print(block)
+    #       can_optimize = False
+    #       temp = []
+    #       add_blocks = []
+    #       for ir in block:
+    #           temp.append(ir)
+    #           if ir[0] == 'update' and ir[1] == 2:
+    #               curr_ir = deepcopy(ir)
+    #               curr_ir[2] = curr_ir[2][:-1] +  '+size/2]'
+    #               curr_ir[4]= curr_ir[4][:-1] +  '+size/2]'
+    #               temp.append(curr_ir)
+    #               add_blocks.append(['update', ir[1]-1, ir[2], '+=', curr_ir[2]])
+    #               can_optimize = True
+    #       if(can_optimize):
+    #         temp[0][4] += '/2'
+    #         for block in add_blocks:
+    #           temp.append(block)
+    #       # temp.append()
+    #     #   print("OPTIMIZED BLOCK")
+         
+    #       for i in temp: 
+    #         print(i)
+    #       optimized_code += "# optimized block start\n"
+    #       optimized_code += optimization_for(temp)
+    #       optimized_code += "# optimized block end\n\n"
 
         
   
    
     
     
-    write_to_file('python_code.py', pytho_code)
-    write_to_file('optimized_code.py', optimized_code)
+    write_to_file('python_code.py', python_code)
+    # write_to_file('optimized_code.py', optimized_code)
     print("=====================================")
     
 
