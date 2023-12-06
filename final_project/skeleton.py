@@ -718,6 +718,26 @@ def python_code_generator(irs, optimize, optimize_blocks):
         
     return python_code
 
+def optimization_for(blocks):
+    # optimize_code = ""
+    
+   
+    
+    return python_code_generator(blocks, False, None)
+    
+    # for block in blocks:      
+    #     if block[1] > 0:
+    #         optimize_code += tab * block[1]
+    #     optimize_code += python_for(block[2], block[3], block[4], block[5])
+       
+      
+    # return optimize_code 
+    
+
+    
+    
+    
+
 
 # def optimization_for(code):
     
@@ -786,11 +806,14 @@ if __name__ == '__main__':
     print(pytho_code)
     print("=====================================")
     from copy import deepcopy
-
-    if optimize:
+    
+ 
+    optimized_code = ""
+    
+    if optimize_blocks is not None:
         for block in optimize_blocks: 
-          print("UNOPTIMIZED BLOCK")
-          print(block)
+        #   print("UNOPTIMIZED BLOCK")
+        #   print(block)
           can_optimize = False
           temp = []
           for ir in block:
@@ -803,14 +826,17 @@ if __name__ == '__main__':
                   can_optimize = True
 
           temp[0][4] += '/2'
-          print("OPTIMIZED BLOCK")
+        #   print("OPTIMIZED BLOCK")
           print(temp)
+          optimized_code += optimization_for(temp)
+
         
   
    
     
     
     write_to_file('python_code.py', pytho_code)
+    write_to_file('optimized_code.py', optimized_code)
     print("=====================================")
     
 

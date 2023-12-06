@@ -11,6 +11,6 @@ def subNumbers(d, c):
 
 def reference_reduction(n, size):
     for i in range(size, 1 - 1, 1):
-        n[a + 1] += n[i]
+        n[1] += n[i]
 
 

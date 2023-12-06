@@ -17,6 +17,6 @@ int subNumbers(int d, int c) {
 
 void reference_reduction(int *n, int size) {
   for (int i = size; i >= 1; i++) {
-    n[a+1] += n[i];
+    n[1] += n[i];
   }
 }
