@@ -227,9 +227,9 @@ def p_func_args(p):
     if len(p) == 1:
         p[0] = []
     elif len(p) == 2:
-        p[0] = [[p[1]]]
+        p[0] = [p[1]]
     else:
-        p[0] = [p[1]] + [p[3]]
+        p[0] = p[1] + [p[3]]
         
 def p_f_statement(p):
     '''

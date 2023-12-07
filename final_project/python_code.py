@@ -1,20 +1,34 @@
+if __name__ == '__main__':
+    x = 10
+    y = 20
+    j = x + y
+    j = x + y
+    sum = 0
+    a = []
+    a = [0] * 10
+    a[1] = 1
+    b = []
+    b = [0] * 10
+    sum = addNumbers(x, y)
+    if sum > 20:
+        print(['"Sum is greater than 20. sum = "'], ['sum'], ['endl'])
+
+    else:
+        print(['"Sum is less than or equal to 20.  sum = "'], ['sum'], ['endl'])
+
+    print(['"For loop: "'])
+    for i in range(0, 5, 1):
+        print(['i'], ['" "'])
+
+    print(['endl'])
+    print(['"While loop: "'])
+    j = 5
+    while j >= 0:
+        print(['j'], ['" "'])
+        j -= 1
+
+    print(['endl'])
+
 def addNumbers(a, b):
     return a + b
-
-def reference_reduction(b, size):
-    for i in range(1, size/2, 1):
-        b[0] += b[i]
-        b[0+size/2] += b[i+size/2]
-
-    b[0] += b[0+size/2]
-
-def subNumbers(d, c):
-    return d - c
-
-def reference_reduction(n, size):
-    for i in range(size, 1/2 - 1, 1):
-        n[1] += n[i]
-        n[1+size/2] += n[i+size/2]
-
-    n[1] += n[1+size/2]
 
