@@ -3,16 +3,25 @@
 #include <iostream>
 using namespace std;
 
+
+
+
 // Function declaration
-int addNumbers(int *a, int b);
+int addNumbers(int a, int b);
+
+
+
 
 
 int main() {
+
+
     // Variable declarations and assignments
     int x = 10;
     int y = 20;
-    int j = x + y;
-    j = x + y;
+    y = x + y;
+
+
     int sum;
 
     int *a;
@@ -42,6 +51,8 @@ int main() {
     }
     cout << endl;
 
+
+
     // While loop
     cout << "While loop: ";
     int j = 5;
@@ -50,6 +61,8 @@ int main() {
         j--; 
     }
     cout << endl;
+
+
 
 }
 

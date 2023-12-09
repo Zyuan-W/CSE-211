@@ -270,15 +270,14 @@ def p_statement_decl(p):
 # variable assignment: ('assign', var_name, value)
 def p_statement_assign(p):
     '''
-    statement : VAR EQUALS NUM SEMICOLON
-                | array EQUALS NUM SEMICOLON
-                | VAR EQUALS expr SEMICOLON
-                | array EQUALS expr SEMICOLON
+    statement : VAR EQUALS factor SEMICOLON
+                | array EQUALS factor SEMICOLON
     '''
     scopes = ST.check_scope()
     p[0] = ['assign', scopes, p[1], p[3]]
 
     
+
 # def p_statement_plusplus(p):
 #     '''
 #     statement : VAR PLUS PLUS SEMICOLON
@@ -620,8 +619,10 @@ def switch(ir, optimize):
         return python_code
     elif command == 'for':
         python_code = ""
+        
         if ir[1] > 0:
             python_code += tab * ir[1]
+
         python_code += python_for(ir[2], ir[3], ir[4], ir[5])
         if optimize:
             opt_scope = True

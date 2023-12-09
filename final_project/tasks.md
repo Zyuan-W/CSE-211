@@ -10,6 +10,25 @@ def parse_cpp_to_ir(cpp_code):
 ```
 
 
+['func_declare', 'addNumbers', [['int', 'a'], ['int', 'b']], 'int']
+
+
+
+['declare', 1, 'x', 10]
+['declare', 1, 'y', 20]
+['assign', 1, 'y', 'x + y']
+
+
+
+['while', 1, 'j >= 0']
+('left_brace', '{')
+['cout', 2, [['j'], ['" "']]]
+['update', 2, 'j', '-=', 1]
+('right_brace', '}')
+['cout', 1, [['endl']]]
+
+
+
 
 ````
 ir: ir[0] = command, ir[1] = scopes
@@ -77,7 +96,6 @@ while (j = 5) ==> ('while', 'j = 5')
 # Convert the interpreted IR into Python code
 
 ```
-priority of keyword
 
 check the spacing
 
