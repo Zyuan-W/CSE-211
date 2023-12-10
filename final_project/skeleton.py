@@ -254,17 +254,29 @@ def p_func_call(p):
 # variable declaration: ('declare', var_name, value)
 # temporarily assume everything is assigned to a literal
 def p_statement_decl(p):
+    # '''
+    # statement : INT VAR SEMICOLON
+    #           | INT VAR EQUALS factor SEMICOLON
+    #           | INT VAR EQUALS expr SEMICOLON
+    # '''
     '''
-    statement : INT VAR SEMICOLON
-              | INT VAR EQUALS NUM SEMICOLON
-              | INT VAR EQUALS VAR SEMICOLON
-              | INT VAR EQUALS expr SEMICOLON
+    statement : data_type VAR SEMICOLON
+              | data_type VAR EQUALS factor SEMICOLON
+              | data_type VAR EQUALS expr SEMICOLON
     '''
     scopes = ST.check_scope()
     if len(p) == 4:
         p[0] = ['declare', scopes, p[2], 0]
     else:
         p[0] = ['declare', scopes, p[2], p[4]]
+
+
+def p_data_type(p):
+    '''
+    data_type : INT
+
+    '''
+    p[0] = p[1]
 
 
 # variable assignment: ('assign', var_name, value)
@@ -497,9 +509,9 @@ def p_print_content(p):
     if len(p) == 1:
         p[0] = []
     elif len(p) == 4:
-        p[0] = [[p[3]]]
+        p[0] = [p[3]]
     else:
-        p[0] = [[p[3]]] + p[4]
+        p[0] = [p[3]] + p[4]
 
 # cout << "Hello World" << x; ==> ('print', '"Hello World", x)
 def p_statement_print(p):
@@ -512,8 +524,9 @@ def p_statement_print(p):
 
 
 def p_error(p):
-    print("check your Cpp code syntax")
-    print("Syntax error at '%s'" % p.value)
+    # print("check your Cpp code syntax")
+    # print("Syntax error at '%s'" % p.value)
+    p[0] = ('error', p.value)
 
 parser = yacc.yacc(debug=True)
 
@@ -840,43 +853,6 @@ if __name__ == '__main__':
     print("=====================================")
     print(python_code)
     print("=====================================")
-   
-    
- 
-    # optimized_code = ""
-    
-    # if optimize_blocks is not None:
-    #     for block in optimize_blocks: 
-    #     #   print("UNOPTIMIZED BLOCK")
-    #     #   print(block)
-    #       can_optimize = False
-    #       temp = []
-    #       add_blocks = []
-    #       for ir in block:
-    #           temp.append(ir)
-    #           if ir[0] == 'update' and ir[1] == 2:
-    #               curr_ir = deepcopy(ir)
-    #               curr_ir[2] = curr_ir[2][:-1] +  '+size/2]'
-    #               curr_ir[4]= curr_ir[4][:-1] +  '+size/2]'
-    #               temp.append(curr_ir)
-    #               add_blocks.append(['update', ir[1]-1, ir[2], '+=', curr_ir[2]])
-    #               can_optimize = True
-    #       if(can_optimize):
-    #         temp[0][4] += '/2'
-    #         for block in add_blocks:
-    #           temp.append(block)
-    #       # temp.append()
-    #     #   print("OPTIMIZED BLOCK")
-         
-    #       for i in temp: 
-    #         print(i)
-    #       optimized_code += "# optimized block start\n"
-    #       optimized_code += optimization_for(temp)
-    #       optimized_code += "# optimized block end\n\n"
-
-        
-  
-   
     
     
     write_to_file('python_code.py', python_code)
