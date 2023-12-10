@@ -271,7 +271,9 @@ def p_statement_decl(p):
 def p_statement_assign(p):
     '''
     statement : VAR EQUALS factor SEMICOLON
+                | VAR EQUALS expr SEMICOLON
                 | array EQUALS factor SEMICOLON
+                | array EQUALS expr SEMICOLON
     '''
     scopes = ST.check_scope()
     p[0] = ['assign', scopes, p[1], p[3]]
@@ -438,13 +440,13 @@ def p_term_factor(p):
     p[0] = p[1]
     
     
-def p_factor_expr(p):
-    '''
-    factor : LPAREN expr RPAREN
+# def p_factor_expr(p):
+#     '''
+#     factor : LPAREN expr RPAREN
         
-    '''
+#     '''
 
-    p[0] = f'({p[2]})' 
+#     p[0] = f'({p[2]})' 
 
 
 def p_factor_num(p):

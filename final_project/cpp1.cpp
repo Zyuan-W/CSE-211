@@ -1,21 +1,11 @@
-
-
 #include <iostream>
 using namespace std;
-
-
 
 
 // Function declaration
 int addNumbers(int a, int b);
 
-
-
-
-
 int main() {
-
-
     // Variable declarations and assignments
     int x = 10;
     int y = 20;
@@ -68,7 +58,7 @@ int main() {
 
 
 // Function definition
-int addNumbers(int *a, int b) {
+int addNumbers(int a, int b) {
     return a + b;
   
 
