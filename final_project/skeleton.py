@@ -29,7 +29,7 @@ tokens = ['NUM', 'VAR', 'PLUS', 'MINUS', 'DIV',
               'IF', 'ELSE', 'WHILE', 'LB', 'RB', 'INT', 
               'GREATER', 'LESS', 'IGNORE_CONTENT', 'COUT', 'SENTENCE',
               'COMMA', 'ENDL', 'RETURN','LBRACKET', 'RBRACKET', 'STAR', 
-              'SIZEOF', 'MALLOC', 'VOID']
+              'SIZEOF', 'MALLOC', 'VOID', 'DATA_TYPE']
 
 # t_MULT = r'\*'
 # t_PLUS = r'\+'
@@ -58,6 +58,7 @@ t_COMMA = r','
 t_SIZEOF = r'sizeof'
 t_MALLOC = r'malloc'
 t_VOID = r'void'
+# t_INT = r'int'
 
 def t_IGNORE_CONTENT(t):
     r'\/\/.*|\#.*|using|namespace|std;'
@@ -80,7 +81,7 @@ reserved = {
     'return' : 'RETURN',
     'sizeof' : 'SIZEOF',
     'malloc' : 'MALLOC',
-    'void' : 'VOID'
+    'void' : 'VOID',
 }
 
 
@@ -94,6 +95,14 @@ def t_INT(t):
     r'int'
     t.type = reserved.get(t.value, 'INT')
     return t
+
+
+# data type include int, float, double, char, string, bool
+# def t_DATA_TYPE(t):
+#     # r'int|float|double|char|string|bool'
+#     r'float|double'
+#     t.type = reserved.get(t.value, 'DATA_TYPE')
+#     return t
 
 def t_NUM(t):
     r'\d+'
@@ -115,21 +124,6 @@ def t_MINUS(t):
     t.type = 'MINUS'
     return t
 
-# def t_FOR(t):
-#     r'for'
-#     t.type = 'FOR'
-#     return t
-
-# def t_WHILE(t):
-#     r'while'
-#     t.type = 'WHILE'
-#     return t
-
-# def t_IF(t):
-#     r'if'
-#     t.type = 'IF'
-#     return t
-
 def t_newline(t):
     r'\n'
     t.lexer.lineno +=1
@@ -137,31 +131,8 @@ def t_newline(t):
 
 lexer = lex.lex()
 
+
 # Parser
-
-# rule for intermediate representation:
-
-# variable declaration: ('declare', var_name, value)
-# int x = 10;  ==> ('declare', 'x', '10')
-# int y; ==> ('declare', 'y','0')
-
-# variable assignment: ('assign', var_name, value)
-# x = 11; ==> ('assign', 'x', '11')
-
-# if statement: ('if', condition)
-# if (sum = 10); ==> ('if', 'sum = 10')
-
-# For loop: ('for', iter, start, end, update)
-# for (int i = 0; i < 5; i++) ==> ('for', 'int i', '0', '5', 'i+1')
-
-# while loop: ('while', condition)
-# while (j = 5) ==> ('while', 'j = 5')
-
-# print statement: ('print', string, var_name)
-# cout << x; ==> ('print', '', 'x')
-# cout << "Hello World"; ==> ('print', '"Hello World"', '')
-# cout << "Hello World" << x; ==> ('print', '"Hello World", x)
-
 
 def p_program(p):
     '''program : statement
@@ -254,16 +225,16 @@ def p_func_call(p):
 # variable declaration: ('declare', var_name, value)
 # temporarily assume everything is assigned to a literal
 def p_statement_decl(p):
-    # '''
-    # statement : INT VAR SEMICOLON
-    #           | INT VAR EQUALS factor SEMICOLON
-    #           | INT VAR EQUALS expr SEMICOLON
-    # '''
     '''
-    statement : data_type VAR SEMICOLON
-              | data_type VAR EQUALS factor SEMICOLON
-              | data_type VAR EQUALS expr SEMICOLON
+    statement : INT VAR SEMICOLON
+              | INT VAR EQUALS factor SEMICOLON
+              | INT VAR EQUALS expr SEMICOLON
     '''
+    # '''
+    # statement : DATA_TYPE VAR SEMICOLON
+    #           | DATA_TYPE VAR EQUALS factor SEMICOLON
+    #           | DATA_TYPE VAR EQUALS expr SEMICOLON
+    # '''
     scopes = ST.check_scope()
     if len(p) == 4:
         p[0] = ['declare', scopes, p[2], 0]
@@ -271,12 +242,12 @@ def p_statement_decl(p):
         p[0] = ['declare', scopes, p[2], p[4]]
 
 
-def p_data_type(p):
-    '''
-    data_type : INT
+# def p_data_type(p):
+#     '''
+#     type : INT
+#     '''
+#     p[0] = p[1]
 
-    '''
-    p[0] = p[1]
 
 
 # variable assignment: ('assign', var_name, value)

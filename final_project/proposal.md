@@ -51,6 +51,33 @@ Cases
     ...
 ```
 
+```
+
+# rule for intermediate representation:
+
+# variable declaration: ('declare', var_name, value)
+# int x = 10;  ==> ('declare', 'x', '10')
+# int y; ==> ('declare', 'y','0')
+
+# variable assignment: ('assign', var_name, value)
+# x = 11; ==> ('assign', 'x', '11')
+
+# if statement: ('if', condition)
+# if (sum = 10); ==> ('if', 'sum = 10')
+
+# For loop: ('for', iter, start, end, update)
+# for (int i = 0; i < 5; i++) ==> ('for', 'int i', '0', '5', 'i+1')
+
+# while loop: ('while', condition)
+# while (j = 5) ==> ('while', 'j = 5')
+
+# cout statement: ('cout', string, var_name)
+# cout << x; ==> ('cout', '', 'x')
+# cout << "Hello World"; ==> ('cout', '"Hello World"', '')
+# cout << "Hello World" << x; ==> ('cout', '"Hello World", x)
+
+```
+
 - Create a Python code generator to translate the intermediate representation into Python code.
 ```
 check spacing
